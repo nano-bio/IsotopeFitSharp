@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsotopeFitter", "IsotopeFit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsotopeFitLib", "IsotopeFitLib\IsotopeFitLib.csproj", "{22DB119B-6BAC-4F70-ACA6-4FA56215BFEB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsotopeFitLib.Tests", "IsotopeFitLib.Tests\IsotopeFitLib.Tests.csproj", "{8EDF4429-251A-416D-BB68-93F227191BCF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsotopeFitter.Tests", "IsotopeFitter.Tests\IsotopeFitter.Tests.csproj", "{20B95A5E-C4E6-4683-9D0A-19692E5F76FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,6 +26,14 @@ Global
 		{22DB119B-6BAC-4F70-ACA6-4FA56215BFEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22DB119B-6BAC-4F70-ACA6-4FA56215BFEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22DB119B-6BAC-4F70-ACA6-4FA56215BFEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20B95A5E-C4E6-4683-9D0A-19692E5F76FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20B95A5E-C4E6-4683-9D0A-19692E5F76FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20B95A5E-C4E6-4683-9D0A-19692E5F76FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20B95A5E-C4E6-4683-9D0A-19692E5F76FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
