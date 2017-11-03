@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace IsotopeFitLib
 {
-    public class Class1
+    class DataStructure1
     {
+
+    }
+
+    class DataStructure2
+    {
+
     }
 }

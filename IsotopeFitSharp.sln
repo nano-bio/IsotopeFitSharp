@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2005
+VisualStudioVersion = 15.0.27004.2006
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsotopeFitter", "IsotopeFitter\IsotopeFitter.csproj", "{63137230-8076-4E73-BC43-7F238E5924BE}"
 EndProject
@@ -13,27 +13,27 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsotopeFitter.Tests", "Isot
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
 		Description = Library and executable to extract data from spectra measured at ClusTOF.
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{63137230-8076-4E73-BC43-7F238E5924BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{63137230-8076-4E73-BC43-7F238E5924BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{63137230-8076-4E73-BC43-7F238E5924BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{63137230-8076-4E73-BC43-7F238E5924BE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{22DB119B-6BAC-4F70-ACA6-4FA56215BFEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{22DB119B-6BAC-4F70-ACA6-4FA56215BFEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{22DB119B-6BAC-4F70-ACA6-4FA56215BFEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{22DB119B-6BAC-4F70-ACA6-4FA56215BFEB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8EDF4429-251A-416D-BB68-93F227191BCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8EDF4429-251A-416D-BB68-93F227191BCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8EDF4429-251A-416D-BB68-93F227191BCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8EDF4429-251A-416D-BB68-93F227191BCF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{20B95A5E-C4E6-4683-9D0A-19692E5F76FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{20B95A5E-C4E6-4683-9D0A-19692E5F76FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{20B95A5E-C4E6-4683-9D0A-19692E5F76FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{20B95A5E-C4E6-4683-9D0A-19692E5F76FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63137230-8076-4E73-BC43-7F238E5924BE}.Debug|x64.ActiveCfg = Debug|x64
+		{63137230-8076-4E73-BC43-7F238E5924BE}.Debug|x64.Build.0 = Debug|x64
+		{63137230-8076-4E73-BC43-7F238E5924BE}.Release|x64.ActiveCfg = Release|x64
+		{63137230-8076-4E73-BC43-7F238E5924BE}.Release|x64.Build.0 = Release|x64
+		{22DB119B-6BAC-4F70-ACA6-4FA56215BFEB}.Debug|x64.ActiveCfg = Debug|x64
+		{22DB119B-6BAC-4F70-ACA6-4FA56215BFEB}.Debug|x64.Build.0 = Debug|x64
+		{22DB119B-6BAC-4F70-ACA6-4FA56215BFEB}.Release|x64.ActiveCfg = Release|x64
+		{22DB119B-6BAC-4F70-ACA6-4FA56215BFEB}.Release|x64.Build.0 = Release|x64
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Debug|x64.ActiveCfg = Debug|x64
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Debug|x64.Build.0 = Debug|x64
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Release|x64.ActiveCfg = Release|x64
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Release|x64.Build.0 = Release|x64
+		{20B95A5E-C4E6-4683-9D0A-19692E5F76FE}.Debug|x64.ActiveCfg = Debug|x64
+		{20B95A5E-C4E6-4683-9D0A-19692E5F76FE}.Debug|x64.Build.0 = Debug|x64
+		{20B95A5E-C4E6-4683-9D0A-19692E5F76FE}.Release|x64.ActiveCfg = Release|x64
+		{20B95A5E-C4E6-4683-9D0A-19692E5F76FE}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
