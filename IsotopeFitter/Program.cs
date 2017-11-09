@@ -4,17 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using IsotopeFitLib;
+using IsotopeFit;
 
 namespace IsotopeFitter
 {
     class Program
     {
+        //TODO: vymysliet, napisat, otestovat sposob rucneho zapisovania do datovych struktur
+
         static void Main(string[] args)
         {
-            IsotopeFitWorkspace wrk = new IsotopeFitWorkspace();
+            Workspace W = new Workspace("testfile.ifd");
 
-            //wrk.NNLS();
+
+
+            Console.ReadKey();
         }
     }
 }

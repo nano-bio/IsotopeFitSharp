@@ -7,7 +7,7 @@
     <ProjectGuid>{22DB119B-6BAC-4F70-ACA6-4FA56215BFEB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>IsotopeFitLib</RootNamespace>
+    <RootNamespace>IsotopeFit</RootNamespace>
     <AssemblyName>IsotopeFitLib</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -22,6 +22,9 @@
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>
+    </DocumentationFile>
+    <RegisterForComInterop>false</RegisterForComInterop>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
@@ -57,6 +60,9 @@
     <Reference Include="Accord.IO, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
       <HintPath>..\packages\Accord.IO.3.8.0\lib\net46\Accord.IO.dll</HintPath>
     </Reference>
+    <Reference Include="DotNetDoctor.CSMatIO, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetDoctor.CSMatIO.1.0.3\lib\net45\DotNetDoctor.CSMatIO.dll</HintPath>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
@@ -74,12 +80,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\DataProcessing.cs" />
-    <Compile Include="src\DataStructures.cs" />
+    <Compile Include="src\IFData.cs" />
     <Compile Include="src\IsotopeFitWorkspace\DesignMatrix.cs" />
     <Compile Include="src\IFDFile.cs" />
     <Compile Include="src\IsotopeFitWorkspace\NNLS.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="src\IsotopeFitWorkspace\Workspace.cs" />
+    <Compile Include="src\IsotopeFitWorkspace\WorkspaceExceptions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

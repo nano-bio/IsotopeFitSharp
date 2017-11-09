@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
-namespace IsotopeFitLib
+namespace IsotopeFit
 {
-    public partial class IsotopeFitWorkspace
+    public partial class Workspace
     {
         private class DesignMatrix
         {

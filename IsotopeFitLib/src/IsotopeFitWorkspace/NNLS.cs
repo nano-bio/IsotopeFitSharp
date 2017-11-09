@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Factorization;
 
-namespace IsotopeFitLib
+namespace IsotopeFit
 {
-    public partial class IsotopeFitWorkspace
+    public partial class Workspace
     {
         /// <summary>
         /// Calculate a non-negative least squares solution of A * x = b
