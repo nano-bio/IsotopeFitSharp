@@ -37,6 +37,7 @@ namespace IsotopeFit
             {
                 //TODO: we will probably want to use the parallel for overload with the init-body-final scheme
                 Parallel.For(0, 100, buildColumnDelegate);
+                //Parallel.For(0, 100,)
             }
 
             internal void CalculateQR()
