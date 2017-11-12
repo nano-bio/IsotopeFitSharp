@@ -55,7 +55,7 @@ namespace IsotopeFit.Tests
             Vector<double> d = Vector<double>.Build.DenseOfEnumerable(blist);
 
             Workspace wrk = new Workspace();
-            Vector<double> solution = wrk.NNLS(C, d);
+            Vector<double> solution = Numerics.NNLS(C, d);
 
             // solution check
             string[] xfile = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\nnls_x_solution.txt");

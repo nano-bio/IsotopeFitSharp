@@ -14,9 +14,9 @@ namespace IsotopeFitter
 
         static void Main(string[] args)
         {
-            Workspace W = new Workspace("testfile.ifd");
+            Workspace W = new Workspace();  // "testfile.ifd"
 
-
+            W.Dummy();
 
             Console.ReadKey();
         }

@@ -11,6 +11,7 @@ namespace IsotopeFit
     public partial class Workspace
     {
         #region Fields
+        private DesignMtrx DesignMatrix;
 
         #endregion
 
@@ -48,6 +49,9 @@ namespace IsotopeFit
         public IFData.Calibration Calibration { get; set; }
         public IFData.BaselineCorr BaselineCorr { get; set; }
 
+        public double FwhmRange { get; set; }
+        public double SearchRange { get; set; }
+
         #endregion
 
         #region Methods
@@ -76,7 +80,13 @@ namespace IsotopeFit
 
             //TODO: calculate the background corrected spectrum
 
-            //TODO: store it in a corresponding workspace field
+            //TODO: store it in a corresponding workspace field            
+        }
+
+        public void Dummy()
+        {
+            DesignMtrx dm = new DesignMtrx();
+            dm.Build();
         }
 
         #endregion

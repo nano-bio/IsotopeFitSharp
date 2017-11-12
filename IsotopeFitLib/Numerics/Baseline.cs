@@ -9,27 +9,27 @@ using MathNet.Numerics.Interpolation;
 
 namespace IsotopeFit
 {
-    public static class DataProcessing
+    public static partial class Numerics
     {
-        //TODO: methods for backround subtraction, resolution fitting, mass axis correction, etc...
+        //TODO: methods for backround subtraction
 
         /// <summary>
         /// Corrects the raw data for baseline, according to supplied baseline correction information.
         /// </summary>
-        /// <param name="BC">Data object containing the baseline correction information.</param>
-        /// <param name="RD">Data object containing the raw experimental data.</param>
+        /// <param name="bc">Data object containing the baseline correction information.</param>
+        /// <param name="rd">Data object containing the raw experimental data.</param>
         /// <returns>MathNet vector containing the signal with the baseline subtracted from it.</returns>
-        internal static Vector<double> CorrectBaseline(IFData.BaselineCorr BC, IFData.RawData RD)
+        internal static Vector<double> CorrectBaseline(IFData.BaselineCorr bc, IFData.RawData rd)
         {
-            int massAxisLength = RD.Length;
+            int massAxisLength = rd.Length;
 
             //TODO: Evaluating the bg correction for the whole range might be useless. Specifiyng a mass range would make sense.
-            Vector<double> baseline = Vector<double>.Build.DenseOfArray(SPPCHIP(BC.XAxis.ToArray(), BC.YAxis.ToArray(), RD.MassAxis.ToArray()));
+            Vector<double> baseline = Vector<double>.Build.DenseOfArray(SPPCHIP(bc.XAxis.ToArray(), bc.YAxis.ToArray(), rd.MassAxis.ToArray()));
             Vector<double> correctedSignal = Vector<double>.Build.Dense(massAxisLength, 0);
 
             for (int i = 0; i < massAxisLength; i++)
             {
-                correctedSignal[i] = RD.SignalAxis[i] - baseline[i];
+                correctedSignal[i] = rd.SignalAxis[i] - baseline[i];
             }
 
             return correctedSignal;

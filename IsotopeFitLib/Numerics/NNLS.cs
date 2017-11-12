@@ -10,14 +10,14 @@ using MathNet.Numerics.LinearAlgebra.Factorization;
 
 namespace IsotopeFit
 {
-    public partial class Workspace
+    public static partial class Numerics
     {
         /// <summary>
         /// Calculate a non-negative least squares solution of A * x = b
         /// </summary>
         /// <param name="C">Matrix describing the model.</param>
         /// <param name="d">Vector with observation values.</param>
-        public Vector<double> NNLS(Matrix<double> C, Vector<double> d)
+        public static Vector<double> NNLS(Matrix<double> C, Vector<double> d)
         {
             //TODO: this needs to be set at the start of all calculations, right after Isotopefitter is called
             //MathNet.Numerics.Control.UseNativeMKL();

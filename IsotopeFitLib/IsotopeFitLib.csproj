@@ -79,14 +79,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="src\DataProcessing.cs" />
-    <Compile Include="src\IFData.cs" />
-    <Compile Include="src\IsotopeFitWorkspace\DesignMatrix.cs" />
-    <Compile Include="src\IFDFile.cs" />
-    <Compile Include="src\IsotopeFitWorkspace\NNLS.cs" />
+    <Compile Include="Numerics\Baseline.cs" />
+    <Compile Include="IFData.cs" />
+    <Compile Include="Numerics\MassAxis.cs" />
+    <Compile Include="Numerics\QRFactorization.cs" />
+    <Compile Include="Numerics\Resolution.cs" />
+    <Compile Include="Workspace\DesignMatrix.cs" />
+    <Compile Include="IFDFile.cs" />
+    <Compile Include="Numerics\NNLS.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="src\IsotopeFitWorkspace\Workspace.cs" />
-    <Compile Include="src\IsotopeFitWorkspace\WorkspaceExceptions.cs" />
+    <Compile Include="Workspace\Workspace.cs" />
+    <Compile Include="Workspace\WorkspaceExceptions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
