@@ -69,7 +69,8 @@ namespace IsotopeFit.Tests
 
             for (int i = 0; i < correctX.Count; i++)
             {
-                Assert.Less(1e-9, Math.Abs(solution[i] - correctX[i]),  "Solution is wrong.");
+                //Assert.Less(1e-9, Math.Abs(solution[i] - correctX[i]),  "Solution is wrong.");
+                Assert.AreEqual(correctX[i], solution[i], 1e-9);
             }
 
             Assert.Pass("NNLS test passed.");

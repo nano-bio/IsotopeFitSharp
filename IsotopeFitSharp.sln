@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2006
+VisualStudioVersion = 15.0.27004.2008
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsotopeFitter", "IsotopeFitter\IsotopeFitter.csproj", "{63137230-8076-4E73-BC43-7F238E5924BE}"
 EndProject
@@ -26,12 +26,12 @@ Global
 		{22DB119B-6BAC-4F70-ACA6-4FA56215BFEB}.Debug|x64.Build.0 = Debug|x64
 		{22DB119B-6BAC-4F70-ACA6-4FA56215BFEB}.Release|x64.ActiveCfg = Release|x64
 		{22DB119B-6BAC-4F70-ACA6-4FA56215BFEB}.Release|x64.Build.0 = Release|x64
-		{8EDF4429-251A-416D-BB68-93F227191BCF}.Debug|x64.ActiveCfg = Debug|x86
-		{8EDF4429-251A-416D-BB68-93F227191BCF}.Debug|x64.Build.0 = Debug|x86
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Debug|x64.ActiveCfg = Debug|x64
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Debug|x64.Build.0 = Debug|x64
 		{8EDF4429-251A-416D-BB68-93F227191BCF}.Release|x64.ActiveCfg = Release|x64
 		{8EDF4429-251A-416D-BB68-93F227191BCF}.Release|x64.Build.0 = Release|x64
-		{20B95A5E-C4E6-4683-9D0A-19692E5F76FE}.Debug|x64.ActiveCfg = Debug|x86
-		{20B95A5E-C4E6-4683-9D0A-19692E5F76FE}.Debug|x64.Build.0 = Debug|x86
+		{20B95A5E-C4E6-4683-9D0A-19692E5F76FE}.Debug|x64.ActiveCfg = Debug|x64
+		{20B95A5E-C4E6-4683-9D0A-19692E5F76FE}.Debug|x64.Build.0 = Debug|x64
 		{20B95A5E-C4E6-4683-9D0A-19692E5F76FE}.Release|x64.ActiveCfg = Release|x64
 		{20B95A5E-C4E6-4683-9D0A-19692E5F76FE}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
