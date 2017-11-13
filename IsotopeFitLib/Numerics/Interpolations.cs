@@ -8,6 +8,9 @@ namespace IsotopeFit
 {
     public static partial class Numerics
     {
-
+        public static double PPEval()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
