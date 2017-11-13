@@ -19,7 +19,7 @@ namespace IsotopeFit
         /// <param name="bc">Data object containing the baseline correction information.</param>
         /// <param name="rd">Data object containing the raw experimental data.</param>
         /// <returns>MathNet vector containing the signal with the baseline subtracted from it.</returns>
-        internal static Vector<double> CorrectBaseline(IFData.BaselineCorr bc, IFData.RawData rd)
+        internal static Vector<double> CorrectBaseline(IFData.BaselineCorr bc, IFData.Spectrum rd)
         {
             int massAxisLength = rd.Length;
 
