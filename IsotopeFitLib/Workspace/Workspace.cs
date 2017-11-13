@@ -47,10 +47,12 @@ namespace IsotopeFit
         public ulong EndIndex { get; set; }
         public List<IFData.Molecule> Molecules { get; set; }
         public IFData.Calibration Calibration { get; set; }
-        public IFData.BaselineCorr BaselineCorr { get; set; }
-
+        public IFData.BaselineCorr BaselineCorr { get; set; }       
+     
         public double FwhmRange { get; set; }
         public double SearchRange { get; set; }
+
+        public double[] ResolutionCoefs { get; set; }
 
         #endregion
 
@@ -80,7 +82,12 @@ namespace IsotopeFit
 
             //TODO: calculate the background corrected spectrum
 
-            //TODO: store it in a corresponding workspace field            
+            //TODO: store it in a corresponding workspace field              
+        }
+
+        public void ResolutionFit()
+        {
+            ResolutionCoefs = Numerics.PolynomialFit(Calibration.COMList, Calibration.ResolutionList).ToArray();
         }
 
         //public void Dummy()
