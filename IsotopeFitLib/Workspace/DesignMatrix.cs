@@ -16,10 +16,10 @@ namespace IsotopeFit
         {
             #region Fields
 
-            private Vector<double>[] dmVectors;
-            private double[] massAxisArr;
+            private Vector<double>[] designMatrixVectors;
+            private double[] massAxis;
 
-            //bool[] fitMask; 
+            bool[] fitMask; 
 
             #endregion
 
@@ -30,29 +30,29 @@ namespace IsotopeFit
             /// </summary>
             internal DesignMtrx(IFData.Spectrum spectrum, List<IFData.Molecule> molecules, IFData.Calibration calibration)
             {
-                MassAxis = spectrum.MassAxis;
+                massAxis = spectrum.MassAxis.ToArray();
                 Molecules = molecules;
                 Calibration = calibration;
 
                 Rows = spectrum.Length;
                 Cols = molecules.Count;
-
-                massAxisArr = MassAxis.ToArray();
             }
 
             #endregion
 
             #region Properties
 
-            private Vector<double> MassAxis { get; set; }
+            //private Vector<double> MassAxis { get; set; }
             private List<IFData.Molecule> Molecules { get; set; }
-            private IFData.Calibration Calibration { get; set; }
+            private IFData.Calibration Calibration { get; set; }            
 
+            internal Matrix<double> Storage { get; private set; }   //TODO: maybe a field would suffice
             internal int Rows { get; private set; }
             internal int Cols { get; private set; }
-
-            internal Matrix<double> Storage { get; private set; }
             internal Matrix<double> R { get; private set; }
+
+            internal double SearchRange { get; set; }   //TODO: at the moment, those two values are not being set anywhere
+            internal double FwhmRange { get; set; }
 
             #endregion
 
@@ -66,7 +66,8 @@ namespace IsotopeFit
                 //Matrix<double> dm = Matrix<double>.Build.SparseDiagonal(1000, 400, 0);
                 //Storage = Matrix<double>.Build.SparseDiagonal(1000, 400, 0);  //TODO: we will create the final matrix after all rows are built, because matrix write operations are not thread safe
 
-                dmVectors = new Vector<double>[Cols];
+                designMatrixVectors = new Vector<double>[Cols];
+                fitMask = new bool[Rows];
 
                 //TODO: we will probably want to use the parallel for overload with the init-body-final scheme
                 //TODO: if we dont need the build init for each thread, use the parallel for with the appropriate signature
@@ -74,19 +75,35 @@ namespace IsotopeFit
                 Parallel.For(0, 100, BuildInit, BuildWork, null);
 
                 //TODO: build the sparse design matrix from the vector array
+                Storage = Matrix<double>.Build.SparseOfColumnVectors(designMatrixVectors);
             }
 
+
+            /// <summary>
+            /// Initializes a workspace for each thread of the parallel for loop that builds the design matrix.
+            /// Executes once, before the first iteration runs on a newly created thread.
+            /// </summary>
+            /// <returns>New instance of thread workspace.</returns>
             private BuildState BuildInit()
-            {
-                // maybe wont be necessary
-                return new BuildState();
+            {                
+                return new BuildState(Rows);
             }
 
+            /// <summary>
+            /// Builds one column of the design matrix, which corresponds to a particular cluster.
+            /// Executes once per iteration.
+            /// </summary>
+            /// <param name="moleculeIndex">Parallel for loop interation variable.</param>
+            /// <param name="pls">Intra-thread messaging structure.</param>
+            /// <param name="bs">Thread-local status object.</param>
+            /// <returns>Modified thread status object.</returns>
             private BuildState BuildWork(int moleculeIndex, ParallelLoopState pls, BuildState bs)
             {
                 Console.WriteLine(Thread.CurrentThread.ManagedThreadId);
 
                 int isotopePeakCount = Molecules[moleculeIndex].PeakData.Mass.Count;
+
+                bool[] localFitmask = new bool[Rows];
 
                 // loop through all isotope peaks of the current molecule
                 for (int i = 0; i < isotopePeakCount; i++)
@@ -98,6 +115,8 @@ namespace IsotopeFit
 
                     Vector<double> breaks;
                     Matrix<double> coefs;
+
+                    Vector<double> currentColumn;
 
                     mass = Molecules[moleculeIndex].PeakData.Mass[i];
                     abundance = Molecules[moleculeIndex].PeakData.Abundance[i];  // area of the line and abundance are proportional
@@ -118,33 +137,54 @@ namespace IsotopeFit
                     coefs = TransformLineShapeCoefs(Calibration.Shape, fwhm, abundance);
 
                     //TODO: find peak and fitmask limits
+                    peakLowerLimitIndex = FindLowerLimitIndex(massAxis, breaks.First());
+                    peakUpperLimitIndex = FindUpperLimitIndex(massAxis, breaks.Last());
+                    fitmaskLowerLimitIndex = FindLowerLimitIndex(massAxis, mass - SearchRange * FwhmRange * fwhm);
+                    fitmaskUpperLimitIndex = FindUpperLimitIndex(massAxis, mass + SearchRange * FwhmRange * fwhm);
 
-
-                    //TODO: adjust fitmask
+                    //TODO: adjust local fitmask
+                    for (int j = fitmaskLowerLimitIndex; j <= fitmaskUpperLimitIndex; j++)
+                    {
+                        bs.fitMask[j] = true;
+                    }
 
                     //TODO: build the design matrix column for the current molecule
-
-                    //TODO: the following stuff is not optimal in the c++ code
-
-                    for (int j = 0; j < 10; j++)
+                    currentColumn = Vector<double>.Build.Sparse(Rows);
+                    
+                    for (int j = peakLowerLimitIndex; j <= peakUpperLimitIndex; j++)
                     {
-                        //TODO: evaluate the peakshape partial polynomial at the j index of massaxis
+                        if (bs.fitMask[j])
+                        {
+                            //TODO: evaluate the peakshape partial polynomial at the j index of massaxis
+                            //TODO: evaluate the correct partial polynomial - to get ideal signal value
+                            idealSignalValue = abundance * Numerics.PPEval();
 
-                        //TODO: evaluate the correct partial polynomial - to get ideal signal value     
-
-                        //TODO: add the point to the design matrix column - if it falls within the fitmask
+                            //TODO: add the point to the design matrix column - if it falls within the fitmask
+                            
+                        }
                     }
 
                     //TODO: add the built column to the column storage
-                    //dmVectors[moleculeIndex] = ggg;
+                    designMatrixVectors[moleculeIndex] = currentColumn;
                 }
 
                 return bs;
             }
 
+            /// <summary>
+            /// Incorporates thread calculation results into the class-level storage.
+            /// Executes once, after the last iteration of a particular thread.
+            /// </summary>
+            /// <param name="bs">Thread-local state object.</param>
             private void BuildFinal(BuildState bs)
             {
-
+                lock (fitMask)
+                {
+                    for (int i = 0; i < Rows; i++)
+                    {
+                        if (bs.fitMask[i]) fitMask[i] = true;
+                    }
+                }
             }
 
             /// <summary>
@@ -204,11 +244,11 @@ namespace IsotopeFit
             }
 
             /// <summary>
-            /// 
+            /// Finds the index of the first value in a sorted array that is greater than the specified threshold.
             /// </summary>
-            /// <param name="array"></param>
-            /// <param name="threshold"></param>
-            /// <returns></returns>
+            /// <param name="array">Sorted array of values to be searched.</param>
+            /// <param name="threshold">Value to which the comparison will be made.</param>
+            /// <returns>Index of first value that is greater than the specified threshold.</returns>
             private int FindLowerLimitIndex(double[] array, double threshold)
             {
                 int index = Array.BinarySearch(array, threshold);
@@ -218,11 +258,11 @@ namespace IsotopeFit
             }
 
             /// <summary>
-            /// Finds the index of last value in a sorted array that is less than than specified threshold.
+            /// Finds the index of the last value in a sorted array that is less than the specified threshold.
             /// </summary>
             /// <param name="array">Sorted array of values to be searched.</param>
             /// <param name="threshold">Value to which the comparison will be made.</param>
-            /// <returns>Index of last value that is less than than specified threshold.</returns>
+            /// <returns>Index of last value that is less than the specified threshold.</returns>
             private int FindUpperLimitIndex(double[] array, double threshold)
             {
                 int index = Array.BinarySearch(array, threshold);
@@ -245,14 +285,11 @@ namespace IsotopeFit
             /// </summary>
             private class BuildState
             {
-                internal int peakLowerLimitIndex, peakUpperLimitIndex;
-                internal int fitmaskLowerLimitIndex, fitmaskUpperLimitIndex;
-                internal int breakIndex;
-                internal double mass, area, resolution, fwhm, idealSignalValue;
+                internal bool[] fitMask;
 
-                internal BuildState()
+                internal BuildState(int size)
                 {
-
+                    fitMask = new bool[size];
                 }
             }
 
