@@ -23,9 +23,9 @@ namespace IsotopeFit
             return reader.Content["data"] as MLStructure;
         }
 
-        internal static IFData.RawData ReadRawData(MLStructure root)
+        internal static IFData.Spectrum ReadRawData(MLStructure root)
         {
-            return new IFData.RawData((root["raw_peakdata"] as MLDouble).GetArray());
+            return new IFData.Spectrum((root["raw_peakdata"] as MLDouble).GetArray());
         }
 
         internal static ulong ReadStartIndex(MLStructure root)

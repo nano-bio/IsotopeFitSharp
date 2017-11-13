@@ -53,30 +53,41 @@ namespace IsotopeFit
         }
 
         /// <summary>
-        /// Storage class for raw experimental data.
+        /// Storage class for mass spectrum data.
         /// </summary>
-        public class RawData
+        public class Spectrum
         {
             public int Length { get; set; }
 
             public Vector<double> MassAxis { get; set; }
             public Vector<double> SignalAxis { get; set; }
 
-            internal RawData()
+            internal Spectrum()
             {
 
+            }
+
+            /// <summary>
+            /// Creates new storage for mass spectrum data from specified x and y axis.
+            /// </summary>
+            /// <param name="massAxis">Mass axis of the spectrum.</param>
+            /// <param name="signalAxis">Signal axis of the spectrum.</param>
+            internal Spectrum(Vector<double> massAxis, Vector<double> signalAxis)
+            {
+                Length = massAxis.Count;
+                MassAxis = massAxis;
+                SignalAxis = signalAxis;
             }
 
             /// <summary>
             /// Creates new storage for raw data and populates it with supplied data.
             /// </summary>
             /// <param name="data">Data to be stored in the new instance.</param>
-            internal RawData(double[][] data)
+            internal Spectrum(double[][] data)
             {
                 //TODO: include the check to determine is the array is MxN or NxM
 
                 Length = data.Length;
-
                 MassAxis = Vector<double>.Build.Dense(Length, 0);
                 SignalAxis = Vector<double>.Build.Dense(Length, 0);
 

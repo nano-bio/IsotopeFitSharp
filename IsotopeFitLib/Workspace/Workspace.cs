@@ -42,7 +42,7 @@ namespace IsotopeFit
 
         #region Properties
 
-        public IFData.RawData RawData { get; set; }
+        public IFData.Spectrum RawData { get; set; }
         public ulong StartIndex { get; set; }
         public ulong EndIndex { get; set; }
         public List<IFData.Molecule> Molecules { get; set; }
@@ -83,11 +83,11 @@ namespace IsotopeFit
             //TODO: store it in a corresponding workspace field            
         }
 
-        public void Dummy()
-        {
-            DesignMtrx dm = new DesignMtrx();
-            dm.Build();
-        }
+        //public void Dummy()
+        //{
+        //    DesignMtrx dm = new DesignMtrx(RawData.Length, Molecules);
+        //    dm.Build();
+        //}
 
         #endregion
     }
