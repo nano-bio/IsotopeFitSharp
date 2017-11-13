@@ -130,5 +130,23 @@ namespace IsotopeFit.Tests
 
             Assert.Pass("IFDFile read test passed.");
         }
+
+        [Test]
+        public void ResolutionFitTest()
+        {
+            Workspace Wrk = new Workspace(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\testfile.ifd");
+            Wrk.ResolutionFit();
+            double[] Solution = Wrk.ResolutionCoefs;
+            string[] Corrected = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\ResolutionCoefs.txt");
+
+            Solution = Solution.Reverse().ToArray();
+
+            for (int i = 0; i < Corrected.Length; i++)
+            {
+                Assert.AreEqual(Convert.ToDouble(Corrected[i], new System.Globalization.NumberFormatInfo { NumberDecimalSeparator = "." }), Solution[i], 1e-9);
+            }
+
+            Assert.Pass("ResolutioKOFitKOT test passed.");
+        }
     }
 }
