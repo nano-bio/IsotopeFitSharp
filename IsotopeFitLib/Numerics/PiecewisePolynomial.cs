@@ -11,8 +11,8 @@ namespace IsotopeFit.Numerics
 {
     public static partial class Algorithm
     {
-        //TODO: implement spline calculation
-        internal static void Spline()
+        //TODO: implement spline calculation - continuous 2nd derivation
+        internal static Matrix<double> Spline(double[] x, double[] y)
         {
             throw new NotImplementedException();
         }
@@ -30,7 +30,7 @@ namespace IsotopeFit.Numerics
         /// <param name="y">Array of y values.</param>
         /// <param name="xToEval">Array of x values, for which the interpolated curve is to be evaluated at.</param>
         /// <returns>Array of evaluated y values.</returns>
-        internal static double[] PCHIP(double[] x, double[] y, double[] xToEval)
+        internal static Matrix<double> PCHIP(double[] x, double[] y)
         {
             /*
              * Before the interpolation itself, we need to calculate
@@ -42,7 +42,7 @@ namespace IsotopeFit.Numerics
 
             // number of input and output values
             int n = x.Length;
-            int nInterp = xToEval.Length;
+            //int nInterp = xToEval.Length;
 
             // variables related to horizontal data
             double h0, h1, hSum;
@@ -58,7 +58,7 @@ namespace IsotopeFit.Numerics
             double[] deriv = new double[n];
 
             // array for output values
-            double[] interpVal = new double[nInterp];
+            //double[] interpVal = new double[nInterp];
 
 
             h0 = x[1] - x[0];
@@ -139,15 +139,13 @@ namespace IsotopeFit.Numerics
                 if (Math.Abs(deriv[n - 1]) > Math.Abs(deltaMax)) deriv[n - 1] = deltaMax;
             }
 
-            // derivatives are calculated, let's interpolate
+            // derivatives are calculated, let's interpolate            
+            Matrix<double> coefs = Matrix<double>.Build.Dense(n - 1, 4);    // because there is one less section than breaks and the polynomials are cubic
+
+            //TODO: rewrite the fitting routine, so that it returns the partial polynomial coefficients. it might be necessary to copy the mathnet source code
             CubicSpline cs = CubicSpline.InterpolateHermite(x, y, deriv);
 
-            for (int i = 0; i < xToEval.Length; i++)
-            {
-                interpVal[i] = cs.Interpolate(xToEval[i]);
-            }
-
-            return interpVal;
+            return coefs;
         }
 
         //TODO: matus

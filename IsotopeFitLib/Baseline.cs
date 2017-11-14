@@ -24,12 +24,20 @@ namespace IsotopeFit.Numerics
             int massAxisLength = rd.Length;
 
             //TODO: Evaluating the bg correction for the whole range might be useless. Specifiyng a mass range would make sense.
-            Vector<double> baseline = Vector<double>.Build.DenseOfArray(PCHIP(bc.XAxis.ToArray(), bc.YAxis.ToArray(), rd.MassAxis.ToArray()));
+            
+            /*
+             * Now we have to first create the interpolation object, which also calculates the interpolation parameters.
+             * Only after that can we call the interpolation evaluation function.
+             */
+            
+            //TODO: rewrite for the new interpolation scheme
+
+            //Vector<double> baseline = Vector<double>.Build.DenseOfArray(PCHIP(bc.XAxis.ToArray(), bc.YAxis.ToArray(), rd.MassAxis.ToArray()));
             Vector<double> correctedSignal = Vector<double>.Build.Dense(massAxisLength, 0);
 
             for (int i = 0; i < massAxisLength; i++)
             {
-                correctedSignal[i] = rd.SignalAxis[i] - baseline[i];
+                //correctedSignal[i] = rd.SignalAxis[i] - baseline[i];
             }
 
             return correctedSignal;

@@ -12,9 +12,9 @@ namespace IsotopeFit.Numerics
 {
     public static partial class Algorithm
     {
-        internal static Vector<double> PolynomialFit(Vector<double> x, Vector<double> y)
+        internal static Vector<double> PolynomialFit(double[] x, double[] y)
         {
-            double[] coefs = Fit.Polynomial(x.ToArray(), y.ToArray(), 3, DirectRegressionMethod.QR);
+            double[] coefs = Fit.Polynomial(x, y, 3, DirectRegressionMethod.QR);
             return Vector<double>.Build.DenseOfArray(coefs);
         }
 

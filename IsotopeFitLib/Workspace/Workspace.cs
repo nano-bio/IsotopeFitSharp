@@ -89,7 +89,7 @@ namespace IsotopeFit
 
         public void ResolutionFit()
         {
-            ResolutionCoefs = Algorithm.PolynomialFit(Calibration.COMList, Calibration.ResolutionList).ToArray();
+            ResolutionCoefs = Algorithm.PolynomialFit(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray()).ToArray();
         }
 
         //public void Dummy()

@@ -12,7 +12,7 @@ namespace IsotopeFit.Numerics
     {
         #region Constructors
 
-        public Interpolation(double[] x, double[] y, InterpolationType t)
+        public Interpolation(double[] x, double[] y, InterpType t)
         {
             Type = t;
             XValues = x;
@@ -23,14 +23,14 @@ namespace IsotopeFit.Numerics
 
         public Interpolation(double[] coefs)
         {
-            Type = InterpolationType.Polynomial;
+            Type = InterpType.Polynomial;
             Calculated = true;
             Coefs = Matrix<double>.Build.DenseOfRowVectors(Vector<double>.Build.DenseOfArray(coefs));
         }
 
         public Interpolation(double[] breaks, double[][] coefs)
         {
-            Type = InterpolationType.PiecewisePolynomial;
+            Type = InterpType.PiecewisePolynomial;
             Calculated = true;
 
             Breaks = Vector<double>.Build.DenseOfArray(breaks);
@@ -39,7 +39,7 @@ namespace IsotopeFit.Numerics
 
         #endregion
 
-        public enum InterpolationType
+        public enum InterpType
         {
             Spline,
             PCHIP,
@@ -49,7 +49,7 @@ namespace IsotopeFit.Numerics
 
         #region Properties
 
-        public InterpolationType Type { get; private set; }
+        public InterpType Type { get; private set; }
         public double[] XValues { get; private set; }
         public double[] YValues { get; private set; }
         public bool Calculated { get; private set; }
@@ -60,15 +60,18 @@ namespace IsotopeFit.Numerics
 
         #region Methods
 
-        private bool Calculate(double[] x, double[] y, InterpolationType t)
+        private bool Calculate(double[] x, double[] y, InterpType t)
         {
             switch (t)
             {
-                case InterpolationType.Spline:
+                case InterpType.Spline:
+                    Coefs = Algorithm.Spline(x, y);
                     break;
-                case InterpolationType.PCHIP:
+                case InterpType.PCHIP:
+                    Coefs = Algorithm.PCHIP(x, y);
                     break;
-                case InterpolationType.Polynomial:
+                case InterpType.Polynomial:
+                    Coefs = Matrix<double>.Build.DenseOfRowVectors(Algorithm.PolynomialFit(x, y));
                     break;
                 default:
                     throw new InterpolationException("Unknown interpolation type.");
@@ -81,27 +84,55 @@ namespace IsotopeFit.Numerics
         {
             if (!Calculated) throw new InterpolationException("Can not evaluate, interpolation object has not yet been supplied with input data. Use one of the constructors.");
 
-            double retval;
+            switch (Type)
+            {
+                case InterpType.Spline:
+                case InterpType.PCHIP:
+                case InterpType.PiecewisePolynomial:
+                    return Algorithm.PPEval(Breaks, Coefs, x);
+                case InterpType.Polynomial:
+                    return Algorithm.PolynomialEval();
+                default:
+                    throw new InterpolationException("Unknown interpolation type.");
+            }
+        }
+
+        [Obsolete]
+        internal double[] Evaluate(double[] x)
+        {
+            if (!Calculated) throw new InterpolationException("Can not evaluate, interpolation object has not yet been supplied with input data. Use one of the constructors.");
+
+            double[] eval = new double[x.Length];
 
             switch (Type)
             {
-                case InterpolationType.Spline:
-                case InterpolationType.PCHIP:
-                case InterpolationType.PiecewisePolynomial:
-                    //TODO: evaluate piecewise polynomial
-                    break;
-                case InterpolationType.Polynomial:
-                    //TODO: evaluate polynomial
-                    break;
+                case InterpType.Spline:
+                case InterpType.PCHIP:
+                case InterpType.PiecewisePolynomial:
+                    {
+                        for (int i = 0; i < x.Length; i++)      //TODO: replace these for loops by implementing evaluation functions that take arrays as inputs - less function calls
+                        {
+                            eval[i] = Algorithm.PPEval(Breaks, Coefs, x[i]);
+                        }
+                        break;
+                    }                    
+                case InterpType.Polynomial:
+                    {
+                        for (int i = 0; i < x.Length; i++)
+                        {
+                            eval[i] = Algorithm.PolynomialEval();
+                        }
+                        break;
+                    }
                 default:
                     throw new InterpolationException("Unknown interpolation type.");
             }
 
-            return 0; //TODO
+            return eval;
         }
 
         #endregion
-        
+
         [Serializable]
         public class InterpolationException : Exception
         {
