@@ -8,6 +8,8 @@ using System.Runtime.InteropServices;
 
 using MathNet.Numerics.LinearAlgebra;
 
+using IsotopeFit.Numerics;
+
 namespace IsotopeFit
 {
     public partial class Workspace
@@ -156,7 +158,7 @@ namespace IsotopeFit
                         {
                             //TODO: evaluate the peakshape partial polynomial at the j index of massaxis
                             //TODO: evaluate the correct partial polynomial - to get ideal signal value
-                            idealSignalValue = abundance * Numerics.PPEval(breaks, coefs, massAxis[j]);
+                            idealSignalValue = abundance * Algorithm.PPEval(breaks, coefs, massAxis[j]);
 
                             //TODO: add the point to the design matrix column - if it falls within the fitmask
                             

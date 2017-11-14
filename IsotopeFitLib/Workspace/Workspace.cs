@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 
+using IsotopeFit.Numerics;
+
 namespace IsotopeFit
 {
     [ComVisible(true)]  //TODO: the ComVisible attribute can be set globally for the whole library. might be nicer.
@@ -87,7 +89,7 @@ namespace IsotopeFit
 
         public void ResolutionFit()
         {
-            ResolutionCoefs = Numerics.PolynomialFit(Calibration.COMList, Calibration.ResolutionList).ToArray();
+            ResolutionCoefs = Algorithm.PolynomialFit(Calibration.COMList, Calibration.ResolutionList).ToArray();
         }
 
         //public void Dummy()
