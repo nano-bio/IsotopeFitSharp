@@ -8,19 +8,37 @@ using MathNet.Numerics.LinearAlgebra;
 
 namespace IsotopeFit.Numerics
 {
+    /// <summary>
+    /// Class that handles data interpolations and related data.
+    /// </summary>
     public class Interpolation
     {
         #region Constructors
 
+        /// <summary>
+        /// Creates new interpolation object and calculates interpolation parameters.
+        /// </summary>
+        /// <param name="x">Array of sorted x-values that are to be interpolated.</param>
+        /// <param name="y">Array of y-values that are to be interpolated.</param>
+        /// <param name="t">Interpolation type.</param>
         public Interpolation(double[] x, double[] y, InterpType t)
         {
             Type = t;
             XValues = x;
             YValues = y;
 
+            if (t != InterpType.Polynomial)
+            {
+                Breaks = Vector<double>.Build.DenseOfArray(x);
+            }
+
             Calculated = Calculate(x, y, t);
         }
 
+        /// <summary>
+        /// Creates new polynomial interpolation object from polynomial coefficients.
+        /// </summary>
+        /// <param name="coefs"></param>
         public Interpolation(double[] coefs)
         {
             Type = InterpType.Polynomial;
@@ -143,5 +161,10 @@ namespace IsotopeFit.Numerics
               System.Runtime.Serialization.SerializationInfo info,
               System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
         }
-    }    
+    }
+
+    class PPInterpolation : Interpolation
+    {
+
+    }
 }
