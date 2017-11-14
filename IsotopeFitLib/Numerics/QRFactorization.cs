@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IsotopeFit
 {
-    public static partial class Numerics
+    public static partial class Algorithm
     {
         //TODO: methods for QR factorization
     }

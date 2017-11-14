@@ -10,7 +10,7 @@ using MathNet.Numerics.LinearAlgebra.Factorization;
 
 namespace IsotopeFit
 {
-    public static partial class Numerics
+    public static partial class Algorithm
     {
         /// <summary>
         /// Calculate a non-negative least squares solution of A * x = b

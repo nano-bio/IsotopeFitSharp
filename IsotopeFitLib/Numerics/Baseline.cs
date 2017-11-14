@@ -9,7 +9,7 @@ using MathNet.Numerics.Interpolation;
 
 namespace IsotopeFit
 {
-    public static partial class Numerics
+    public static partial class Algorithm
     {
         //TODO: methods for backround subtraction
 
