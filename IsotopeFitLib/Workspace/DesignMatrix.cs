@@ -76,6 +76,7 @@ namespace IsotopeFit
 
                 //TODO: build the sparse design matrix from the vector array
                 Storage = Matrix<double>.Build.SparseOfColumnVectors(designMatrixVectors);
+
             }
 
 
@@ -121,7 +122,7 @@ namespace IsotopeFit
                     mass = Molecules[moleculeIndex].PeakData.Mass[i];
                     abundance = Molecules[moleculeIndex].PeakData.Abundance[i];  // area of the line and abundance are proportional
 
-                    resolution = 2000;    //TODO: polyeval
+                    resolution = 2500;    //Numerics.PolynomialEval();
 
                     fwhm = mass / resolution;
 
@@ -130,19 +131,17 @@ namespace IsotopeFit
                         throw new ArithmeticException("fwhm was negative"); //TODO: reorder breaks and coefs? check matlab code
                     }
 
-                    //TODO: transform shape breaks
+                    // transform shape breaks and coefficients
                     breaks = TransformLineShapeBreaks(Calibration.Shape, fwhm, mass);
-
-                    //TODO: transform shape coefficients
                     coefs = TransformLineShapeCoefs(Calibration.Shape, fwhm, abundance);
 
-                    //TODO: find peak and fitmask limits
+                    // find peak and fitmask limits
                     peakLowerLimitIndex = FindLowerLimitIndex(massAxis, breaks.First());
                     peakUpperLimitIndex = FindUpperLimitIndex(massAxis, breaks.Last());
                     fitmaskLowerLimitIndex = FindLowerLimitIndex(massAxis, mass - SearchRange * FwhmRange * fwhm);
                     fitmaskUpperLimitIndex = FindUpperLimitIndex(massAxis, mass + SearchRange * FwhmRange * fwhm);
 
-                    //TODO: adjust local fitmask
+                    // adjust local fitmask
                     for (int j = fitmaskLowerLimitIndex; j <= fitmaskUpperLimitIndex; j++)
                     {
                         bs.fitMask[j] = true;
@@ -157,7 +156,7 @@ namespace IsotopeFit
                         {
                             //TODO: evaluate the peakshape partial polynomial at the j index of massaxis
                             //TODO: evaluate the correct partial polynomial - to get ideal signal value
-                            idealSignalValue = abundance * Numerics.PPEval();
+                            idealSignalValue = abundance * Numerics.PPEval(breaks, coefs, massAxis[j]);
 
                             //TODO: add the point to the design matrix column - if it falls within the fitmask
                             

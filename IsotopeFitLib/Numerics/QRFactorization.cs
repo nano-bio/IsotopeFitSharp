@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IsotopeFit
+namespace IsotopeFit.Numerics
 {
     public static partial class Algorithm
     {

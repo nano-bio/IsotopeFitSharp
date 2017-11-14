@@ -4,16 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using MathNet.Numerics;
 using MathNet.Numerics.LinearAlgebra;
-using MathNet.Numerics.LinearRegression;
 using MathNet.Numerics.Interpolation;
 
-namespace IsotopeFit
+namespace IsotopeFit.Numerics
 {
     public static partial class Algorithm
     {
-        #region PCHIP
+        //TODO: implement spline calculation
+        internal static void Spline()
+        {
+            throw new NotImplementedException();
+        }
 
         /// <summary>
         /// Calculates shape preserving piecewise cubic hermite polynomial interpolation.
@@ -28,7 +30,7 @@ namespace IsotopeFit
         /// <param name="y">Array of y values.</param>
         /// <param name="xToEval">Array of x values, for which the interpolated curve is to be evaluated at.</param>
         /// <returns>Array of evaluated y values.</returns>
-        internal static double[] SPPCHIP(double[] x, double[] y, double[] xToEval)
+        internal static double[] PCHIP(double[] x, double[] y, double[] xToEval)
         {
             /*
              * Before the interpolation itself, we need to calculate
@@ -164,23 +166,5 @@ namespace IsotopeFit
 
             throw new NotImplementedException();
         }
-
-        #endregion
-
-        #region Polynomial
-
-        internal static Vector<double> PolynomialFit(Vector<double> x, Vector<double> y)
-        {
-            double[] coefs = Fit.Polynomial(x.ToArray(), y.ToArray(), 3, DirectRegressionMethod.QR);
-            return Vector<double>.Build.DenseOfArray(coefs);
-        }
-
-        //TODO: matus
-        internal static double PolynomialEval()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
     }
 }

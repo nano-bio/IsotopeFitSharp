@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.Interpolation;
 
-namespace IsotopeFit
+namespace IsotopeFit.Numerics
 {
     public static partial class Algorithm
     {
-        //TODO: methods for backround subtraction
+        //TODO: move to workspace
 
         /// <summary>
         /// Corrects the raw data for baseline, according to supplied baseline correction information.
@@ -24,7 +24,7 @@ namespace IsotopeFit
             int massAxisLength = rd.Length;
 
             //TODO: Evaluating the bg correction for the whole range might be useless. Specifiyng a mass range would make sense.
-            Vector<double> baseline = Vector<double>.Build.DenseOfArray(SPPCHIP(bc.XAxis.ToArray(), bc.YAxis.ToArray(), rd.MassAxis.ToArray()));
+            Vector<double> baseline = Vector<double>.Build.DenseOfArray(PCHIP(bc.XAxis.ToArray(), bc.YAxis.ToArray(), rd.MassAxis.ToArray()));
             Vector<double> correctedSignal = Vector<double>.Build.Dense(massAxisLength, 0);
 
             for (int i = 0; i < massAxisLength; i++)

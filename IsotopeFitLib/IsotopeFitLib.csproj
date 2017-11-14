@@ -79,12 +79,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Numerics\Baseline.cs" />
+    <Compile Include="Baseline.cs" />
     <Compile Include="IFData.cs" />
-    <Compile Include="Numerics\Interpolations.cs" />
-    <Compile Include="Numerics\MassAxis.cs" />
+    <Compile Include="Numerics\Interpolation.cs" />
+    <Compile Include="Numerics\Polynomial.cs" />
+    <Compile Include="Numerics\PiecewisePolynomial.cs" />
     <Compile Include="Numerics\QRFactorization.cs" />
-    <Compile Include="Numerics\Resolution.cs" />
     <Compile Include="Workspace\DesignMatrix.cs" />
     <Compile Include="IFDFile.cs" />
     <Compile Include="Numerics\NNLS.cs" />

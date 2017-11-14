@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Factorization;
 
-namespace IsotopeFit
+namespace IsotopeFit.Numerics
 {
     public static partial class Algorithm
     {
