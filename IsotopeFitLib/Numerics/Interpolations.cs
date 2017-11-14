@@ -28,7 +28,7 @@ namespace IsotopeFit
         /// <param name="y">Array of y values.</param>
         /// <param name="xToEval">Array of x values, for which the interpolated curve is to be evaluated at.</param>
         /// <returns>Array of evaluated y values.</returns>
-        private static double[] SPPCHIP(double[] x, double[] y, double[] xToEval)
+        internal static double[] SPPCHIP(double[] x, double[] y, double[] xToEval)
         {
             /*
              * Before the interpolation itself, we need to calculate
@@ -148,9 +148,21 @@ namespace IsotopeFit
             return interpVal;
         }
 
-        public static double PPEval(Matrix<double> coefs, double x)
+        //TODO: matus
+        internal static double PPEval(Vector<double> breaks, Matrix<double> coefs, double x)
         {
-            
+            /*
+             * Ako na to:
+             * ciastkove polynomy sa pouzivaju na interpolaciu dat (aj na fitovanie sa asi daju). pri interpolacii prechadzas striktne cez zadane body.
+             * tieto body tvoria hranice ciastkovych polynomov.
+             * Na vyhodnotenie (vypocitanie interpolovanych hodnot) potrebujes nasledovne data:
+             * breaks - vektor s hranicami polynomov na x-ovej osi
+             * coefs - matica, v ktorej kazdy riadok obsahuje koeficienty polynomu
+             * Ako suvisia? prvy riadok v matici koeficientov zodpoveda polynomu, ktory je medzi prvou a druhou hodnotou vo vektore hranic
+             * No a samozrejme sa ti zide este hodnota x, v ktorej chces vypocitat y-ovu hodnotu.    
+             */
+
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -161,7 +173,13 @@ namespace IsotopeFit
         {
             double[] coefs = Fit.Polynomial(x.ToArray(), y.ToArray(), 3, DirectRegressionMethod.QR);
             return Vector<double>.Build.DenseOfArray(coefs);
-        } 
+        }
+
+        //TODO: matus
+        internal static double PolynomialEval()
+        {
+            throw new NotImplementedException();
+        }
 
         #endregion
     }
