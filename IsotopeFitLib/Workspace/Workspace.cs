@@ -89,9 +89,23 @@ namespace IsotopeFit
 
         public void ResolutionFit()
         {
-            ResolutionCoefs = Algorithm.PolynomialFit(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray()).ToArray();
-        }
+            var InterpType = new Interpolation.InterpType(); // TODO maybe could be done somewhere else
 
+            switch (InterpType)
+            {
+                case Interpolation.InterpType.Polynomial:
+                    int order = 3; // TODO will be defined by user from GUI
+                    PolyInterpolation RC = new PolyInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), order);
+                    ResolutionCoefs = RC.Coefs; // Used for Test.cs in IsotopeFitLib.Tests
+                    break;
+                default:
+                    throw new Interpolation.InterpolationException("Unknown interpolation type.");
+            }
+
+            
+            
+        }
+        
         //public void Dummy()
         //{
         //    DesignMtrx dm = new DesignMtrx(RawData.Length, Molecules);
