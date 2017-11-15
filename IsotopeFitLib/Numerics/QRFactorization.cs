@@ -20,7 +20,8 @@ namespace IsotopeFit.Numerics
         /// <param name="M">Matrix to be QR factorized.</param>
         internal static void SparseQR(Matrix<double> M)
         {
-            //TODO: decide if the QR factorization is done in-place or another matrix is created and returned.
+            //TODO: add the transformation of the observation vector for least squares
+            //TODO: decide if the QR factorization is done in-place or another matrix is created and returned
 
             Givens gp;
             double x, y;
@@ -29,10 +30,7 @@ namespace IsotopeFit.Numerics
             {
                 for (int j = M.RowCount - 1; j > i; j--)
                 {
-                    if (M.At(i, j) == 0)
-                    {
-                        continue;
-                    }
+                    if (M.At(j, i) == 0) continue;
 
                     gp = GivensParams(M.At(i, i), M.At(j, i));
 
@@ -43,6 +41,8 @@ namespace IsotopeFit.Numerics
 
                         M.At(i, k, gp.c * x + gp.s * y);
                         M.At(j, k, -gp.s * x + gp.c * y);
+
+                        //TODO: add zero-coercing
                     }
                 }
             }
