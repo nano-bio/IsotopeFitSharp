@@ -11,6 +11,55 @@ namespace IsotopeFit.Numerics
     public static partial class Algorithm
     {
         /// <summary>
+        /// Calculates QR factorization of a least squares system.
+        /// </summary>
+        /// <param name="lss">Least squares system object to be QR factorized.</param>
+        /// <returns>QR factorized least squares system object.</returns>
+        internal static LeastSquaresSystem LeaSqrSparseQR(LeastSquaresSystem lss)
+        {
+            LeastSquaresSystem localSystem = new LeastSquaresSystem();
+
+            Matrix<double> M = Matrix<double>.Build.SparseOfMatrix(lss.SystemMatrix);
+            Vector<double> v = Vector<double>.Build.SparseOfVector(lss.ObservationVector);
+
+            Givens gp;
+            double x, y;
+
+            for (int i = 0; i < M.ColumnCount; i++)
+            {
+                for (int j = M.RowCount - 1; j > i; j--)
+                {
+                    if (M.At(j, i) == 0) continue;
+
+                    gp = GivensParams(M.At(i, i), M.At(j, i));
+
+                    for (int k = i; k < M.ColumnCount; k++)
+                    {
+                        x = M.At(i, k);
+                        y = M.At(j, k);
+
+                        M.At(i, k, gp.c * x + gp.s * y);
+                        M.At(j, k, gp.c * y - gp.s * x);
+
+                        //TODO: add zero-coercing
+                    }
+
+                    x = v.At(i);
+                    y = v.At(j);
+
+                    //TODO: this must be tested, if it is done correctly
+                    v.At(i, gp.c * x + gp.s * y);
+                    v.At(j, gp.c * y - gp.s * x);
+                }
+            }
+
+            localSystem.SystemMatrix = M.SubMatrix(0, M.ColumnCount, 0, M.ColumnCount);
+            localSystem.ObservationVector = v;
+
+            return localSystem;
+        }
+
+        /// <summary>
         /// Calculates QR factorization of the sparse matrix M.
         /// </summary>
         /// <remarks>
@@ -18,11 +67,8 @@ namespace IsotopeFit.Numerics
         /// It is meant primarily for sparse matrices.
         /// </remarks>
         /// <param name="M">Matrix to be QR factorized.</param>
-        internal static void SparseQR(Matrix<double> M)
+        internal static Matrix<double> SparseQR(Matrix<double> M)
         {
-            //TODO: add the transformation of the observation vector for least squares
-            //TODO: decide if the QR factorization is done in-place or another matrix is created and returned
-
             Givens gp;
             double x, y;
 
@@ -46,6 +92,8 @@ namespace IsotopeFit.Numerics
                     }
                 }
             }
+
+            return M.SubMatrix(0, M.ColumnCount, 0, M.ColumnCount);
         }
 
         /// <summary>
