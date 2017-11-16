@@ -9,24 +9,24 @@ using MathNet.Numerics.LinearAlgebra.Factorization;
 
 namespace IsotopeFit.Numerics
 {
-    internal class LeastSquaresSystem
+    public class LeastSquaresSystem
     {
         internal LeastSquaresSystem()
         {
 
         }
 
-        internal LeastSquaresSystem(Matrix<double> a, Vector<double> b)
+        public LeastSquaresSystem(Matrix<double> a, Vector<double> b)
         {
             SystemMatrix = a;
             ObservationVector = b;
         }
 
-        internal Matrix<double> SystemMatrix { get; set; }
-        internal Vector<double> ObservationVector { get; set; }
-        internal Vector<double> Solution { get; private set; }
+        internal Matrix<double> SystemMatrix { get; private set; }
+        internal Vector<double> ObservationVector { get; private set; }
+        public Vector<double> Solution { get; private set; }
 
-        private void Solve()
+        public void Solve()
         {
             // at the moment we only need the NNLS method, so no need to add switches for more types
             Solution = NNLS(SystemMatrix, ObservationVector);
@@ -87,6 +87,8 @@ namespace IsotopeFit.Numerics
             double tolx = 10 * MathNet.Numerics.Precision.DoublePrecision * n * C.L1Norm(); // that is how octave does it
 
             // calculation starts here
+
+            System.Diagnostics.Debug.WriteLine(d.Count + " " + C.RowCount + " " + C.ColumnCount + " " + x.Count);
 
             resid = d - C * x;
             w = CT * resid;
