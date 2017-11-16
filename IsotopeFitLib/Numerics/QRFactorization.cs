@@ -17,7 +17,7 @@ namespace IsotopeFit.Numerics
         /// <returns>QR factorized least squares system object.</returns>
         public static LeastSquaresSystem LeaSqrSparseQR(LeastSquaresSystem lss)
         {
-            Matrix<double> M = Matrix<double>.Build.SparseOfMatrix(lss.SystemMatrix);
+            Matrix<double> M = Matrix<double>.Build.SparseOfMatrix(lss.DesignMatrix);
             Vector<double> v = Vector<double>.Build.DenseOfVector(lss.ObservationVector);
 
             Givens gp;
@@ -114,7 +114,7 @@ namespace IsotopeFit.Numerics
             }
             else
             {
-                //TODO: test if putting these operations is more effective
+                //TODO: test if putting these operations together is more effective
                 double fg2 = v1 * v1 + v2 * v2;
                 double r = Math.Sqrt(fg2);
                 double rr = 1d / r;
