@@ -82,12 +82,12 @@
     <Compile Include="Baseline.cs" />
     <Compile Include="IFData.cs" />
     <Compile Include="Numerics\Interpolation.cs" />
+    <Compile Include="Numerics\LeastSquaresSystem.cs" />
     <Compile Include="Numerics\Polynomial.cs" />
     <Compile Include="Numerics\PiecewisePolynomial.cs" />
     <Compile Include="Numerics\QRFactorization.cs" />
     <Compile Include="Workspace\DesignMatrix.cs" />
     <Compile Include="IFDFile.cs" />
-    <Compile Include="Numerics\NNLS.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Workspace\Workspace.cs" />
     <Compile Include="Workspace\WorkspaceExceptions.cs" />

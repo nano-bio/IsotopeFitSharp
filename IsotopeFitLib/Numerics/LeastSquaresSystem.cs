@@ -3,20 +3,47 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Runtime.InteropServices;
 
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Factorization;
 
 namespace IsotopeFit.Numerics
 {
-    public static partial class Algorithm
+    internal class LeastSquaresSystem
     {
+        internal LeastSquaresSystem()
+        {
+
+        }
+
+        internal LeastSquaresSystem(Matrix<double> a, Vector<double> b)
+        {
+            SystemMatrix = a;
+            ObservationVector = b;
+        }
+
+        internal Matrix<double> SystemMatrix { get; set; }
+        internal Vector<double> ObservationVector { get; set; }
+        internal Vector<double> Solution { get; private set; }
+
+        private void Solve()
+        {
+            // at the moment we only need the NNLS method, so no need to add switches for more types
+            Solution = NNLS(SystemMatrix, ObservationVector);
+        }
+
         /// <summary>
-        /// Calculate a non-negative least squares solution of A * x = b
+        /// Calculate a non-negative least squares solution of C * x = d
         /// </summary>
+        /// <remarks>
+        /// The algorithm was originally published in:
+        /// Lawson, Hanson, Solving Least Squares Problems, 1987, ISBN 978-0-89871-356-5, p. 160, Chapter 23.3
+        /// Another description of the same algorithm, but easier to understand has been published in:
+        /// Bro, De Jong, 1997, A fast non-negativity-constrained least squares algorithm, J. Chemom. 11, pp. 393-401
+        /// </remarks>
         /// <param name="C">Matrix describing the model.</param>
         /// <param name="d">Vector with observation values.</param>
+        /// <returns>MathNet vector with the solution.</returns>
         public static Vector<double> NNLS(Matrix<double> C, Vector<double> d)
         {
             //TODO: this needs to be set at the start of all calculations, right after Isotopefitter is called
@@ -31,7 +58,7 @@ namespace IsotopeFit.Numerics
             Matrix<double> CT = C.Transpose();
             double[][] Carr = C.ToColumnArrays();
             Matrix<double> CP;
-            List<double[]> CPList = new List<double[]>();            
+            List<double[]> CPList = new List<double[]>();
 
             // solution vectors
             Vector<double> x = Vector<double>.Build.Dense(n, 0);
@@ -40,7 +67,7 @@ namespace IsotopeFit.Numerics
             // gradient vectors
             Vector<double> w;
             Vector<double> wz = Vector<double>.Build.Dense(n, 0);
-            
+
             // active and passive sets
             bool[] P = new bool[n];
             bool[] A = new bool[n];
@@ -204,7 +231,7 @@ namespace IsotopeFit.Numerics
                 w = CT * resid;
             }
 
-            Console.WriteLine("done " + outerIter);
+            //Console.WriteLine("done " + outerIter);
             return x;
         }
     }
