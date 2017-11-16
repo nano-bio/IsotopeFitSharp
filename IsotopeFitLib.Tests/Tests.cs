@@ -14,7 +14,7 @@ using IsotopeFit.Numerics;
 namespace IsotopeFit.Tests
 {
     [TestFixture]
-    public class Tests
+    public partial class Tests
     {
         [Test]
         public void NNLSTest()
@@ -57,7 +57,7 @@ namespace IsotopeFit.Tests
             Vector<double> d = Vector<double>.Build.DenseOfEnumerable(blist);
 
             Workspace wrk = new Workspace();
-            Vector<double> solution = Algorithm.NNLS(C, d);
+            Vector<double> solution = LeastSquaresSystem.NNLS(C, d);
 
             // solution check
             string[] xfile = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\nnls_x_solution.txt");

@@ -1,0 +1,12 @@
+# Created by Octave 4.2.0, Thu Nov 16 14:42:38 2017 GMT <unknown@unknown>
+# name: abundances
+# type: matrix
+# rows: 5
+# columns: 1
+ 2
+ 2.5
+ 1.5
+ 3.999999999999999
+ 2
+
+
