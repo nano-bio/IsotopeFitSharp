@@ -15,12 +15,12 @@ namespace IsotopeFit.Numerics
         /// </summary>
         /// <param name="lss">Least squares system object to be QR factorized.</param>
         /// <returns>QR factorized least squares system object.</returns>
-        internal static LeastSquaresSystem LeaSqrSparseQR(LeastSquaresSystem lss)
+        public static LeastSquaresSystem LeaSqrSparseQR(LeastSquaresSystem lss)
         {
             LeastSquaresSystem localSystem = new LeastSquaresSystem();
 
             Matrix<double> M = Matrix<double>.Build.SparseOfMatrix(lss.SystemMatrix);
-            Vector<double> v = Vector<double>.Build.SparseOfVector(lss.ObservationVector);
+            Vector<double> v = Vector<double>.Build.DenseOfVector(lss.ObservationVector);
 
             Givens gp;
             double x, y;
@@ -53,8 +53,9 @@ namespace IsotopeFit.Numerics
                 }
             }
 
+            //TODO: this cutting, especially for the vector should maybe be checked for non-zero values before the cutting line
             localSystem.SystemMatrix = M.SubMatrix(0, M.ColumnCount, 0, M.ColumnCount);
-            localSystem.ObservationVector = v;
+            localSystem.ObservationVector = v.SubVector(0, M.ColumnCount);
 
             return localSystem;
         }
@@ -67,7 +68,7 @@ namespace IsotopeFit.Numerics
         /// It is meant primarily for sparse matrices.
         /// </remarks>
         /// <param name="M">Matrix to be QR factorized.</param>
-        internal static Matrix<double> SparseQR(Matrix<double> M)
+        public static Matrix<double> SparseQR(Matrix<double> M)
         {
             Givens gp;
             double x, y;
