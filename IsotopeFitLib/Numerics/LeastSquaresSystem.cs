@@ -9,27 +9,36 @@ using MathNet.Numerics.LinearAlgebra.Factorization;
 
 namespace IsotopeFit.Numerics
 {
+    /// <summary>
+    /// Class for handling least squares systems.
+    /// </summary>
     public class LeastSquaresSystem
     {
-        internal LeastSquaresSystem()
+        /// <summary>
+        /// Creates new least squares system and populates it with the supplied data.
+        /// </summary>
+        /// <param name="desMat">Design matrix of the least squares system.</param>
+        /// <param name="obsVec">Vector of observations of the least squares system.</param>
+        public LeastSquaresSystem(Matrix<double> desMat, Vector<double> obsVec)
         {
-
+            DesignMatrix = desMat;
+            ObservationVector = obsVec;
         }
 
-        public LeastSquaresSystem(Matrix<double> a, Vector<double> b)
-        {
-            SystemMatrix = a;
-            ObservationVector = b;
-        }
-
-        internal Matrix<double> SystemMatrix { get; private set; }
+        internal Matrix<double> DesignMatrix { get; private set; }
         internal Vector<double> ObservationVector { get; private set; }
         public Vector<double> Solution { get; private set; }
 
+        /// <summary>
+        /// Calls the least square solver method and stores the result in the Solution property.
+        /// </summary>
+        /// <remarks>
+        /// At the moment, only non-negative least squares solver is implemented.
+        /// </remarks>
         public void Solve()
         {
             // at the moment we only need the NNLS method, so no need to add switches for more types
-            Solution = NNLS(SystemMatrix, ObservationVector);
+            Solution = NNLS(DesignMatrix, ObservationVector);
         }
 
         /// <summary>
@@ -44,7 +53,7 @@ namespace IsotopeFit.Numerics
         /// <param name="C">Matrix describing the model.</param>
         /// <param name="d">Vector with observation values.</param>
         /// <returns>MathNet vector with the solution.</returns>
-        public static Vector<double> NNLS(Matrix<double> C, Vector<double> d)
+        private static Vector<double> NNLS(Matrix<double> C, Vector<double> d)
         {
             //TODO: this needs to be set at the start of all calculations, right after Isotopefitter is called
             //MathNet.Numerics.Control.UseNativeMKL();
@@ -105,8 +114,7 @@ namespace IsotopeFit.Numerics
                 outerIter += 1;
 
 
-                //inicializacia wz, pozriet ci nepojde predsa aj cez LINQ
-                //wz.Where((val, idx) => P[idx] == false).Select(val => val = double.MinValue);
+                //TODO: check if wz initialization can be implemented using LINQ, something like wz.Where((val, idx) => P[idx] == false).Select(val => val = double.MinValue);
                 for (int i = 0; i < n; i++)
                 {
                     System.Diagnostics.Debug.Assert(P[i] != A[i]);
@@ -138,11 +146,7 @@ namespace IsotopeFit.Numerics
                 }
 
                 CP = Matrix<double>.Build.DenseOfColumnArrays(CPList.ToArray());
-
-                //sw.Start();
                 z = CP.QR(QRMethod.Thin).Solve(d);
-                //sw.Stop();
-
 
                 //inner loop - check if any regression coefficient has turned negative
                 while (z.Where((val, idx) => P[idx] == true).Any(val => val <= 0))
@@ -165,7 +169,6 @@ namespace IsotopeFit.Numerics
                             if (z[zColIndex] <= 0)
                             {
                                 //TODO: maybe it does not have to be a list, because we iterate through the inner loop
-                                //Q.Add(x[i] / (x[i] - z[zColIndex]));
                                 Q.Add(x[i] / (x[i] - z[zColIndex]));
                             }
 
@@ -211,10 +214,7 @@ namespace IsotopeFit.Numerics
                     }
 
                     CP = Matrix<double>.Build.DenseOfColumnArrays(CPList.ToArray());
-
-                    //sw.Start();
                     z = CP.QR(QRMethod.Thin).Solve(d);
-                    //sw.Stop();
                 }
 
                 // calculate gradient
@@ -233,7 +233,6 @@ namespace IsotopeFit.Numerics
                 w = CT * resid;
             }
 
-            //Console.WriteLine("done " + outerIter);
             return x;
         }
     }
