@@ -1,0 +1,8 @@
+# Created by Octave 4.2.0, Thu Nov 16 20:37:26 2017 GMT <unknown@unknown>
+# name: polyCoefs
+# type: matrix
+# rows: 1
+# columns: 4
+ 2.641030943205285e-006 -0.004754069811389319 2.468022558634431 2353.564324916002
+
+

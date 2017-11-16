@@ -143,11 +143,11 @@ namespace IsotopeFit.Tests
             double[] Solution = PolyRC.Coefs;
             Solution = Solution.Reverse().ToArray();
 
-            string[] octavePolyCoefs = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\PolynomialResolutionCoefs.txt");
+            string[] octavePoly = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\PolynomialResolutionCoefs.txt");
 
             List<double> values = new List<double>();
 
-            foreach (string line in octavePolyCoefs)
+            foreach (string line in octavePoly)
             {
                 if (!line.Contains("#") && line != "")
                 {
