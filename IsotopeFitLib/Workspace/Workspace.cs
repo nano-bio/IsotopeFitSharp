@@ -49,14 +49,21 @@ namespace IsotopeFit
         public ulong EndIndex { get; set; }
         public List<IFData.Molecule> Molecules { get; set; }
         public IFData.Calibration Calibration { get; set; }
-        public IFData.BaselineCorr BaselineCorr { get; set; }       
-     
+        public IFData.BaselineCorr BaselineCorr { get; set; }
+
         public double FwhmRange { get; set; }
         public double SearchRange { get; set; }
 
-        public double[] ResolutionCoefs { get; set; }
+        public InterpType interpType { get; set; }
 
         #endregion
+
+        public enum InterpType
+        {
+            Polynomial,
+            PCHIP,
+            Spline
+        }
 
         #region Methods
 
@@ -87,23 +94,23 @@ namespace IsotopeFit
             //TODO: store it in a corresponding workspace field              
         }
 
-        public void ResolutionFit()
+        public void ResolutionFit(InterpType t)
         {
-            var InterpType = new Interpolation.InterpType(); // TODO maybe could be done somewhere else
-
-            switch (InterpType)
+            switch (t)
             {
-                case Interpolation.InterpType.Polynomial:
+                case InterpType.Polynomial:
                     int order = 3; // TODO will be defined by user from GUI
-                    PolyInterpolation RC = new PolyInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), order);
-                    ResolutionCoefs = RC.Coefs; // Used for Test.cs in IsotopeFitLib.Tests
+                    PolyInterpolation PolyRC = new PolyInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), order);
+                    break;
+                case InterpType.PCHIP:
+                    PPInterpolation PCHIPRC = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), PPInterpolation.PPType.PCHIP);
+                    break;
+                case InterpType.Spline:
+                    PPInterpolation SplineRC = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), PPInterpolation.PPType.Spline);
                     break;
                 default:
                     throw new Interpolation.InterpolationException("Unknown interpolation type.");
             }
-
-            
-            
         }
         
         //public void Dummy()

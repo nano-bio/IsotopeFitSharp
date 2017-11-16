@@ -13,20 +13,11 @@ namespace IsotopeFit.Numerics
     {
         protected double[] xValues;
         protected double[] yValues;
-
-        public InterpType Type { get; set; }
-
+        
         internal abstract double Evaluate(double x);
         
         internal abstract double[] Evaluate(double[] x);
-
-        public enum InterpType
-        {
-            Polynomial,
-            PiecewisePolynomial
-        }
-
-
+        
         [Serializable]
         public class InterpolationException : Exception
         {
