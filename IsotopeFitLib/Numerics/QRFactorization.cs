@@ -17,8 +17,6 @@ namespace IsotopeFit.Numerics
         /// <returns>QR factorized least squares system object.</returns>
         public static LeastSquaresSystem LeaSqrSparseQR(LeastSquaresSystem lss)
         {
-            LeastSquaresSystem localSystem = new LeastSquaresSystem();
-
             Matrix<double> M = Matrix<double>.Build.SparseOfMatrix(lss.SystemMatrix);
             Vector<double> v = Vector<double>.Build.DenseOfVector(lss.ObservationVector);
 
@@ -54,10 +52,7 @@ namespace IsotopeFit.Numerics
             }
 
             //TODO: this cutting, especially for the vector should maybe be checked for non-zero values before the cutting line
-            localSystem.SystemMatrix = M.SubMatrix(0, M.ColumnCount, 0, M.ColumnCount);
-            localSystem.ObservationVector = v.SubVector(0, M.ColumnCount);
-
-            return localSystem;
+            return new LeastSquaresSystem(M.SubMatrix(0, M.ColumnCount, 0, M.ColumnCount), v.SubVector(0, M.ColumnCount));
         }
 
         /// <summary>
