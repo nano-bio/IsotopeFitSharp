@@ -14,7 +14,7 @@ using IsotopeFit.Numerics;
 namespace IsotopeFit.Tests
 {
     [TestFixture]
-    public class Tests
+    public partial class Tests
     {
         [Test]
         public void NNLSTest()
@@ -131,84 +131,6 @@ namespace IsotopeFit.Tests
             Assert.AreEqual(190.835184629240d, Wrk.BaselineCorr.YAxis[42], 1e-10);
 
             Assert.Pass("IFDFile read test passed.");
-        }
-        
-        [Test]
-        public void ResolutionPolynomialFitTest()
-        {
-            Workspace Wrk = new Workspace(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\testfile.ifd");
-            
-            PolyInterpolation PolyRC = new PolyInterpolation(Wrk.Calibration.COMList.ToArray(), Wrk.Calibration.ResolutionList.ToArray(), 3);
-
-            double[] Solution = PolyRC.Coefs;
-            Solution = Solution.Reverse().ToArray();
-
-            string[] octavePoly = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\PolynomialResolutionCoefs.txt");
-
-            List<double> values = new List<double>();
-
-            foreach (string line in octavePoly)
-            {
-                if (!line.Contains("#") && line != "")
-                {
-                    string[] valuesstr = line.Trim().Split(new char[] { ' ' });
-
-                    foreach (string str in valuesstr)
-                    {
-                        values.Add(Convert.ToDouble(str, new System.Globalization.NumberFormatInfo { NumberDecimalSeparator = "." }));
-                    }
-                }
-            }
-            
-            for (int i = 0; i < values.ToArray().Length; i++)
-            {
-                Assert.AreEqual(values.ToArray()[i], Solution[i], 1e-9);
-            }
-
-            Assert.Pass("ResolutioKOFitKOT test passed.");
-        }
-
-        [Test]
-        public void ResolutionPCHIPFitTest()
-        {
-            Workspace Wrk = new Workspace(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\testfile.ifd");
-
-            PPInterpolation PPRC = new PPInterpolation(Wrk.Calibration.COMList.ToArray(), Wrk.Calibration.ResolutionList.ToArray(), PPInterpolation.PPType.PCHIP);
-
-            double[][] Solution = PPRC.Coefs;
-            string[] octavePCHIP = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\PCHIPResolutionCoefs.txt");
-
-            List<Vector<double>> rows = new List<Vector<double>>();
-
-            foreach (string line in octavePCHIP)
-            {
-                List<double> values = new List<double>();
-
-                if (!line.Contains("#") && line != "")
-                {
-                    string[] valuesstr = line.Trim().Split(new char[] { ' ' });
-
-                    foreach (string str in valuesstr)
-                    {
-                        values.Add(Convert.ToDouble(str, new System.Globalization.NumberFormatInfo { NumberDecimalSeparator = "." }));
-                    }
-
-                    rows.Add(Vector<double>.Build.DenseOfEnumerable(values));
-                }
-            }
-
-            double[][] C = Matrix<double>.Build.DenseOfRowVectors(rows).ToRowArrays();
-            
-            for (int i = 0; i < Solution.GetLength(0); i++)
-            {
-                Solution[i] = Solution[i].Reverse().ToArray();
-                for (int j = 0; j < C[0].Length; j++)
-                {
-                    Assert.AreEqual(Convert.ToDouble(C[i][j], new System.Globalization.NumberFormatInfo { NumberDecimalSeparator = "." }), Solution[i][j], 1e-9);
-                }
-            }
-            
-            Assert.Pass("ResolutioKOFitKOT test passed.");
         }
     }
 }
