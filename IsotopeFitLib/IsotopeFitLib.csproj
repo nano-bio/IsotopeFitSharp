@@ -83,9 +83,7 @@
     <Compile Include="Baseline.cs" />
     <Compile Include="IFData.cs" />
     <Compile Include="Numerics\Interpolation.cs" />
-    <Compile Include="Numerics\InterpolationOld.cs" />
     <Compile Include="Numerics\PolyInterpolation.cs" />
-    <Compile Include="Numerics\PiecewisePolynomial.cs" />
     <Compile Include="Numerics\PPInterpolation.cs" />
     <Compile Include="Numerics\QRFactorization.cs" />
     <Compile Include="Workspace\DesignMatrix.cs" />

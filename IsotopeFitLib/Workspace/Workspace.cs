@@ -55,14 +55,14 @@ namespace IsotopeFit
         public double SearchRange { get; set; }
 
         public InterpType interpType { get; set; }
-
+        
         #endregion
 
         public enum InterpType
         {
             Polynomial,
-            PCHIP,
-            Spline
+            Spline,
+            PCHIP
         }
 
         #region Methods
@@ -102,11 +102,11 @@ namespace IsotopeFit
                     int order = 3; // TODO will be defined by user from GUI
                     PolyInterpolation PolyRC = new PolyInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), order);
                     break;
-                case InterpType.PCHIP:
-                    PPInterpolation PCHIPRC = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), PPInterpolation.PPType.PCHIP);
-                    break;
                 case InterpType.Spline:
                     PPInterpolation SplineRC = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), PPInterpolation.PPType.Spline);
+                    break;
+                case InterpType.PCHIP:
+                    PPInterpolation PCHIPRC = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), PPInterpolation.PPType.PCHIP);
                     break;
                 default:
                     throw new Interpolation.InterpolationException("Unknown interpolation type.");

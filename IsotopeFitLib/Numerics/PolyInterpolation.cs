@@ -69,12 +69,12 @@ namespace IsotopeFit.Numerics
             Coefs = coefs;
         }
         
-        internal override double Evaluate(double x)
+        public override double Evaluate(double x)
         {
             return PolyEvaluate(x);
         }
 
-        internal override double[] Evaluate(double[] x)
+        public override double[] Evaluate(double[] x)
         {
             double[] MultiEval = new double[x.Length];
             for (int i = 0; i < x.Length; i++)

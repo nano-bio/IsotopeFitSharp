@@ -14,10 +14,10 @@ namespace IsotopeFit.Numerics
         protected double[] xValues;
         protected double[] yValues;
         
-        internal abstract double Evaluate(double x);
+        public abstract double Evaluate(double x); // TODO changed to public, because of InterpolationTests.cs
         
-        internal abstract double[] Evaluate(double[] x);
-        
+        public abstract double[] Evaluate(double[] x); // TODO changed to public, because of InterpolationTests.cs
+
         [Serializable]
         public class InterpolationException : Exception
         {

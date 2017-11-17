@@ -54,17 +54,23 @@ namespace IsotopeFit.Numerics
         {
             switch (t)
             {
-                case PPType.PCHIP:
-                    PCHIP(x, y);
-                    break;
                 case PPType.Spline:
                     Spline(x, y);
+                    break;
+                case PPType.PCHIP:
+                    PCHIP(x, y);
                     break;
                 default:
                     throw new InterpolationException("Unknow interpolation type.");
             }
         }
-
+        
+        //TODO: implement spline calculation - continuous 2nd derivation
+        internal static Matrix<double> Spline(double[] x, double[] y)
+        {
+            throw new NotImplementedException();
+        }
+        
         /// <summary>
         /// Calculates shape preserving piecewise cubic hermite polynomial interpolation.
         /// </summary>
@@ -213,21 +219,16 @@ namespace IsotopeFit.Numerics
                 c3[i] = (2 * (y[i] - y[i + 1]) / w + deriv[i] + deriv[i + 1]) / w2;
             }
 
+            Breaks = x;
             Coefs = Matrix<double>.Build.DenseOfColumnArrays(c0, c1, c2, c3).ToRowArrays();
         }
 
-        //TODO: implement spline calculation - continuous 2nd derivation
-        internal static Matrix<double> Spline(double[] x, double[] y)
-        {
-            throw new NotImplementedException();
-        }
-
-        internal override double Evaluate(double x)
+        public override double Evaluate(double x)
         {
             return PPEval(Breaks, Coefs, x);
         }
 
-        internal override double[] Evaluate(double[] x)
+        public override double[] Evaluate(double[] x)
         {
             double[] MultiEval = new double[x.Length];
             for (int i = 0; i < x.Length; i++)
@@ -239,22 +240,25 @@ namespace IsotopeFit.Numerics
 
         internal static double PPEval(double[] breaks, double[][] coefs, double x)
         {
-            double[] breaksArray = breaks.ToArray();
+            double[] breaksArray = breaks;
 
             int breakIndex = Array.BinarySearch(breaksArray, x);
 
             if (breakIndex >= 0)
             {
-                return breaksArray[breakIndex];
+                if (breakIndex == coefs.GetLength(0))
+                {
+                    return coefs[breakIndex-1][0];
+                }
+                return coefs[breakIndex][0];
             }
             else
             {
                 int indexOfNearest = ~breakIndex;
-
+                
                 if ((0 < indexOfNearest) && (indexOfNearest < breaksArray.Length))
                 {
-                    return MathNet.Numerics.Evaluate.Polynomial(x, coefs[indexOfNearest] );
-
+                    return MathNet.Numerics.Evaluate.Polynomial(x, coefs[indexOfNearest-1] );
                 }
                 else
                 {
