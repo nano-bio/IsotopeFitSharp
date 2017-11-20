@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Reflection;
 
+using MathNet.Numerics.LinearAlgebra.Double;
 using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Storage;
 
 using IsotopeFit.Numerics;
 
@@ -54,7 +56,7 @@ namespace IsotopeFitLib.Tests
             }
 
             // original matrix
-            Matrix<double> C = Matrix<double>.Build.SparseOfRowVectors(Arows);
+            SparseMatrix C = (SparseMatrix)SparseMatrix.Build.SparseOfRowVectors(Arows);
             Vector<double> d = Vector<double>.Build.DenseOfEnumerable(blist);
 
             LeastSquaresSystem lss = new LeastSquaresSystem(C, d);
