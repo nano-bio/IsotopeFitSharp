@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2008
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsotopeFitter", "IsotopeFitter\IsotopeFitter.csproj", "{63137230-8076-4E73-BC43-7F238E5924BE}"
 EndProject
@@ -11,29 +11,49 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsotopeFitLib.Tests", "Isot
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsotopeFitter.Tests", "IsotopeFitter.Tests\IsotopeFitter.Tests.csproj", "{20B95A5E-C4E6-4683-9D0A-19692E5F76FE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSparse", "CSparse\CSparse.csproj", "{BD00D9BD-D669-4AEE-91B7-0105AFC994EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Description = Library and executable to extract data from spectra measured at ClusTOF.
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{63137230-8076-4E73-BC43-7F238E5924BE}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{63137230-8076-4E73-BC43-7F238E5924BE}.Debug|x64.ActiveCfg = Debug|x64
 		{63137230-8076-4E73-BC43-7F238E5924BE}.Debug|x64.Build.0 = Debug|x64
+		{63137230-8076-4E73-BC43-7F238E5924BE}.Release|Any CPU.ActiveCfg = Release|x86
 		{63137230-8076-4E73-BC43-7F238E5924BE}.Release|x64.ActiveCfg = Release|x64
 		{63137230-8076-4E73-BC43-7F238E5924BE}.Release|x64.Build.0 = Release|x64
+		{22DB119B-6BAC-4F70-ACA6-4FA56215BFEB}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{22DB119B-6BAC-4F70-ACA6-4FA56215BFEB}.Debug|x64.ActiveCfg = Debug|x64
 		{22DB119B-6BAC-4F70-ACA6-4FA56215BFEB}.Debug|x64.Build.0 = Debug|x64
+		{22DB119B-6BAC-4F70-ACA6-4FA56215BFEB}.Release|Any CPU.ActiveCfg = Release|x86
 		{22DB119B-6BAC-4F70-ACA6-4FA56215BFEB}.Release|x64.ActiveCfg = Release|x64
 		{22DB119B-6BAC-4F70-ACA6-4FA56215BFEB}.Release|x64.Build.0 = Release|x64
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{8EDF4429-251A-416D-BB68-93F227191BCF}.Debug|x64.ActiveCfg = Debug|x64
 		{8EDF4429-251A-416D-BB68-93F227191BCF}.Debug|x64.Build.0 = Debug|x64
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Release|Any CPU.ActiveCfg = Release|x86
 		{8EDF4429-251A-416D-BB68-93F227191BCF}.Release|x64.ActiveCfg = Release|x64
 		{8EDF4429-251A-416D-BB68-93F227191BCF}.Release|x64.Build.0 = Release|x64
+		{20B95A5E-C4E6-4683-9D0A-19692E5F76FE}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{20B95A5E-C4E6-4683-9D0A-19692E5F76FE}.Debug|x64.ActiveCfg = Debug|x64
 		{20B95A5E-C4E6-4683-9D0A-19692E5F76FE}.Debug|x64.Build.0 = Debug|x64
+		{20B95A5E-C4E6-4683-9D0A-19692E5F76FE}.Release|Any CPU.ActiveCfg = Release|x86
 		{20B95A5E-C4E6-4683-9D0A-19692E5F76FE}.Release|x64.ActiveCfg = Release|x64
 		{20B95A5E-C4E6-4683-9D0A-19692E5F76FE}.Release|x64.Build.0 = Release|x64
+		{BD00D9BD-D669-4AEE-91B7-0105AFC994EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD00D9BD-D669-4AEE-91B7-0105AFC994EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD00D9BD-D669-4AEE-91B7-0105AFC994EC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BD00D9BD-D669-4AEE-91B7-0105AFC994EC}.Debug|x64.Build.0 = Debug|Any CPU
+		{BD00D9BD-D669-4AEE-91B7-0105AFC994EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD00D9BD-D669-4AEE-91B7-0105AFC994EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD00D9BD-D669-4AEE-91B7-0105AFC994EC}.Release|x64.ActiveCfg = Release|Any CPU
+		{BD00D9BD-D669-4AEE-91B7-0105AFC994EC}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
