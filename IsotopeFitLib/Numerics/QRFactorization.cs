@@ -5,6 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
+using MathNet.Numerics.LinearAlgebra.Storage;
+
+//using CSparse;
+//using CSparse.Double;
+using CSparse.Storage;
 
 namespace IsotopeFit.Numerics
 {
@@ -17,43 +23,81 @@ namespace IsotopeFit.Numerics
         /// <returns>QR factorized least squares system object.</returns>
         public static LeastSquaresSystem LeaSqrSparseQR(LeastSquaresSystem lss)
         {
-            Matrix<double> M = Matrix<double>.Build.SparseOfMatrix(lss.DesignMatrix);
-            Vector<double> v = Vector<double>.Build.DenseOfVector(lss.ObservationVector);
+            SparseMatrix M = (SparseMatrix)SparseMatrix.Build.SparseOfMatrix(lss.DesignMatrix);
+            SparseVector v = (SparseVector)SparseVector.Build.SparseOfVector(lss.ObservationVector);
 
-            Givens gp;
-            double x, y;
+            M.InsertColumn(M.ColumnCount, v);
 
-            for (int i = 0; i < M.ColumnCount; i++)
+            M = (SparseMatrix)M.Transpose();
+            SparseCompressedRowMatrixStorage<double> spStor = (SparseCompressedRowMatrixStorage<double>)M.Storage;
+
+            var C = new CSparse.Double.SparseMatrix(M.ColumnCount, M.RowCount);
+            C.ColumnPointers = spStor.RowPointers;
+            C.RowIndices = spStor.ColumnIndices;
+            C.Values = spStor.Values;
+
+            var R = CSparse.Double.Factorization.SparseQR.Create(C, CSparse.ColumnOrdering.MinimumDegreeAtA).R;
+            R.DropZeros();  //TODO: this might need to be set to machine epsilon
+
+            SparseMatrix Mr = (SparseMatrix)SparseMatrix.Build.Sparse(R.ColumnCount - 1, R.ColumnCount - 1);
+            SparseVector vr = (SparseVector)SparseVector.Build.Sparse(R.ColumnCount - 1);
+
+            for (int i = 0; i < Mr.RowCount; i++)
             {
-                for (int j = M.RowCount - 1; j > i; j--)
+                for (int j = 0; j < Mr.ColumnCount; j++)
                 {
-                    if (M.At(j, i) == 0) continue;
-
-                    gp = GivensParams(M.At(i, i), M.At(j, i));
-
-                    for (int k = i; k < M.ColumnCount; k++)
-                    {
-                        x = M.At(i, k);
-                        y = M.At(j, k);
-
-                        M.At(i, k, gp.c * x + gp.s * y);
-                        M.At(j, k, gp.c * y - gp.s * x);
-
-                        //TODO: add zero-coercing
-                    }
-
-                    x = v.At(i);
-                    y = v.At(j);
-
-                    //TODO: this must be tested, if it is done correctly
-                    v.At(i, gp.c * x + gp.s * y);
-                    v.At(j, gp.c * y - gp.s * x);
+                    Mr.At(i, j, R.At(i, j));                    
                 }
+                vr.At(i, R.At(i, Mr.ColumnCount));
             }
 
-            //TODO: this cutting, especially for the vector should maybe be checked for non-zero values before the cutting line
-            return new LeastSquaresSystem(M.SubMatrix(0, M.ColumnCount, 0, M.ColumnCount), v.SubVector(0, M.ColumnCount));
+            return new LeastSquaresSystem(Mr, vr);
         }
+
+        ///// <summary>
+        ///// Calculates QR factorization of a least squares system.
+        ///// </summary>
+        ///// <param name="lss">Least squares system object to be QR factorized.</param>
+        ///// <returns>QR factorized least squares system object.</returns>
+        //public static LeastSquaresSystem LeaSqrSparseQR(LeastSquaresSystem lss)
+        //{
+        //    Matrix<double> M = Matrix<double>.Build.SparseOfMatrix(lss.DesignMatrix);
+        //    Vector<double> v = Vector<double>.Build.DenseOfVector(lss.ObservationVector);
+
+        //    Givens gp;
+        //    double x, y;
+
+        //    for (int i = 0; i < M.ColumnCount; i++)
+        //    {
+        //        for (int j = M.RowCount - 1; j > i; j--)
+        //        {
+        //            if (M.At(j, i) == 0) continue;
+
+        //            gp = GivensParams(M.At(i, i), M.At(j, i));
+
+        //            for (int k = i; k < M.ColumnCount; k++)
+        //            {
+        //                x = M.At(i, k);
+        //                y = M.At(j, k);
+
+        //                M.At(i, k, gp.c * x + gp.s * y);
+        //                M.At(j, k, gp.c * y - gp.s * x);
+
+        //                //TODO: add zero-coercing
+        //            }
+
+        //            x = v.At(i);
+        //            y = v.At(j);
+
+        //            //TODO: this must be tested, if it is done correctly
+        //            v.At(i, gp.c * x + gp.s * y);
+        //            v.At(j, gp.c * y - gp.s * x);
+        //        }
+        //    }
+
+        //    //TODO: this cutting, especially for the vector should maybe be checked for non-zero values before the cutting line
+        //    return new LeastSquaresSystem(M.SubMatrix(0, M.ColumnCount, 0, M.ColumnCount), v.SubVector(0, M.ColumnCount));
+        //}
 
         /// <summary>
         /// Calculates QR factorization of the sparse matrix M.
