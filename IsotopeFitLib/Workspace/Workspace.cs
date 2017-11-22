@@ -123,12 +123,12 @@ namespace IsotopeFit
                     throw new Interpolation.InterpolationException("Unknown interpolation type.");
             }
         }
-        
-        //public void Dummy()
-        //{
-        //    DesignMtrx dm = new DesignMtrx(RawData.Length, Molecules);
-        //    dm.Build();
-        //}
+
+        public void BuildDesignMatrix()
+        {
+            DesignMtrx dm = new DesignMtrx(RawData, Molecules, Calibration);
+            dm.Build();
+        }
 
         #endregion
     }
