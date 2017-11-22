@@ -9,6 +9,17 @@ using IsotopeFit.Numerics;
 
 namespace IsotopeFit
 {
+   /*
+    * TODO:
+    * 1) zbastlit design matrix a ako posledny stlpec dat vektor pozorovani
+    * 2) transponovat a napchat do csparse
+    * 3) urobit QR
+    * 4) vyrypat R a narezat ho na skutocne R a faktorizovany vektor pozorovani
+    * 5) pokracovat v NNLS
+    * 
+    * Volitelne skusit ako si s ulohou poradi CSparse leasqr solver.
+    */
+
     [ComVisible(true)]  //TODO: the ComVisible attribute can be set globally for the whole library. might be nicer.
     public partial class Workspace
     {
