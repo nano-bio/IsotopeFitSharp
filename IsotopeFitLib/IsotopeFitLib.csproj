@@ -80,7 +80,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Baseline.cs" />
     <Compile Include="IFData.cs" />
     <Compile Include="Numerics\Interpolation.cs" />
     <Compile Include="Numerics\PolyInterpolation.cs" />
