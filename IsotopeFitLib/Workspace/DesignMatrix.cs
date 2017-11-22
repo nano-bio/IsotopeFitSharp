@@ -21,7 +21,9 @@ namespace IsotopeFit
             private Vector<double>[] designMatrixVectors;
             private double[] massAxis;
 
-            bool[] fitMask; 
+            bool[] fitMask;
+
+            PolyInterpolation resolutionFit;
 
             #endregion
 
@@ -48,7 +50,7 @@ namespace IsotopeFit
             private List<IFData.Molecule> Molecules { get; set; }
             private IFData.Calibration Calibration { get; set; }            
 
-            internal Matrix<double> Storage { get; private set; }   //TODO: maybe a field would suffice
+            internal Matrix<double> Storage { get; private set; }   //TODO: maybe a field would suffice and change it directly to a sparse matrix
             internal int Rows { get; private set; }
             internal int Cols { get; private set; }
             internal Matrix<double> R { get; private set; }
@@ -64,20 +66,23 @@ namespace IsotopeFit
             #region Methods
 
             internal void Build()
-            {
-                //Matrix<double> dm = Matrix<double>.Build.SparseDiagonal(1000, 400, 0);
-                //Storage = Matrix<double>.Build.SparseDiagonal(1000, 400, 0);  //TODO: we will create the final matrix after all rows are built, because matrix write operations are not thread safe
-
+            {                
+                //TODO: make them sparse
                 designMatrixVectors = new Vector<double>[Cols];
                 fitMask = new bool[Rows];
 
-                //TODO: we will probably want to use the parallel for overload with the init-body-final scheme
-                //TODO: if we dont need the build init for each thread, use the parallel for with the appropriate signature
-                // loop through all molecules
-                Parallel.For(0, 100, BuildInit, BuildWork, null);
+                //TODO: this is temporary
+                SearchRange = 1;
+                FwhmRange = 0.5;
 
-                //TODO: build the sparse design matrix from the vector array
-                Storage = Matrix<double>.Build.SparseOfColumnVectors(designMatrixVectors);
+                // initialize the resolution interpolation object from IFD data. immediately calculates the interpolation internally
+                resolutionFit = new PolyInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), (int)Calibration.ResolutionParam); //TODO: maybe change the ulongs to ints
+
+                // loop through all molecules
+                Parallel.For(0, Cols, BuildInit, BuildWork, BuildFinal);
+
+                //build the sparse design matrix from the column vector array
+                Storage = Matrix<double>.Build.SparseOfColumnVectors(designMatrixVectors);   //TODO: this is horribly slow. we should build the matrix manually.
 
             }
 
@@ -89,7 +94,7 @@ namespace IsotopeFit
             /// <returns>New instance of thread workspace.</returns>
             private BuildState BuildInit()
             {                
-                return new BuildState(Rows);
+                return new BuildState(Rows, resolutionFit.Coefs);
             }
 
             /// <summary>
@@ -102,19 +107,14 @@ namespace IsotopeFit
             /// <returns>Modified thread status object.</returns>
             private BuildState BuildWork(int moleculeIndex, ParallelLoopState pls, BuildState bs)
             {
-                Console.WriteLine(Thread.CurrentThread.ManagedThreadId);
-
                 int isotopePeakCount = Molecules[moleculeIndex].PeakData.Mass.Count;
-
-                bool[] localFitmask = new bool[Rows];
 
                 // loop through all isotope peaks of the current molecule
                 for (int i = 0; i < isotopePeakCount; i++)
                 {
                     int peakLowerLimitIndex, peakUpperLimitIndex;
                     int fitmaskLowerLimitIndex, fitmaskUpperLimitIndex;
-                    int breakIndex;
-                    double mass, abundance, resolution, fwhm, idealSignalValue;
+                    double mass, abundance, resolution, fwhm;
 
                     Vector<double> breaks;
                     Matrix<double> coefs;
@@ -123,9 +123,7 @@ namespace IsotopeFit
 
                     mass = Molecules[moleculeIndex].PeakData.Mass[i];
                     abundance = Molecules[moleculeIndex].PeakData.Abundance[i];  // area of the line and abundance are proportional
-
-                    resolution = 2500;    //Numerics.PolynomialEval();
-
+                    resolution = bs.resolutionFit.Evaluate(mass);
                     fwhm = mass / resolution;
 
                     if (fwhm <= 0)
@@ -149,23 +147,21 @@ namespace IsotopeFit
                         bs.fitMask[j] = true;
                     }
 
-                    //TODO: build the design matrix column for the current molecule
-                    currentColumn = Vector<double>.Build.Sparse(Rows);
+                    // build the design matrix column for the current molecule
+                    currentColumn = Vector<double>.Build.Sparse(Rows);  //TODO: maybe we can make this building also manually, to be more effective
+                    PPInterpolation peakshape = new PPInterpolation(breaks.ToArray(), coefs.ToRowArrays());
                     
                     for (int j = peakLowerLimitIndex; j <= peakUpperLimitIndex; j++)
                     {
+                        // check if the point falls within the fitmask
                         if (bs.fitMask[j])
                         {
-                            //TODO: evaluate the peakshape partial polynomial at the j index of massaxis
-                            //TODO: evaluate the correct partial polynomial - to get ideal signal value
-                            //idealSignalValue = abundance * Algorithm.PPEval(breaks, coefs, massAxis[j]);
-
-                            //TODO: add the point to the design matrix column - if it falls within the fitmask
-                            
+                            // evaluate the peakshape partial polynomial at the j index of mass axis and add the point to the design matrix column
+                            currentColumn[j] = abundance * peakshape.Evaluate(massAxis[j]);
                         }
                     }
 
-                    //TODO: add the built column to the column storage
+                    // add the built column to the column storage
                     designMatrixVectors[moleculeIndex] = currentColumn;
                 }
 
@@ -222,20 +218,20 @@ namespace IsotopeFit
                 {
                     for (int col = 0; col < coefs.ColumnCount; col++)
                     {
-                        // value 4 is hardcoded, because the line shape is alway represented by piecewise cubic polynomials
+                        // value 4 is hardcoded, because the line shape is always represented by piecewise cubic polynomials
                         switch (col % 4)
                         {
                             case 0:
-                                coefs.At(row, col, sh.Coefs.At(row, col) * abundance / Math.Pow(fwhm, 4));
+                                coefs.At(row, col, sh.Coefs.At(row, col) * abundance / fwhm);
                                 break;
                             case 1:
-                                coefs.At(row, col, sh.Coefs.At(row, col) * abundance / Math.Pow(fwhm, 3));
-                                break;
-                            case 2:
                                 coefs.At(row, col, sh.Coefs.At(row, col) * abundance / Math.Pow(fwhm, 2));
                                 break;
+                            case 2:
+                                coefs.At(row, col, sh.Coefs.At(row, col) * abundance / Math.Pow(fwhm, 3));
+                                break;
                             case 3:
-                                coefs.At(row, col, sh.Coefs.At(row, col) * abundance / fwhm);
+                                coefs.At(row, col, sh.Coefs.At(row, col) * abundance / Math.Pow(fwhm, 4));
                                 break;
                         }
                     }
@@ -287,10 +283,12 @@ namespace IsotopeFit
             private class BuildState
             {
                 internal bool[] fitMask;
+                internal PolyInterpolation resolutionFit;
 
-                internal BuildState(int size)
+                internal BuildState(int size, double[] resFitCoefs)
                 {
                     fitMask = new bool[size];
+                    resolutionFit = new PolyInterpolation(resFitCoefs);
                 }
             }
 
