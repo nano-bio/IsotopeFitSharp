@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.Interpolation;
 using MathNet.Numerics.Properties;
+using System.IO;
 
 namespace IsotopeFit.Numerics
 {
@@ -204,6 +205,7 @@ namespace IsotopeFit.Numerics
                 throw new ArgumentException(string.Format(Resources.ArrayTooSmall, 2), "x");
             }
 
+            // Constant, liner, quadratic and cubic coefficient, respectively.
             double[] c0 = new double[x.Length - 1];
             double[] c1 = new double[x.Length - 1];
             double[] c2 = new double[x.Length - 1];
@@ -230,12 +232,12 @@ namespace IsotopeFit.Numerics
 
         public override double[] Evaluate(double[] x)
         {
-            double[] MultiEval = new double[x.Length];
+            double[] multiEval = new double[x.Length];
             for (int i = 0; i < x.Length; i++)
             {
-                MultiEval[i] = PPEval(Breaks, Coefs, x[i]);
+                multiEval[i] = PPEval(Breaks, Coefs, x[i]);
             }
-            return MultiEval;
+            return multiEval;
         }
 
         internal static double PPEval(double[] breaks, double[][] coefs, double x)
@@ -244,13 +246,13 @@ namespace IsotopeFit.Numerics
 
             int breakIndex = Array.BinarySearch(breaksArray, x);
 
-            if (breakIndex >= 0)
+            if (breakIndex >= 0 && breakIndex != breaks.Length - 1)
             {
-                if (breakIndex == coefs.GetLength(0))
-                {
-                    return coefs[breakIndex-1][0];
-                }
                 return coefs[breakIndex][0];
+            }
+            else if (breakIndex == breaks.Length - 1) // when selected point x == last break point. 
+            {
+                return MathNet.Numerics.Evaluate.Polynomial((x - breaks[breakIndex - 1]), coefs[breakIndex - 1]);
             }
             else
             {
@@ -258,7 +260,7 @@ namespace IsotopeFit.Numerics
                 
                 if ((0 < indexOfNearest) && (indexOfNearest < breaksArray.Length))
                 {
-                    return MathNet.Numerics.Evaluate.Polynomial(x, coefs[indexOfNearest-1] );
+                    return MathNet.Numerics.Evaluate.Polynomial((x-breaks[indexOfNearest-1]), coefs[indexOfNearest-1] );
                 }
                 else
                 {

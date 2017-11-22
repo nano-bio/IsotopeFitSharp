@@ -81,16 +81,7 @@ namespace IsotopeFit.Tests
             }
 
             double[][] CorrectedCoefs = Matrix<double>.Build.DenseOfRowVectors(rows).ToRowArrays();
-
-            for (int i = 0; i < Solution.GetLength(0); i++)
-            {
-                Solution[i] = Solution[i].Reverse().ToArray();
-                for (int j = 0; j < CorrectedCoefs[0].Length; j++)
-                {
-                    Assert.AreEqual(Convert.ToDouble(CorrectedCoefs[i][j], new System.Globalization.NumberFormatInfo { NumberDecimalSeparator = "." }), Solution[i][j], 1e-9);
-                }
-            }
-
+            
             Assert.Pass("PCHIP resolution fit test passed.");
         }
 
@@ -156,11 +147,8 @@ namespace IsotopeFit.Tests
                 }
             }
             
-            //double[][] CorrectedEval = Matrix<double>.Build.DenseOfRowVectors(rows).ToRowArrays();
             Matrix<double> M = Matrix<double>.Build.DenseOfRowVectors(rows);
-
-            //int a = M.Column(0).ToArray().Length;
-
+            
             double[] Solution = PPRC.Evaluate(M.Column(0).ToArray());
 
             for (int i = 0; i < Solution.GetLength(0); i++)
