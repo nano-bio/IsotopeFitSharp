@@ -18,6 +18,12 @@ namespace IsotopeFit.Numerics
     {
         #region Constructors
 
+        /// <summary>
+        /// Creates new interpolation object and calculates piecewise polynomial interpolation parameters.
+        /// </summary>
+        /// <param name="x">Array of x values.</param>
+        /// <param name="y">Array of y values.</param>
+        /// <param name="t">Piecewise polynomial interpolation type.</param>
         public PPInterpolation(double[] x, double[] y, PPType t)
         {
             xValues = x;
@@ -27,6 +33,14 @@ namespace IsotopeFit.Numerics
             Calculate(x, y, t);
         }
 
+        /// <summary>
+        /// Creates new interpolation object and stores already known interpolation parameters.
+        /// </summary>
+        /// <remarks>
+        /// Input polynomial coefficients have to be sorted by increasing power from left to right in 2D array.
+        /// </remarks>
+        /// <param name="breaks">Array of break points.</param>
+        /// <param name="coefs">2D array of polynomial coefficients.</param>
         public PPInterpolation(double[] breaks, double[][] coefs)
         {
             Breaks = breaks;
@@ -48,9 +62,15 @@ namespace IsotopeFit.Numerics
             Spline,
             PCHIP
         }
-        
+
         #region Methods
 
+        /// <summary>
+        /// Initializes a calculation by selected piecewise polynomial interpolation method. 
+        /// </summary>
+        /// <param name="x">Array of x values.</param>
+        /// <param name="y">Array of y values.</param>
+        /// <param name="t">Piecewise polynomial interpolation type.</param>
         private void Calculate(double[] x, double[] y, PPType t)
         {
             switch (t)
@@ -84,7 +104,6 @@ namespace IsotopeFit.Numerics
         /// <param name="x">Array of x values.</param>
         /// <param name="y">Array of y values.</param>
         /// <param name="xToEval">Array of x values, for which the interpolated curve is to be evaluated at.</param>
-        /// <returns>Array of evaluated y values.</returns>
         private void PCHIP(double[] x, double[] y)
         {
             /*
@@ -225,11 +244,21 @@ namespace IsotopeFit.Numerics
             Coefs = Matrix<double>.Build.DenseOfColumnArrays(c0, c1, c2, c3).ToRowArrays();
         }
 
+        /// <summary>
+        /// Initializes a piecewise cubic polynomial evaluation of a selected point x.
+        /// </summary>
+        /// <param name="x">Single x value.</param>
+        /// <returns>Single evaluated y value.</returns>
         public override double Evaluate(double x)
         {
             return PPEval(Breaks, Coefs, x);
         }
 
+        /// <summary>
+        /// Initializes a piecewise cubic polynomial evaluation of a selected array of points x.
+        /// </summary>
+        /// <param name="x">Array of x values.</param>
+        /// <returns>Array of evaluated y values.</returns>
         public override double[] Evaluate(double[] x)
         {
             double[] multiEval = new double[x.Length];
@@ -240,27 +269,38 @@ namespace IsotopeFit.Numerics
             return multiEval;
         }
 
+        /// <summary>
+        /// Evaluates a piecewise cubic polynomial at point x within the defined range. 
+        /// </summary>
+        /// <remarks>
+        /// Evaluation itself does not depend on selected calculation method.
+        /// </remarks>
+        /// <param name="breaks">Array of break points.</param>
+        /// <param name="coefs">2D array of polynomial coefficients.</param>
+        /// <param name="x">Single x value to be evaluated.</param>
+        /// <returns>Single evaluated y value.</returns>
         internal static double PPEval(double[] breaks, double[][] coefs, double x)
         {
-            double[] breaksArray = breaks;
+            // Assigns an index of equal break point or a bitwise compelent index of first greater one to the point x. 
+            int breakIndex = Array.BinarySearch(breaks, x);
 
-            int breakIndex = Array.BinarySearch(breaksArray, x);
-
-            if (breakIndex >= 0 && breakIndex != breaks.Length - 1)
+            // Selected point equals to one of the break points.
+            if (breakIndex >= 0)
             {
+                if (breakIndex == breaks.Length - 1)
+                {
+                    return MathNet.Numerics.Evaluate.Polynomial((x - breaks[breakIndex - 1]), coefs[breakIndex - 1]);
+                }
                 return coefs[breakIndex][0];
             }
-            else if (breakIndex == breaks.Length - 1) // when selected point x == last break point. 
-            {
-                return MathNet.Numerics.Evaluate.Polynomial((x - breaks[breakIndex - 1]), coefs[breakIndex - 1]);
-            }
+            // Selected point is in between of two break points. 
             else
             {
-                int indexOfNearest = ~breakIndex;
+                int indexOfGreater = ~breakIndex;
                 
-                if ((0 < indexOfNearest) && (indexOfNearest < breaksArray.Length))
+                if ((0 < indexOfGreater) && (indexOfGreater < breaks.Length))
                 {
-                    return MathNet.Numerics.Evaluate.Polynomial((x-breaks[indexOfNearest-1]), coefs[indexOfNearest-1] );
+                    return MathNet.Numerics.Evaluate.Polynomial((x-breaks[indexOfGreater-1]), coefs[indexOfGreater-1] );
                 }
                 else
                 {
