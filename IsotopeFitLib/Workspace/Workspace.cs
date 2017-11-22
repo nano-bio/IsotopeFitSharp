@@ -55,7 +55,7 @@ namespace IsotopeFit
 
         #region Properties
 
-        public IFData.Spectrum RawData { get; set; }
+        public IFData.Spectrum SpectralData { get; set; }
         public ulong StartIndex { get; set; }
         public ulong EndIndex { get; set; }
         public List<IFData.Molecule> Molecules { get; set; }
@@ -87,7 +87,7 @@ namespace IsotopeFit
         {
             var rootElement = IFDFile.Open(path);
 
-            RawData = IFDFile.ReadRawData(rootElement);
+            SpectralData = IFDFile.ReadRawData(rootElement);
             StartIndex = IFDFile.ReadStartIndex(rootElement);
             EndIndex = IFDFile.ReadEndIndex(rootElement);
             Molecules = IFDFile.ReadMolecules(rootElement);
@@ -98,11 +98,85 @@ namespace IsotopeFit
 
         public void CorrectBaseline()
         {
+            //TODO: can be shortened/optimized
+
             //TODO: check is all necessary data are already loaded in the workspace. throw exception if not
+            if (SpectralData == null || BaselineCorr == null)
+            {
+                throw new WorkspaceNotDefinedException("Required data are not present in workspace."); //TODO: specify more precisely
+            }
 
-            //TODO: calculate the background corrected spectrum
+            int massAxisLength = SpectralData.RawLength;
 
-            //TODO: store it in a corresponding workspace field              
+            //TODO: Evaluating the bg correction for the whole range might be useless. Specifiyng a mass range would make sense.
+            //TODO: crop the mass axis to the last specified point of the baseline? might break usefulness.
+            PPInterpolation baselineFit = new PPInterpolation(BaselineCorr.XAxis.ToArray(), BaselineCorr.YAxis.ToArray(), PPInterpolation.PPType.PCHIP);    //TODO: write for more interp types
+
+            MathNet.Numerics.LinearAlgebra.Vector<double> baseline = MathNet.Numerics.LinearAlgebra.Vector<double>.Build.DenseOfArray(baselineFit.Evaluate(SpectralData.RawMassAxis.ToArray()));
+            MathNet.Numerics.LinearAlgebra.Vector<double> correctedSignal = MathNet.Numerics.LinearAlgebra.Vector<double>.Build.Dense(massAxisLength, 0);
+
+            for (int i = 0; i < massAxisLength; i++)
+            {
+                correctedSignal[i] = SpectralData.RawSignalAxis[i] - baseline[i];
+            }
+
+            SpectralData.PureSignalAxis = correctedSignal;
+        }
+
+        public void CorrectMassOffset()
+        {
+            //TODO: this can be cleaned/optimized, it is an ugly mess right now
+            //TODO: check if required data are present
+
+            int massAxisLength = SpectralData.RawLength;    //TODO: might want to use the cropped length as well
+            int fitDataLength = Calibration.COMList.Count;
+
+            // generate the x-axis for the fit
+            double xAxisMin = SpectralData.RawMassAxis.Min();
+            double xAxisMax = SpectralData.RawMassAxis.Max();
+
+            int xAxisLength = (int)((xAxisMax - xAxisMin) / 0.01);   //TODO: allow to set granularity of the x axis
+            MathNet.Numerics.LinearAlgebra.Vector<double> xAxis = MathNet.Numerics.LinearAlgebra.Vector<double>.Build.Dense(xAxisLength);
+
+            for (int i = 0; i < xAxisLength; i++)
+            {
+                xAxis[i] = xAxisMin + i * 0.01;
+            }
+
+            // Will hold evaluated data from the first fit and serve as x-axis (yes, x-axis) in the second fit. Because the fit needs to be reversed.
+            double[] yAxis = new double[xAxisLength];
+
+            PPInterpolation massOffset = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.MassOffsetList.ToArray(), PPInterpolation.PPType.PCHIP);
+
+            // Evaluation of the fit at positions given by generated x-axis and storing the correction in YAxis vector.
+            yAxis = massOffset.Evaluate(xAxis.ToArray());   //TODO: this is most likely broken because it can not extrapolate right now
+
+            for (int i = 0; i < xAxisLength; i++)
+            {
+                yAxis[i] += xAxis[i];
+            }
+
+            // This is a sanity check for YAxis monotonicity. That is required by the second fit, where the YAxis server as x-axis. Matlab does this without telling.
+            // This could be solved in a more safe way, if the user would actually specify endindex of the raw data, so the uncalibrated range can get cut out.
+            double yAxisMax = yAxis.Max();
+            int yAxisMaxIndex = Array.BinarySearch(yAxis, yAxisMax);
+            double[] yAxisNew = new double[yAxisMaxIndex + 1];  //TODO: check if the length correct
+            Array.Copy(yAxis, yAxisNew, yAxisMaxIndex);
+
+            // Fit to generate corrected mass axis. Note that the X and Y axis are inverted. For this to be correct, it must be corrected in the IFD file generation first.
+            PPInterpolation massOffset2 = new PPInterpolation(yAxis, xAxis.ToArray(), PPInterpolation.PPType.PCHIP);    //TODO: i think those vectors have different lengths now
+
+            double[] correctedMassAxis = new double[yAxis.Length];
+
+            for (int i = 0; SpectralData.RawMassAxis[i] < yAxis.Last(); i++)
+            {
+                correctedMassAxis[i] = massOffset2.Evaluate(SpectralData.RawMassAxis[i]);
+            }
+
+            // TODO: It might happen due to the monotonicity check, that during the second evaluation we hit a singularity. This cuts off the nonsense data.
+
+            // Store the corrected mass axis in the appropriate place
+            SpectralData.MassOffsetCorrAxis = MathNet.Numerics.LinearAlgebra.Double.DenseVector.Build.DenseOfArray(correctedMassAxis);
         }
 
         public void ResolutionFit(InterpType t)
@@ -122,11 +196,13 @@ namespace IsotopeFit
                 default:
                     throw new Interpolation.InterpolationException("Unknown interpolation type.");
             }
+
+            //TODO: save the object somewhere
         }
 
         public void BuildDesignMatrix()
         {
-            DesignMtrx dm = new DesignMtrx(RawData, Molecules, Calibration);
+            DesignMtrx dm = new DesignMtrx(SpectralData, Molecules, Calibration);
             dm.Build();
         }
 
