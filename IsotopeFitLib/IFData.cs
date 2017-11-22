@@ -57,10 +57,13 @@ namespace IsotopeFit
         /// </summary>
         public class Spectrum
         {
-            public int Length { get; set; }
+            public int RawLength { get; set; }
+            public int CroppedLength { get; set; }
 
-            public Vector<double> MassAxis { get; set; }
-            public Vector<double> SignalAxis { get; set; }
+            public Vector<double> RawMassAxis { get; set; }
+            public Vector<double> MassOffsetCorrAxis { get; set; }  // with mass offset corrected
+            public Vector<double> RawSignalAxis { get; set; }
+            public Vector<double> PureSignalAxis { get; set; }     // with baseline subtracted
 
             internal Spectrum()
             {
@@ -74,9 +77,9 @@ namespace IsotopeFit
             /// <param name="signalAxis">Signal axis of the spectrum.</param>
             internal Spectrum(Vector<double> massAxis, Vector<double> signalAxis)
             {
-                Length = massAxis.Count;
-                MassAxis = massAxis;
-                SignalAxis = signalAxis;
+                RawLength = massAxis.Count;
+                RawMassAxis = massAxis;
+                RawSignalAxis = signalAxis;
             }
 
             /// <summary>
@@ -87,14 +90,14 @@ namespace IsotopeFit
             {
                 //TODO: include the check to determine is the array is MxN or NxM
 
-                Length = data.Length;
-                MassAxis = Vector<double>.Build.Dense(Length, 0);
-                SignalAxis = Vector<double>.Build.Dense(Length, 0);
+                RawLength = data.Length;
+                RawMassAxis = Vector<double>.Build.Dense(RawLength, 0);
+                RawSignalAxis = Vector<double>.Build.Dense(RawLength, 0);
 
-                for (int i = 0; i < Length; i++)
+                for (int i = 0; i < RawLength; i++)
                 {
-                    MassAxis[i] = data[i][0];
-                    SignalAxis[i] = data[i][1];
+                    RawMassAxis[i] = data[i][0];
+                    RawSignalAxis[i] = data[i][1];
                 }
             }
         }

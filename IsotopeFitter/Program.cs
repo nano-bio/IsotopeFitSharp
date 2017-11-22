@@ -20,7 +20,7 @@ namespace IsotopeFitter
 
             int idx = 0;
 
-            List<double> axisList = W.RawData.MassAxis.ToList();
+            List<double> axisList = W.SpectralData.RawMassAxis.ToList();
             axisList.Sort();
 
             double[] axis = axisList.ToArray();

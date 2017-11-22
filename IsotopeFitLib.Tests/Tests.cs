@@ -86,8 +86,8 @@ namespace IsotopeFit.Tests
             Workspace Wrk = new Workspace(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\testfile.ifd");
 
             // raw data check
-            Assert.AreEqual(4.64416598796176d, Wrk.RawData.MassAxis[9999], 1e-12);
-            Assert.AreEqual(173.00000000000000d, Wrk.RawData.SignalAxis[9999], 1e-12);
+            Assert.AreEqual(4.64416598796176d, Wrk.SpectralData.RawMassAxis[9999], 1e-12);
+            Assert.AreEqual(173.00000000000000d, Wrk.SpectralData.RawSignalAxis[9999], 1e-12);
 
             // start and end index check
             Assert.AreEqual(1, Wrk.StartIndex);
