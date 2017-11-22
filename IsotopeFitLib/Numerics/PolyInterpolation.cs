@@ -32,7 +32,7 @@ namespace IsotopeFit.Numerics
                 throw new InterpolationException("Maximal order of polynomial interpolation is 10.");
             }
 
-            Order = order; // TODO make a precaution for maximal input Order
+            Order = order;
 
             Calculate(x, y, order);
         }
