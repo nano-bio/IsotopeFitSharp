@@ -149,7 +149,17 @@ namespace IsotopeFit
             S.Breaks = IFData.Arr2DToVect((dataField as MLDouble).GetArray());
 
             dataField = (sh as MLStructure)["coefs"] as MLArray;
-            S.Coefs = IFData.Arr2DToMatrix((dataField as MLDouble).GetArray());
+
+            double[][] coefs = (dataField as MLDouble).GetArray();
+
+            for (int i = 0; i < coefs.Length; i++)
+            {
+               coefs[i] = coefs[i].Reverse().ToArray();
+            }
+
+            S.Coefs = IFData.Arr2DToMatrix(coefs);
+
+
 
             dataField = (sh as MLStructure)["pieces"] as MLArray;
             S.Pieces = (ulong)(dataField as MLDouble).GetArray()[0][0];
