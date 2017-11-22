@@ -61,6 +61,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InterpolationTests.cs" />
     <Compile Include="LeaSqrQRTests.cs" />
     <Compile Include="Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -96,9 +97,14 @@
     <Content Include="TestData\nnls_x_solution.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\ResolutionCoefs.txt">
+    <Content Include="TestData\PCHIPEvaluation.txt" />
+    <Content Include="TestData\PCHIPResolutionCoefs.txt" />
+    <Content Include="TestData\PolynomialEvaluation.txt" />
+    <Content Include="TestData\PolynomialResolutionCoefs.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestData\SplineEvaluation.txt" />
+    <Content Include="TestData\SplineResolutionCoefs.txt" />
     <Content Include="TestData\spectrum.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

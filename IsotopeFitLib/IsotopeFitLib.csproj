@@ -71,6 +71,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -82,6 +83,8 @@
     <Compile Include="Baseline.cs" />
     <Compile Include="IFData.cs" />
     <Compile Include="Numerics\Interpolation.cs" />
+    <Compile Include="Numerics\PolyInterpolation.cs" />
+    <Compile Include="Numerics\PPInterpolation.cs" />
     <Compile Include="Numerics\LeastSquaresSystem.cs" />
     <Compile Include="Numerics\Polynomial.cs" />
     <Compile Include="Numerics\PiecewisePolynomial.cs" />

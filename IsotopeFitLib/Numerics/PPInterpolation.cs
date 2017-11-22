@@ -6,17 +6,71 @@ using System.Threading.Tasks;
 
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.Interpolation;
+using MathNet.Numerics.Properties;
 
 namespace IsotopeFit.Numerics
 {
-    public static partial class Algorithm
+    /// <summary>
+    /// Derived class that handles piecewise polynomial interpolations and evaluation of data. 
+    /// </summary>
+    public class PPInterpolation : Interpolation
     {
+        #region Constructors
+
+        public PPInterpolation(double[] x, double[] y, PPType t)
+        {
+            xValues = x;
+            yValues = y;
+            ppType = t;
+
+            Calculate(x, y, t);
+        }
+
+        public PPInterpolation(double[] breaks, double[][] coefs)
+        {
+            Breaks = breaks;
+            Coefs = coefs;
+        }
+
+        #endregion
+
+        #region Properties
+
+        public PPType ppType { get; private set; }
+        public double[] Breaks { get; private set; }
+        public double[][] Coefs { get; private set; }
+
+        #endregion
+
+        public enum PPType
+        {
+            Spline,
+            PCHIP
+        }
+        
+        #region Methods
+
+        private void Calculate(double[] x, double[] y, PPType t)
+        {
+            switch (t)
+            {
+                case PPType.Spline:
+                    Spline(x, y);
+                    break;
+                case PPType.PCHIP:
+                    PCHIP(x, y);
+                    break;
+                default:
+                    throw new InterpolationException("Unknow interpolation type.");
+            }
+        }
+        
         //TODO: implement spline calculation - continuous 2nd derivation
         internal static Matrix<double> Spline(double[] x, double[] y)
         {
             throw new NotImplementedException();
         }
-
+        
         /// <summary>
         /// Calculates shape preserving piecewise cubic hermite polynomial interpolation.
         /// </summary>
@@ -30,7 +84,7 @@ namespace IsotopeFit.Numerics
         /// <param name="y">Array of y values.</param>
         /// <param name="xToEval">Array of x values, for which the interpolated curve is to be evaluated at.</param>
         /// <returns>Array of evaluated y values.</returns>
-        internal static Matrix<double> PCHIP(double[] x, double[] y)
+        private void PCHIP(double[] x, double[] y)
         {
             /*
              * Before the interpolation itself, we need to calculate
@@ -138,31 +192,83 @@ namespace IsotopeFit.Numerics
                 deltaMax = 3.0 * delta1;
                 if (Math.Abs(deriv[n - 1]) > Math.Abs(deltaMax)) deriv[n - 1] = deltaMax;
             }
+            
+            // Create a hermite cubic spline interpolation from a set of (x,y) value pairs and their slope (first derivative), sorted ascendingly by x.
+            if (x.Length != y.Length || x.Length != deriv.Length)
+            {
+                throw new ArgumentException(Resources.ArgumentVectorsSameLength);
+            }
 
-            // derivatives are calculated, let's interpolate            
-            Matrix<double> coefs = Matrix<double>.Build.Dense(n - 1, 4);    // because there is one less section than breaks and the polynomials are cubic
+            if (x.Length < 2)
+            {
+                throw new ArgumentException(string.Format(Resources.ArrayTooSmall, 2), "x");
+            }
 
-            //TODO: rewrite the fitting routine, so that it returns the partial polynomial coefficients. it might be necessary to copy the mathnet source code
-            CubicSpline cs = CubicSpline.InterpolateHermite(x, y, deriv);
+            double[] c0 = new double[x.Length - 1];
+            double[] c1 = new double[x.Length - 1];
+            double[] c2 = new double[x.Length - 1];
+            double[] c3 = new double[x.Length - 1];
 
-            return coefs;
+            for (int i = 0; i < c0.Length; i++)
+            {
+                double w = x[i + 1] - x[i];
+                double w2 = w * w;
+                c0[i] = y[i];
+                c1[i] = deriv[i];
+                c2[i] = (3 * (y[i + 1] - y[i]) / w - 2 * deriv[i] - deriv[i + 1]) / w;
+                c3[i] = (2 * (y[i] - y[i + 1]) / w + deriv[i] + deriv[i + 1]) / w2;
+            }
+
+            Breaks = x;
+            Coefs = Matrix<double>.Build.DenseOfColumnArrays(c0, c1, c2, c3).ToRowArrays();
         }
 
-        //TODO: matus
-        internal static double PPEval(Vector<double> breaks, Matrix<double> coefs, double x)
+        public override double Evaluate(double x)
         {
-            /*
-             * Ako na to:
-             * ciastkove polynomy sa pouzivaju na interpolaciu dat (aj na fitovanie sa asi daju). pri interpolacii prechadzas striktne cez zadane body.
-             * tieto body tvoria hranice ciastkovych polynomov.
-             * Na vyhodnotenie (vypocitanie interpolovanych hodnot) potrebujes nasledovne data:
-             * breaks - vektor s hranicami polynomov na x-ovej osi
-             * coefs - matica, v ktorej kazdy riadok obsahuje koeficienty polynomu
-             * Ako suvisia? prvy riadok v matici koeficientov zodpoveda polynomu, ktory je medzi prvou a druhou hodnotou vo vektore hranic
-             * No a samozrejme sa ti zide este hodnota x, v ktorej chces vypocitat y-ovu hodnotu.    
-             */
-
-            throw new NotImplementedException();
+            return PPEval(Breaks, Coefs, x);
         }
+
+        public override double[] Evaluate(double[] x)
+        {
+            double[] MultiEval = new double[x.Length];
+            for (int i = 0; i < x.Length; i++)
+            {
+                MultiEval[i] = PPEval(Breaks, Coefs, x[i]);
+            }
+            return MultiEval;
+        }
+
+        internal static double PPEval(double[] breaks, double[][] coefs, double x)
+        {
+            double[] breaksArray = breaks;
+
+            int breakIndex = Array.BinarySearch(breaksArray, x);
+
+            if (breakIndex >= 0)
+            {
+                if (breakIndex == coefs.GetLength(0))
+                {
+                    return coefs[breakIndex-1][0];
+                }
+                return coefs[breakIndex][0];
+            }
+            else
+            {
+                int indexOfNearest = ~breakIndex;
+                
+                if ((0 < indexOfNearest) && (indexOfNearest < breaksArray.Length))
+                {
+                    return MathNet.Numerics.Evaluate.Polynomial(x, coefs[indexOfNearest-1] );
+                }
+                else
+                {
+                    throw new InterpolationException("Evaluation point is outside of definition range.");
+                }
+            }
+            
+            throw new NotImplementedException(); // TODO what is a purpose of the line?
+        }
+
+        #endregion
     }
 }

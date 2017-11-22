@@ -60,14 +60,21 @@ namespace IsotopeFit
         public ulong EndIndex { get; set; }
         public List<IFData.Molecule> Molecules { get; set; }
         public IFData.Calibration Calibration { get; set; }
-        public IFData.BaselineCorr BaselineCorr { get; set; }       
-     
+        public IFData.BaselineCorr BaselineCorr { get; set; }
+
         public double FwhmRange { get; set; }
         public double SearchRange { get; set; }
 
-        public double[] ResolutionCoefs { get; set; }
-
+        public InterpType interpType { get; set; }
+        
         #endregion
+
+        public enum InterpType
+        {
+            Polynomial,
+            Spline,
+            PCHIP
+        }
 
         #region Methods
 
@@ -98,11 +105,25 @@ namespace IsotopeFit
             //TODO: store it in a corresponding workspace field              
         }
 
-        public void ResolutionFit()
+        public void ResolutionFit(InterpType t)
         {
-            ResolutionCoefs = Algorithm.PolynomialFit(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray()).ToArray();
+            switch (t)
+            {
+                case InterpType.Polynomial:
+                    int order = 3; // TODO will be defined by user from GUI
+                    PolyInterpolation PolyRC = new PolyInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), order);
+                    break;
+                case InterpType.Spline:
+                    PPInterpolation SplineRC = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), PPInterpolation.PPType.Spline);
+                    break;
+                case InterpType.PCHIP:
+                    PPInterpolation PCHIPRC = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), PPInterpolation.PPType.PCHIP);
+                    break;
+                default:
+                    throw new Interpolation.InterpolationException("Unknown interpolation type.");
+            }
         }
-
+        
         //public void Dummy()
         //{
         //    DesignMtrx dm = new DesignMtrx(RawData.Length, Molecules);
