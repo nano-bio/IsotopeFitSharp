@@ -34,11 +34,11 @@ namespace IsotopeFit
             /// </summary>
             internal DesignMtrx(IFData.Spectrum spectrum, List<IFData.Molecule> molecules, IFData.Calibration calibration)
             {
-                massAxis = spectrum.MassAxis.ToArray();
+                massAxis = spectrum.RawMassAxis.ToArray();
                 Molecules = molecules;
                 Calibration = calibration;
 
-                Rows = spectrum.Length;
+                Rows = spectrum.RawLength;
                 Cols = molecules.Count;
             }
 
