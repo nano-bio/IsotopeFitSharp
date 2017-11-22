@@ -61,6 +61,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DesignMatrixTests.cs" />
     <Compile Include="InterpolationTests.cs" />
     <Compile Include="LeaSqrQRTests.cs" />
     <Compile Include="Tests.cs" />
