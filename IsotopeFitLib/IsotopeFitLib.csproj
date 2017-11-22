@@ -86,8 +86,6 @@
     <Compile Include="Numerics\PolyInterpolation.cs" />
     <Compile Include="Numerics\PPInterpolation.cs" />
     <Compile Include="Numerics\LeastSquaresSystem.cs" />
-    <Compile Include="Numerics\Polynomial.cs" />
-    <Compile Include="Numerics\PiecewisePolynomial.cs" />
     <Compile Include="Numerics\QRFactorization.cs" />
     <Compile Include="Workspace\DesignMatrix.cs" />
     <Compile Include="IFDFile.cs" />
