@@ -17,6 +17,35 @@ namespace IsotopeFit.Tests
     public partial class Tests
     {
         [Test]
+        public void BaselineSubtractTest()
+        {
+            Workspace Wrk = new Workspace(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\testfile.ifd");
+
+            Wrk.CorrectBaseline();
+
+            // solution check
+            string[] bgCorrFile = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\bgcorrected.txt");
+
+            List<double> bgCorr = new List<double>();
+
+            foreach (string line in bgCorrFile)
+            {
+                if (!line.Contains("#") && line != "")
+                {
+                    bgCorr.Add(Convert.ToDouble(line.Trim(), new System.Globalization.NumberFormatInfo { NumberDecimalSeparator = "." }));
+                }
+            }
+
+            for (int i = 0; i < bgCorr.Count; i++)
+            {
+                //Assert.Less(1e-9, Math.Abs(solution[i] - correctX[i]),  "Solution is wrong.");
+                Assert.AreEqual(bgCorr[i], Wrk.SpectralData.PureSignalAxis[i], 1e-9);
+            }
+
+            Assert.Pass("Baseline subtraction test passed");
+        }
+
+        [Test]
         public void NNLSTest()
         {
             //load test data from files
