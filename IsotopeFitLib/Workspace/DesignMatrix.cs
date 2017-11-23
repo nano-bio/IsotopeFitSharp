@@ -60,9 +60,6 @@ namespace IsotopeFit
 
             #endregion
 
-            //private delegate Vector<double> BuildColumnDelegate(int index);
-            //private Action<int> buildColumnDelegate;
-
             #region Methods
 
             internal void Build()

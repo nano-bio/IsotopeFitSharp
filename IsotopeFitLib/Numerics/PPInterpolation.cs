@@ -311,7 +311,7 @@ namespace IsotopeFit.Numerics
                 }
             }
             
-            throw new NotImplementedException(); // TODO what is a purpose of the line?
+            //throw new NotImplementedException(); // TODO what is a purpose of the line?
         }
 
         #endregion
