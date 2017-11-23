@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.IO;
 using System.Diagnostics;
+
+using MathNet.Numerics.LinearAlgebra;
 
 using IsotopeFit;
 
@@ -16,35 +18,51 @@ namespace IsotopeFitter
 
         static void Main(string[] args)
         {
-            Workspace W = new Workspace("testfile.ifd");  // 
+            Stopwatch time = new Stopwatch();            
 
-            int idx = 0;
+            Workspace W = new Workspace("testfiles\\testfile.ifd");
+            time.Start();
 
-            List<double> axisList = W.SpectralData.RawMassAxis.ToList();
-            axisList.Sort();
+            W.CorrectBaseline();
 
-            double[] axis = axisList.ToArray();
+            W.CorrectMassOffset();
 
-            Stopwatch sw = new Stopwatch();
+            W.BuildDesignMatrix();
 
-            sw.Start();
-            idx = FindLowerLimitIndex(axis, 3000);
-            sw.Stop();
+            W.ExtractAbundances();
 
-            double elapsed = sw.ElapsedTicks / Stopwatch.Frequency;
+            time.Stop();
 
-            Console.WriteLine(elapsed);
-            Console.WriteLine(idx + " " + axis[idx]);
+            using (FileStream f = File.OpenWrite("abd.txt"))
+            {
+                using (StreamWriter sw = new StreamWriter(f))
+                {
+                    for (int i = 0; i < W.Molecules.Count; i++)
+                    {
+                        sw.WriteLine(W.Molecules[i].CentreOfMass.ToString() + " " + W.Abundances[i].ToString());
+                    }                    
+                } 
+            }
 
-            Console.ReadKey();
+            Vector<double> calcSpectrum = Vector<double>.Build.Dense((int)W.EndIndex);
+            Vector<double> abdVec = Vector<double>.Build.Dense(W.Abundances);
+
+            calcSpectrum = W.designMatrix.Storage.Multiply(abdVec);
+
+            using (FileStream f = File.OpenWrite("calcSpectrum.txt"))
+            {
+                using (StreamWriter sw = new StreamWriter(f))
+                {
+                    for (int i = 0; i < W.SpectralData.RawLength; i++)
+                    {
+                        sw.WriteLine(W.SpectralData.MassOffsetCorrAxis[i].ToString() + " " + calcSpectrum[i].ToString());
+                    }
+                }
+            }
+
+            Console.WriteLine("done " + time.Elapsed);
+            //Console.ReadKey();
         }
 
-        static int FindLowerLimitIndex(double[] array, double threshold)
-        {
-            int index = Array.BinarySearch(array, threshold);
-
-            if (index >= 0) return index;
-            else return ~index;
-        }
     }
 }
