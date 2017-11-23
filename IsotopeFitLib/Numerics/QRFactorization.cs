@@ -27,9 +27,10 @@ namespace IsotopeFit.Numerics
         public static LeastSquaresSystem LeaSqrSparseQRHouseholder(LeastSquaresSystem lss)
         {
             SparseMatrix M = (SparseMatrix)SparseMatrix.Build.SparseOfMatrix(lss.DesignMatrix);
-            SparseVector v = (SparseVector)SparseVector.Build.SparseOfVector(lss.ObservationVector);
+            //SparseVector v = (SparseVector)SparseVector.Build.SparseOfVector(lss.ObservationVector);
 
-            M = (SparseMatrix)M.InsertColumn(M.ColumnCount, v);
+            // this is not necessary anymore, the last column has been added when the matrix itself was built
+            //M = (SparseMatrix)M.InsertColumn(M.ColumnCount, v);
 
             M = (SparseMatrix)M.Transpose();
             SparseCompressedRowMatrixStorage<double> spStor = (SparseCompressedRowMatrixStorage<double>)M.Storage;

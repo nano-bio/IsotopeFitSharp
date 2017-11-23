@@ -19,6 +19,7 @@ namespace IsotopeFit
             #region Fields
 
             private Vector<double>[] designMatrixVectors;
+            private Vector<double> observationVector;
             private double[] massAxis;
 
             bool[] fitMask;
@@ -35,6 +36,7 @@ namespace IsotopeFit
             internal DesignMtrx(IFData.Spectrum spectrum, List<IFData.Molecule> molecules, IFData.Calibration calibration)
             {
                 massAxis = spectrum.MassOffsetCorrAxis.ToArray();
+                observationVector = spectrum.PureSignalAxis;
                 Molecules = molecules;
                 Calibration = calibration;
 
@@ -65,7 +67,7 @@ namespace IsotopeFit
             internal void Build()
             {                
                 //TODO: make them sparse
-                designMatrixVectors = new Vector<double>[Cols];
+                designMatrixVectors = new Vector<double>[Cols + 1]; // plus 1, because that will be the observations vector. this makes later calculations faster.
                 fitMask = new bool[Rows];
 
                 //TODO: this is temporary
@@ -78,8 +80,12 @@ namespace IsotopeFit
                 // loop through all molecules
                 Parallel.For(0, Cols, BuildInit, BuildWork, BuildFinal);
 
+                // add the observation vector to the last column
+                designMatrixVectors[Cols] = observationVector;
+
                 //build the sparse design matrix from the column vector array
                 Storage = Matrix<double>.Build.SparseOfColumnVectors(designMatrixVectors);   //TODO: this is horribly slow. we should build the matrix manually.
+                //TODO: since we are building the matrix from columns, it should be easy to build a compressed-column-storage right away. That is the type needed for the QR factorization.
 
             }
 
