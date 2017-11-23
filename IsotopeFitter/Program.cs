@@ -18,6 +18,8 @@ namespace IsotopeFitter
 
         static void Main(string[] args)
         {
+            MathNet.Numerics.Control.UseNativeMKL();
+
             Stopwatch time = new Stopwatch();            
 
             Workspace W = new Workspace("testfiles\\testfile.ifd");
@@ -47,7 +49,10 @@ namespace IsotopeFitter
             Vector<double> calcSpectrum = Vector<double>.Build.Dense((int)W.EndIndex);
             Vector<double> abdVec = Vector<double>.Build.Dense(W.Abundances);
 
-            calcSpectrum = W.designMatrix.Storage.Multiply(abdVec);
+            //now we have to remove the last vector from the design matrix
+            Matrix<double> mehehe = W.designMatrix.Storage.SubMatrix(0, W.designMatrix.Storage.RowCount, 0, W.designMatrix.Storage.ColumnCount - 1);
+
+            calcSpectrum = mehehe.Multiply(abdVec);
 
             using (FileStream f = File.OpenWrite("calcSpectrum.txt"))
             {
