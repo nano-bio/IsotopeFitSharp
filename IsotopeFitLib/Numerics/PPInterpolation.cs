@@ -297,10 +297,13 @@ namespace IsotopeFit.Numerics
             else
             {
                 int indexOfGreater = ~breakIndex;
+
+                if (indexOfGreater == 0) indexOfGreater++;
+                if (indexOfGreater == breaks.Length) indexOfGreater--;
                 
                 if ((0 < indexOfGreater) && (indexOfGreater < breaks.Length))
                 {
-                    return MathNet.Numerics.Evaluate.Polynomial((x-breaks[indexOfGreater-1]), coefs[indexOfGreater-1] );
+                    return MathNet.Numerics.Evaluate.Polynomial((x - breaks[indexOfGreater - 1]), coefs[indexOfGreater - 1]);
                 }
                 else
                 {
