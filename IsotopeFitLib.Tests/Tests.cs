@@ -16,7 +16,7 @@ namespace IsotopeFit.Tests
     [TestFixture]
     public partial class Tests
     {
-        [Test]
+        [Test, Category("Data manipulation")]
         public void BaselineSubtractTest()
         {
             Workspace Wrk = new Workspace(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\testfile.ifd");
@@ -36,16 +36,48 @@ namespace IsotopeFit.Tests
                 }
             }
 
+            Assert.AreEqual(bgCorr.Count, Wrk.SpectralData.PureSignalAxis.Count);
+
             for (int i = 0; i < bgCorr.Count; i++)
             {
-                //Assert.Less(1e-9, Math.Abs(solution[i] - correctX[i]),  "Solution is wrong.");
                 Assert.AreEqual(bgCorr[i], Wrk.SpectralData.PureSignalAxis[i], 1e-9);
             }
 
             Assert.Pass("Baseline subtraction test passed");
         }
 
-        [Test]
+        [Test, Category("Data manipulation")]
+        public void MassOffsetCorrectionTest()
+        {
+            Workspace Wrk = new Workspace(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\testfile.ifd");
+            Wrk.CorrectBaseline();
+
+            Wrk.CorrectMassOffset();
+
+            // solution check
+            string[] mOffFile = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\massAxisCorr.txt");
+
+            List<double> mOff = new List<double>();
+
+            foreach (string line in mOffFile)
+            {
+                if (!line.Contains("#") && line != "")
+                {
+                    mOff.Add(Convert.ToDouble(line.Trim(), new System.Globalization.NumberFormatInfo { NumberDecimalSeparator = "." }));
+                }
+            }
+
+            Assert.AreEqual(mOff.Count, Wrk.SpectralData.MassOffsetCorrAxis.Count);
+
+            for (int i = 0; i < mOff.Count; i++)
+            {
+                Assert.AreEqual(mOff[i], Wrk.SpectralData.MassOffsetCorrAxis[i], 1e-9);
+            }
+
+            Assert.Pass("Mass offset correction test passed");
+        }
+
+        [Test, Category("Numerical algorithms")]
         public void NNLSTest()
         {
             //load test data from files
