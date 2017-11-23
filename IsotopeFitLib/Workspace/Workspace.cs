@@ -185,6 +185,21 @@ namespace IsotopeFit
             SpectralData.MassOffsetCorrAxis = MathNet.Numerics.LinearAlgebra.Double.DenseVector.Build.DenseOfArray(correctedMassAxis);
         }
 
+        public void BuildDesignMatrix()
+        {
+            designMatrix = new DesignMtrx(SpectralData, Molecules, Calibration);
+            designMatrix.Build();
+        }
+
+        public void ExtractAbundances()
+        {
+            LeastSquaresSystem lss = new LeastSquaresSystem(designMatrix.Storage, SpectralData.PureSignalAxis);
+
+            lss = Algorithm.LeaSqrSparseQRHouseholder(lss);
+
+            lss.Solve();
+        }
+
         public void ResolutionFit(InterpType t)
         {
             switch (t)
@@ -204,12 +219,6 @@ namespace IsotopeFit
             }
 
             //TODO: save the object somewhere
-        }
-
-        public void BuildDesignMatrix()
-        {
-            designMatrix = new DesignMtrx(SpectralData, Molecules, Calibration);
-            designMatrix.Build();
         }
 
         #endregion
