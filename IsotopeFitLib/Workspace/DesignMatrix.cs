@@ -14,7 +14,7 @@ namespace IsotopeFit
 {
     public partial class Workspace
     {
-        internal class DesignMtrx
+        public class DesignMtrx
         {
             #region Fields
 
@@ -34,7 +34,7 @@ namespace IsotopeFit
             /// </summary>
             internal DesignMtrx(IFData.Spectrum spectrum, List<IFData.Molecule> molecules, IFData.Calibration calibration)
             {
-                massAxis = spectrum.RawMassAxis.ToArray();
+                massAxis = spectrum.MassOffsetCorrAxis.ToArray();
                 Molecules = molecules;
                 Calibration = calibration;
 
@@ -50,7 +50,7 @@ namespace IsotopeFit
             private List<IFData.Molecule> Molecules { get; set; }
             private IFData.Calibration Calibration { get; set; }            
 
-            internal Matrix<double> Storage { get; private set; }   //TODO: maybe a field would suffice and change it directly to a sparse matrix
+            public Matrix<double> Storage { get; private set; }   //TODO: maybe a field would suffice and change it directly to a sparse matrix
             internal int Rows { get; private set; }
             internal int Cols { get; private set; }
             internal Matrix<double> R { get; private set; }

@@ -186,12 +186,12 @@ namespace IsotopeFit.Tests
             Assert.AreEqual(1, Wrk.Calibration.Shape.Dim);
 
             // bgcorrection check
-            Assert.AreEqual(Double.NegativeInfinity, Wrk.BaselineCorr.StartMass, 1e-12);
-            Assert.AreEqual(Double.PositiveInfinity, Wrk.BaselineCorr.EndMass, 1e-12);
-            Assert.AreEqual(50, Wrk.BaselineCorr.NDiv);
-            Assert.AreEqual(40d, Wrk.BaselineCorr.Percent);
-            Assert.AreEqual(2450.15730478338d, Wrk.BaselineCorr.XAxis[25], 1e-10);
-            Assert.AreEqual(190.835184629240d, Wrk.BaselineCorr.YAxis[42], 1e-10);
+            Assert.AreEqual(Double.NegativeInfinity, Wrk.BaselineCorrData.StartMass, 1e-12);
+            Assert.AreEqual(Double.PositiveInfinity, Wrk.BaselineCorrData.EndMass, 1e-12);
+            Assert.AreEqual(50, Wrk.BaselineCorrData.NDiv);
+            Assert.AreEqual(40d, Wrk.BaselineCorrData.Percent);
+            Assert.AreEqual(2450.15730478338d, Wrk.BaselineCorrData.XAxis[25], 1e-10);
+            Assert.AreEqual(190.835184629240d, Wrk.BaselineCorrData.YAxis[42], 1e-10);
 
             Assert.Pass("IFDFile read test passed.");
         }

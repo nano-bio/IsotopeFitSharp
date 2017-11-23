@@ -24,7 +24,7 @@ namespace IsotopeFit
     public partial class Workspace
     {
         #region Fields
-        private DesignMtrx designMatrix;
+        public DesignMtrx designMatrix;
 
         #endregion
 
@@ -60,7 +60,8 @@ namespace IsotopeFit
         public ulong EndIndex { get; set; }
         public List<IFData.Molecule> Molecules { get; set; }
         public IFData.Calibration Calibration { get; set; }
-        public IFData.BaselineCorr BaselineCorr { get; set; }
+        public IFData.BaselineCorr BaselineCorrData { get; set; }
+        public double[] Abundances { get; private set; }
 
         public double FwhmRange { get; set; }
         public double SearchRange { get; set; }
@@ -92,7 +93,7 @@ namespace IsotopeFit
             EndIndex = IFDFile.ReadEndIndex(rootElement);
             Molecules = IFDFile.ReadMolecules(rootElement);
             Calibration = IFDFile.ReadCalibration(rootElement);
-            BaselineCorr = IFDFile.ReadBackgroundCorr(rootElement);
+            BaselineCorrData = IFDFile.ReadBackgroundCorr(rootElement);
         }
 
 
@@ -101,7 +102,7 @@ namespace IsotopeFit
             //TODO: can be shortened/optimized
 
             //TODO: check is all necessary data are already loaded in the workspace. throw exception if not
-            if (SpectralData == null || BaselineCorr == null)
+            if (SpectralData == null || BaselineCorrData == null)
             {
                 throw new WorkspaceNotDefinedException("Required data are not present in workspace."); //TODO: specify more precisely
             }
@@ -110,7 +111,7 @@ namespace IsotopeFit
 
             //TODO: Evaluating the bg correction for the whole range might be useless. Specifiyng a mass range would make sense.
             //TODO: crop the mass axis to the last specified point of the baseline? might break usefulness.
-            PPInterpolation baselineFit = new PPInterpolation(BaselineCorr.XAxis.ToArray(), BaselineCorr.YAxis.ToArray(), PPInterpolation.PPType.PCHIP);    //TODO: write for more interp types
+            PPInterpolation baselineFit = new PPInterpolation(BaselineCorrData.XAxis.ToArray(), BaselineCorrData.YAxis.ToArray(), PPInterpolation.PPType.PCHIP);    //TODO: write for more interp types
 
             MathNet.Numerics.LinearAlgebra.Vector<double> baseline = MathNet.Numerics.LinearAlgebra.Vector<double>.Build.DenseOfArray(baselineFit.Evaluate(SpectralData.RawMassAxis.ToArray()));
             MathNet.Numerics.LinearAlgebra.Vector<double> correctedSignal = MathNet.Numerics.LinearAlgebra.Vector<double>.Build.Dense(massAxisLength, 0);
@@ -168,9 +169,6 @@ namespace IsotopeFit
 
             double[] correctedMassAxis = new double[yAxis.Length];
 
-            Console.WriteLine(SpectralData.RawMassAxis.Last());
-            Console.WriteLine(yAxisNew.Last());
-
             correctedMassAxis = massOffset2.Evaluate(SpectralData.RawMassAxis.ToArray());
 
             //TODO: this is the old C++ evaluation
@@ -194,10 +192,13 @@ namespace IsotopeFit
         public void ExtractAbundances()
         {
             LeastSquaresSystem lss = new LeastSquaresSystem(designMatrix.Storage, SpectralData.PureSignalAxis);
-
+            
+            //TODO: this is ugly, hide this inside the LeastSquaresSystem class
             lss = Algorithm.LeaSqrSparseQRHouseholder(lss);
 
             lss.Solve();
+
+            Abundances = lss.Solution.ToArray();
         }
 
         public void ResolutionFit(InterpType t)
