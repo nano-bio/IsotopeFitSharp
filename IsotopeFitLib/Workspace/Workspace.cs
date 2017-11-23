@@ -24,7 +24,7 @@ namespace IsotopeFit
     public partial class Workspace
     {
         #region Fields
-        private DesignMtrx DesignMatrix;
+        private DesignMtrx designMatrix;
 
         #endregion
 
@@ -161,17 +161,23 @@ namespace IsotopeFit
             double yAxisMax = yAxis.Max();
             int yAxisMaxIndex = Array.BinarySearch(yAxis, yAxisMax);
             double[] yAxisNew = new double[yAxisMaxIndex + 1];  //TODO: check if the length correct
-            Array.Copy(yAxis, yAxisNew, yAxisMaxIndex);
+            Array.Copy(yAxis, yAxisNew, yAxisNew.Length);
 
             // Fit to generate corrected mass axis. Note that the X and Y axis are inverted. For this to be correct, it must be corrected in the IFD file generation first.
-            PPInterpolation massOffset2 = new PPInterpolation(yAxis, xAxis.ToArray(), PPInterpolation.PPType.PCHIP);    //TODO: i think those vectors have different lengths now
+            PPInterpolation massOffset2 = new PPInterpolation(yAxisNew, xAxis.ToArray(), PPInterpolation.PPType.PCHIP);    //TODO: i think those vectors can have different lengths now
 
             double[] correctedMassAxis = new double[yAxis.Length];
 
-            for (int i = 0; SpectralData.RawMassAxis[i] < yAxis.Last(); i++)
-            {
-                correctedMassAxis[i] = massOffset2.Evaluate(SpectralData.RawMassAxis[i]);
-            }
+            Console.WriteLine(SpectralData.RawMassAxis.Last());
+            Console.WriteLine(yAxisNew.Last());
+
+            correctedMassAxis = massOffset2.Evaluate(SpectralData.RawMassAxis.ToArray());
+
+            //TODO: this is the old C++ evaluation
+            //for (int i = 0; SpectralData.RawMassAxis[i] < yAxisNew.Last(); i++)
+            //{
+            //    correctedMassAxis[i] = massOffset2.Evaluate(SpectralData.RawMassAxis[i]);
+            //}
 
             // TODO: It might happen due to the monotonicity check, that during the second evaluation we hit a singularity. This cuts off the nonsense data.
 
@@ -202,8 +208,8 @@ namespace IsotopeFit
 
         public void BuildDesignMatrix()
         {
-            DesignMtrx dm = new DesignMtrx(SpectralData, Molecules, Calibration);
-            dm.Build();
+            designMatrix = new DesignMtrx(SpectralData, Molecules, Calibration);
+            designMatrix.Build();
         }
 
         #endregion
