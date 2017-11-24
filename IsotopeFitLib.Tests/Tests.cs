@@ -89,7 +89,7 @@ namespace IsotopeFit.Tests
 
             foreach (string line in Afile)
             {
-                List<double> values = new List<double>();
+                List<double> vals = new List<double>();
 
                 if (!line.Contains("#") && line != "")
                 {
@@ -97,16 +97,16 @@ namespace IsotopeFit.Tests
 
                     foreach (string str in valuesstr)
                     {
-                        values.Add(Convert.ToDouble(str, new System.Globalization.NumberFormatInfo { NumberDecimalSeparator = "." }));
+                        vals.Add(Convert.ToDouble(str, new System.Globalization.NumberFormatInfo { NumberDecimalSeparator = "." }));
                     }
 
-                    Arows.Add(Vector<double>.Build.DenseOfEnumerable(values));
+                    Arows.Add(Vector<double>.Build.DenseOfEnumerable(vals));
                 }
             }
 
             foreach (string line in bfile)
             {
-                List<double> values = new List<double>();
+                List<double> vals = new List<double>();
 
                 if (!line.Contains("#") && line != "")
                 {
@@ -117,8 +117,30 @@ namespace IsotopeFit.Tests
             Matrix<double> C = Matrix<double>.Build.DenseOfRowVectors(Arows);
             Vector<double> d = Vector<double>.Build.DenseOfEnumerable(blist);
 
+            // we need to copy the C matrix into the CSparse format, just for the sake of the test
+            int nonZeroCount = C.RowCount * C.ColumnCount;
+
+            double[] values = new double[nonZeroCount];
+            int[] rowIndices = new int[nonZeroCount];
+            int[] colPointers = new int[C.ColumnCount + 1];
+
+            values = C.Storage.ToColumnMajorArray();
+            rowIndices = Enumerable.Repeat(Enumerable.Range(0, C.RowCount), C.ColumnCount).SelectMany(x => x).ToArray();    //TODO: test lol
+
+            for (int i = 0; i <= C.ColumnCount; i++)
+            {
+                colPointers[i] = i * C.RowCount;
+            }
+
+            CSparse.Double.SparseMatrix Cs = new CSparse.Double.SparseMatrix(C.RowCount, C.ColumnCount)
+            {
+                Values = values,
+                RowIndices = rowIndices,
+                ColumnPointers = colPointers
+            };
+
             Workspace wrk = new Workspace();
-            LeastSquaresSystem lss = new LeastSquaresSystem(C, d);
+            LeastSquaresSystem lss = new LeastSquaresSystem(Cs, d);
             lss.Solve();
             Vector<double> solution = lss.Solution;
 
@@ -134,7 +156,6 @@ namespace IsotopeFit.Tests
 
             for (int i = 0; i < correctX.Count; i++)
             {
-                //Assert.Less(1e-9, Math.Abs(solution[i] - correctX[i]),  "Solution is wrong.");
                 Assert.AreEqual(correctX[i], solution[i], 1e-9);
             }
 
