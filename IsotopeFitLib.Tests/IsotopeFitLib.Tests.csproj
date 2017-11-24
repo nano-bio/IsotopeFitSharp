@@ -74,6 +74,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CSparse\CSparse.csproj">
+      <Project>{bd00d9bd-d669-4aee-91b7-0105afc994ec}</Project>
+      <Name>CSparse</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IsotopeFitLib\IsotopeFitLib.csproj">
       <Project>{22db119b-6bac-4f70-aca6-4fa56215bfeb}</Project>
       <Name>IsotopeFitLib</Name>
