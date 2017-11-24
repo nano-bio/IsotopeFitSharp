@@ -32,21 +32,23 @@ namespace IsotopeFit.Numerics
 
             if (lss.ObservationVector != null)
             {
-                SparseVector v = (SparseVector)SparseVector.Build.SparseOfVector(lss.ObservationVector);
+                SparseVector v = (SparseVector)SparseVector.Build.SparseOfVector(lss.ObservationVector);    //TODO: this is also a little wasteful
                 SparseVectorStorage<double> svs = v.Storage as SparseVectorStorage<double>;
 
                 //TODO: and we have to put the vector as a last column of the matrix to be factorized
 
-                int nonZeroCount = lss.DesignMatrix.NonZerosCount + (lss.ObservationVector as SparseVector).NonZerosCount;
+                int nonZeroCount = lss.DesignMatrix.NonZerosCount + svs.ValueCount;
 
                 double[] values = new double[nonZeroCount];
                 int[] rowIndices = new int[nonZeroCount];
-                int[] colPointers = new int[lss.DesignMatrix.ColumnCount + 1];    // +1 because n-th colPointer tells about the number of elements in (n-1)st column
+                int[] colPointers = new int[lss.DesignMatrix.ColumnCount + 2];    // +1 because n-th colPointer tells about the number of elements in (n-1)st column
 
                 Array.Copy(lss.DesignMatrix.Values, values, lss.DesignMatrix.Values.Length);
                 Array.Copy(svs.Values, 0, values, lss.DesignMatrix.Values.Length, svs.Values.Length);
+
                 Array.Copy(lss.DesignMatrix.RowIndices, rowIndices, lss.DesignMatrix.RowIndices.Length);
                 Array.Copy(svs.Indices, 0, rowIndices, lss.DesignMatrix.RowIndices.Length, svs.Indices.Length);
+
                 Array.Copy(lss.DesignMatrix.ColumnPointers, colPointers, lss.DesignMatrix.ColumnPointers.Length);
                 colPointers[colPointers.Length - 1] = colPointers[colPointers.Length - 2] + svs.ValueCount;
 
@@ -82,7 +84,13 @@ namespace IsotopeFit.Numerics
 
 
             // access by matrix indices does not work with the CSparse format, we have to copy the internal arrays
-            CSparse.Double.SparseMatrix Mr = new CSparse.Double.SparseMatrix(R.ColumnCount - 1, R.ColumnCount - 1);
+            CSparse.Double.SparseMatrix Mr = new CSparse.Double.SparseMatrix(R.ColumnCount - 1, R.ColumnCount - 1)
+            {
+                Values = new double[R.ColumnPointers[R.ColumnPointers.Length - 2]],
+                RowIndices = new int[R.ColumnPointers[R.ColumnPointers.Length - 2]],
+                ColumnPointers = new int[R.ColumnPointers.Length - 1]
+            };
+
             Array.Copy(R.Values, Mr.Values, Mr.Values.Length);
             Array.Copy(R.RowIndices, Mr.RowIndices, Mr.RowIndices.Length);
             Array.Copy(R.ColumnPointers, Mr.ColumnPointers, Mr.ColumnPointers.Length);
