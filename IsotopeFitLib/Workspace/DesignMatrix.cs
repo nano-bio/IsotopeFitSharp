@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 
 using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Storage;
+
+using CSparse.Double;
 
 using IsotopeFit.Numerics;
 
@@ -18,8 +21,8 @@ namespace IsotopeFit
         {
             #region Fields
 
-            private Vector<double>[] designMatrixVectors;
-            private Vector<double> observationVector;
+            private MathNet.Numerics.LinearAlgebra.Double.SparseVector[] designMatrixVectors;
+            private MathNet.Numerics.LinearAlgebra.Double.SparseVector observationVector;
             private double[] massAxis;
 
             bool[] fitMask;
@@ -36,7 +39,7 @@ namespace IsotopeFit
             internal DesignMtrx(IFData.Spectrum spectrum, List<IFData.Molecule> molecules, IFData.Calibration calibration)
             {
                 massAxis = spectrum.MassOffsetCorrAxis.ToArray();
-                observationVector = spectrum.PureSignalAxis;
+                observationVector = (MathNet.Numerics.LinearAlgebra.Double.SparseVector)MathNet.Numerics.LinearAlgebra.Double.SparseVector.Build.SparseOfVector(spectrum.PureSignalAxis);
                 Molecules = molecules;
                 Calibration = calibration;
 
@@ -52,7 +55,7 @@ namespace IsotopeFit
             private List<IFData.Molecule> Molecules { get; set; }
             private IFData.Calibration Calibration { get; set; }            
 
-            public Matrix<double> Storage { get; private set; }   //TODO: maybe a field would suffice and change it directly to a sparse matrix
+            public SparseMatrix Storage { get; private set; }   //TODO: maybe a field would suffice and change it directly to a sparse matrix
             internal int Rows { get; private set; }
             internal int Cols { get; private set; }
             internal Matrix<double> R { get; private set; }
@@ -65,9 +68,9 @@ namespace IsotopeFit
             #region Methods
 
             internal void Build()
-            {                
+            {
                 //TODO: make them sparse
-                designMatrixVectors = new Vector<double>[Cols + 1]; // plus 1, because that will be the observations vector. this makes later calculations faster.
+                designMatrixVectors = new MathNet.Numerics.LinearAlgebra.Double.SparseVector[Cols + 1]; // plus 1, because that will be the observations vector. this makes later calculations faster.
                 fitMask = new bool[Rows];
 
                 //TODO: this is temporary
@@ -80,12 +83,39 @@ namespace IsotopeFit
                 // loop through all molecules
                 Parallel.For(0, Cols, BuildInit, BuildWork, BuildFinal);
 
+                //TODO: apply the fitmask to the observation vector and convert it to sparse format
                 // add the observation vector to the last column
                 designMatrixVectors[Cols] = observationVector;
 
-                //build the sparse design matrix from the column vector array
-                Storage = Matrix<double>.Build.SparseOfColumnVectors(designMatrixVectors);   //TODO: this is horribly slow. we should build the matrix manually.
-                //TODO: since we are building the matrix from columns, it should be easy to build a compressed-column-storage right away. That is the type needed for the QR factorization.
+                //build the sparse design matrix from the column vector array                
+                //TODO: since we are building the matrix from columns, it should be easy to build a compressed-column-storage right away. That is the storage type needed for the QR factorization.
+                //Storage = Matrix<double>.Build.SparseOfColumnVectors(designMatrixVectors);
+
+                // figure out the non-zero value count
+                int nonZeroCount = 0;
+
+                for (int i = 0; i < designMatrixVectors.Length; i++)
+                {
+                    nonZeroCount += designMatrixVectors[i].NonZerosCount;
+                }
+
+                double[] values = new double[nonZeroCount];
+                int[] rowIndices = new int[nonZeroCount];
+                int[] colPointers = new int[designMatrixVectors.Length + 1];    // +1 because n-th colPointer tells about the number of elements in (n-1)st column
+
+                for (int i = 0; i < designMatrixVectors.Length; i++)
+                {
+                    Array.Copy((designMatrixVectors[i].Storage as SparseVectorStorage<double>).Values, 0, values, colPointers[i], designMatrixVectors[i].NonZerosCount);
+                    Array.Copy((designMatrixVectors[i].Storage as SparseVectorStorage<double>).Indices, 0, rowIndices, colPointers[i], designMatrixVectors[i].NonZerosCount);
+                    colPointers[i + 1] = colPointers[i] + designMatrixVectors[i].NonZerosCount;
+                }
+
+                Storage = new SparseMatrix(Rows, Cols + 1)
+                {
+                    Values = values,
+                    RowIndices = rowIndices,
+                    ColumnPointers = colPointers
+                };
 
             }
 
@@ -122,7 +152,7 @@ namespace IsotopeFit
                     Vector<double> breaks;
                     Matrix<double> coefs;
 
-                    Vector<double> currentColumn;
+                    MathNet.Numerics.LinearAlgebra.Double.SparseVector currentColumn;
 
                     mass = Molecules[moleculeIndex].PeakData.Mass[i];
                     abundance = Molecules[moleculeIndex].PeakData.Abundance[i];  // area of the line and abundance are proportional
@@ -151,7 +181,7 @@ namespace IsotopeFit
                     }
 
                     // build the design matrix column for the current molecule
-                    currentColumn = Vector<double>.Build.Sparse(Rows);  //TODO: maybe we can make this building also manually, to be more effective
+                    currentColumn = (MathNet.Numerics.LinearAlgebra.Double.SparseVector)MathNet.Numerics.LinearAlgebra.Double.SparseVector.Build.Sparse(Rows);  //TODO: we can make this building also manually, to be more effective - and better as well
                     PPInterpolation peakshape = new PPInterpolation(breaks.ToArray(), coefs.ToRowArrays());
                     
                     for (int j = peakLowerLimitIndex; j <= peakUpperLimitIndex; j++)
@@ -287,11 +317,13 @@ namespace IsotopeFit
             {
                 internal bool[] fitMask;
                 internal PolyInterpolation resolutionFit;
+                internal int nonZeroCount;  //TODO: this might be faster solution, but lets leave it for now
 
                 internal BuildState(int size, double[] resFitCoefs)
                 {
                     fitMask = new bool[size];
                     resolutionFit = new PolyInterpolation(resFitCoefs);
+                    nonZeroCount = 0;
                 }
             }
 
