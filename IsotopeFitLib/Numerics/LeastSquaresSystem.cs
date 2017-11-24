@@ -74,7 +74,7 @@ namespace IsotopeFit.Numerics
             SparseMatrix CT = (SparseMatrix)C.Transpose();
 
             //double[][] Carr = C.ToColumnArrays();
-            double[][] Carr = new double[C.ColumnCount][];
+            double[][] Carr = new double[C.ColumnCount][];  //TODO: not effective
 
             for (int i = 0; i < C.ColumnCount; i++)
             {

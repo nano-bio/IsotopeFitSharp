@@ -147,7 +147,7 @@ namespace IsotopeFit
             // Will hold evaluated data from the first fit and serve as x-axis (yes, x-axis) in the second fit. Because the fit needs to be reversed.
             double[] yAxis = new double[xAxisLength];
 
-            PPInterpolation massOffset = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.MassOffsetList.ToArray(), PPInterpolation.PPType.PCHIP);
+            PPInterpolation massOffset = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.MassOffsetList.ToArray(), PPInterpolation.PPType.PCHIP);    //TODO: spline/make choice
 
             // Evaluation of the fit at positions given by generated x-axis and storing the correction in YAxis vector.
             yAxis = massOffset.Evaluate(xAxis.ToArray());   //TODO: this is most likely broken because it can not extrapolate right now
@@ -191,7 +191,7 @@ namespace IsotopeFit
 
         public void ExtractAbundances()
         {
-            LeastSquaresSystem lss = new LeastSquaresSystem(designMatrix.Storage, SpectralData.PureSignalAxis);
+            LeastSquaresSystem lss = new LeastSquaresSystem(designMatrix.Storage, null);    // we dont give the observation vector here, because it was already added to the matrix during the build
             
             //TODO: this is ugly, hide this inside the LeastSquaresSystem class
             lss = Algorithm.LeaSqrSparseQRHouseholder(lss);
