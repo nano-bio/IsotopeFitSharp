@@ -85,7 +85,32 @@ namespace IsotopeFit
 
                 //TODO: apply the fitmask to the observation vector and convert it to sparse format
                 // add the observation vector to the last column
-                designMatrixVectors[Cols] = observationVector;
+
+                int fitMaskNonZero = 0;
+                for (int i = 0; i < fitMask.Length; i++)
+                {
+                    if (fitMask[i]) fitMaskNonZero++;
+                }
+                
+                double[] values2 = new double[fitMaskNonZero];
+                int[] indices = new int[fitMaskNonZero];
+
+                int j = 0;
+                for (int i = 0; i < fitMask.Length; i++)
+                {
+                    if (fitMask[i])
+                    {
+                        values2[j] = (observationVector.Storage as SparseVectorStorage<double>).Values[i];
+                        indices[j] = (observationVector.Storage as SparseVectorStorage<double>).Indices[i];
+                        j++;
+                    }
+                }
+
+                SparseVectorStorage<double> obsVecStor = SparseVectorStorage<double>.OfValue(fitMaskNonZero, 1);
+                obsVecStor.Values = values2;
+                obsVecStor.Indices = indices;
+
+                designMatrixVectors[Cols] = (MathNet.Numerics.LinearAlgebra.Double.SparseVector)MathNet.Numerics.LinearAlgebra.Double.SparseVector.Build.Sparse(obsVecStor);
 
                 //build the sparse design matrix from the column vector array                
                 //TODO: since we are building the matrix from columns, it should be easy to build a compressed-column-storage right away. That is the storage type needed for the QR factorization.
@@ -140,6 +165,8 @@ namespace IsotopeFit
             /// <returns>Modified thread status object.</returns>
             private BuildState BuildWork(int moleculeIndex, ParallelLoopState pls, BuildState bs)
             {
+                //TODO: maybe we could generate only indices and values and return just that. it gets assebled to a matrix manually anyway. might have lower ram demands.
+
                 int isotopePeakCount = Molecules[moleculeIndex].PeakData.Mass.Count;
 
                 // loop through all isotope peaks of the current molecule
