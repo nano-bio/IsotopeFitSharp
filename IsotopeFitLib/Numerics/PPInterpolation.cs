@@ -59,7 +59,8 @@ namespace IsotopeFit.Numerics
 
         public enum PPType
         {
-            Spline,
+            SplineNatural,
+            SplineNotAKnot,
             PCHIP
         }
 
@@ -75,8 +76,8 @@ namespace IsotopeFit.Numerics
         {
             switch (t)
             {
-                case PPType.Spline:
-                    Spline(x, y);
+                case PPType.SplineNotAKnot:
+                    SplineNotAKnot(x, y);
                     break;
                 case PPType.PCHIP:
                     PCHIP(x, y);
@@ -86,10 +87,69 @@ namespace IsotopeFit.Numerics
             }
         }
         
-        //TODO: implement spline calculation - continuous 2nd derivation
-        internal static Matrix<double> Spline(double[] x, double[] y)
+        /// <summary>
+        /// Calculates cubic spline interpolation with not-a-knot boundary conditions and saves it in appropriate storage fields.
+        /// </summary>
+        /// <param name="x">Sorted x-axis of the data to be interpolated.</param>
+        /// <param name="y">y-axis of the data to be interpolated.</param>
+        internal void SplineNotAKnot(double[] x, double[] y)
         {
-            throw new NotImplementedException();
+            int n = x.Length;
+
+            if (n < 3)
+            {
+                throw new Exception();  //TODO
+            }
+
+            // find solution for the quadratic coefficients
+            Matrix<double> M = Matrix<double>.Build.Sparse(n, n);
+            Vector<double> v = Vector<double>.Build.Dense(n);
+
+            // left boundary
+            M.At(0, 0, x[2] - x[1]);
+            M.At(0, 1, x[0] - x[2]);
+            M.At(0, 2, x[1] - x[0]);
+            v.At(0, 0);
+
+            // central conditions
+            //a1[i] = x[i + 1] - x[i];
+            //a2[i] = 2 * (x[i + 1] - x[i - 1]);
+            //a3[i] = x[i] - x[i - 1];
+            //b[i] = ;
+
+            for (int i = 1; i < n - 1; i++)
+            {
+                M.At(i, i - 1, x[i] - x[i - 1]);
+                M.At(i, i, 2 * (x[i + 1] - x[i - 1]));
+                M.At(i, i + 1, x[i + 1] - x[i]);
+                v.At(i, 3 * (y[i + 1] - y[i]) / (x[i + 1] - x[i]) - 3 * (y[i] - y[i - 1]) / (x[i] - x[i - 1]));
+            }
+
+            // right boundary
+            M.At(n - 1, n - 3, x[n - 1] - x[n - 2]);
+            M.At(n - 1, n - 2, x[n - 3] - x[n - 1]);
+            M.At(n - 1, n - 1, x[n - 2] - x[n - 3]);
+            v.At(n - 1, 0);
+
+            // solve the system
+            double[] c2 = M.Solve(v).ToArray();
+
+            // solve for linear and cubic coefficients
+            double[] c1 = new double[n - 1];
+            double[] c3 = new double[n - 1];
+
+            for (int i = 0; i < n - 1; i++)
+            {
+                c1[i] = (y[i + 1] - y[i]) / (x[i + 1] - x[i]) - (x[i + 1] - x[i]) * (2 * c2[i] + c2[i + 1]) / 3;
+                c3[i] = (c2[i + 1] - c2[i]) / (3 * (x[i + 1] - x[i]));
+            }
+
+            // constant coefficients are just y values
+            double[] c0 = y.Take(n - 1).ToArray();
+
+            // save the breaks and coefficient matrix
+            Breaks = x;
+            Coefs = Matrix<double>.Build.DenseOfColumnArrays(new double[][] { c0, c1, c2, c3 }).ToRowArrays();
         }
         
         /// <summary>
@@ -103,7 +163,6 @@ namespace IsotopeFit.Numerics
         /// </remarks>
         /// <param name="x">Array of x values.</param>
         /// <param name="y">Array of y values.</param>
-        /// <param name="xToEval">Array of x values, for which the interpolated curve is to be evaluated at.</param>
         private void PCHIP(double[] x, double[] y)
         {
             /*
