@@ -158,5 +158,39 @@ namespace IsotopeFit.Tests
 
             Assert.Pass("PCHIP Evaluation test passed.");
         }
+
+        [Test, Category("Numerical algorithms")]
+        public void SplineNotAKnotTest()
+        {
+            Workspace Wrk = new Workspace(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\testfile.ifd");
+
+            PPInterpolation spline = new PPInterpolation(Wrk.Calibration.COMList.ToArray(), Wrk.Calibration.MassOffsetList.ToArray(), PPInterpolation.PPType.SplineNotAKnot);
+
+            double[] x = Enumerable.Range(-5, 1006).Select(v => Convert.ToDouble(v)).ToArray();
+
+            double[] Solution = spline.Evaluate(x);
+
+            // solution check
+            string[] PolyEval = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\splineNotAKnot.txt");
+
+            List<double> CorrectEval = new List<double>();
+
+            foreach (string line in PolyEval)
+            {
+                if (!line.Contains("#") && line != "")
+                {
+                    string[] valuesstr = line.Trim().Split(new char[] { ' ' });
+
+                    CorrectEval.Add(Convert.ToDouble(valuesstr[1], new System.Globalization.NumberFormatInfo { NumberDecimalSeparator = "." }));
+                }
+            }
+
+            for (int i = 0; i < Solution.GetLength(0); i++)
+            {
+                Assert.AreEqual(CorrectEval[i], Solution[i], 1e-9);
+            }
+
+            Assert.Pass("SplineNotAKnot calculation and evaluation test passed.");
+        }
     }
 }
