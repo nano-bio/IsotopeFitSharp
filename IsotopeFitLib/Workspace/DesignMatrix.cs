@@ -27,7 +27,7 @@ namespace IsotopeFit
 
             bool[] fitMask;
 
-            PolyInterpolation resolutionFit;
+            Interpolation resolutionFit;
 
             #endregion
 
@@ -36,12 +36,13 @@ namespace IsotopeFit
             /// <summary>
             /// Create new design matrix and initialize data sources for further calculations.
             /// </summary>
-            internal DesignMtrx(IFData.Spectrum spectrum, List<IFData.Molecule> molecules, IFData.Calibration calibration)
+            internal DesignMtrx(IFData.Spectrum spectrum, List<IFData.Molecule> molecules, IFData.Calibration calibration, Interpolation resolutionInterp)
             {
                 massAxis = spectrum.MassOffsetCorrAxis.ToArray();
                 observationVector = (MathNet.Numerics.LinearAlgebra.Double.SparseVector)MathNet.Numerics.LinearAlgebra.Double.SparseVector.Build.SparseOfVector(spectrum.PureSignalAxis);
                 Molecules = molecules;
                 Calibration = calibration;
+                resolutionFit = resolutionInterp;
 
                 Rows = spectrum.RawLength;
                 Cols = molecules.Count;
@@ -76,9 +77,6 @@ namespace IsotopeFit
                 //TODO: this is temporary
                 SearchRange = 1;
                 FwhmRange = 0.5;
-
-                // initialize the resolution interpolation object from IFD data. immediately calculates the interpolation internally
-                resolutionFit = new PolyInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), (int)Calibration.ResolutionParam); //TODO: maybe change the ulongs to ints
 
                 // loop through all molecules
                 Parallel.For(0, Cols, BuildInit, BuildWork, BuildFinal);
@@ -180,7 +178,7 @@ namespace IsotopeFit
             /// <returns>New instance of thread workspace.</returns>
             private BuildState BuildInit()
             {                
-                return new BuildState(Rows, resolutionFit.Coefs);
+                return new BuildState(Rows, resolutionFit);
             }
 
             /// <summary>
@@ -207,8 +205,6 @@ namespace IsotopeFit
 
                     Vector<double> breaks;
                     Matrix<double> coefs;
-
-                   
 
                     mass = Molecules[moleculeIndex].PeakData.Mass[i];
                     abundance = Molecules[moleculeIndex].PeakData.Abundance[i];  // area of the line and abundance are proportional
@@ -373,13 +369,23 @@ namespace IsotopeFit
             private class BuildState
             {
                 internal bool[] fitMask;
-                internal PolyInterpolation resolutionFit;
+                internal Interpolation resolutionFit;
                 internal int nonZeroCount;  //TODO: this might be faster solution, but lets leave it for now
 
-                internal BuildState(int size, double[] resFitCoefs)
+                internal BuildState(int size, Interpolation resFit)
                 {
                     fitMask = new bool[size];
-                    resolutionFit = new PolyInterpolation(resFitCoefs);
+
+                    switch (resFit.GetType().Name)
+                    {
+                        case "PolyInterpolation":
+                            resolutionFit = resFit as PolyInterpolation;
+                            break;
+                        case "PPInterpolation":
+                            resolutionFit = resFit as PPInterpolation;
+                            break;
+                    }
+                    
                     nonZeroCount = 0;
                 }
             }
