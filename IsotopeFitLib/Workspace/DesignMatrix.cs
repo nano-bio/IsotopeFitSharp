@@ -83,9 +83,8 @@ namespace IsotopeFit
                 // loop through all molecules
                 Parallel.For(0, Cols, BuildInit, BuildWork, BuildFinal);
 
-                //TODO: apply the fitmask to the observation vector and convert it to sparse format
-                // add the observation vector to the last column
 
+                // add the observation vector to the last column
                 int fitMaskNonZero = 0;
                 for (int i = 0; i < fitMask.Length; i++)
                 {
@@ -93,7 +92,7 @@ namespace IsotopeFit
                 }
                 
                 double[] values2 = new double[fitMaskNonZero];
-                int[] indices = new int[fitMaskNonZero];
+                int[] indices2 = new int[fitMaskNonZero];
 
                 int j = 0;
                 for (int i = 0; i < fitMask.Length; i++)
@@ -101,22 +100,52 @@ namespace IsotopeFit
                     if (fitMask[i])
                     {
                         values2[j] = (observationVector.Storage as SparseVectorStorage<double>).Values[i];
-                        indices[j] = (observationVector.Storage as SparseVectorStorage<double>).Indices[i];
+                        indices2[j] = (observationVector.Storage as SparseVectorStorage<double>).Indices[i];
                         j++;
                     }
                 }
 
                 SparseVectorStorage<double> obsVecStor = SparseVectorStorage<double>.OfValue(fitMaskNonZero, 1);
                 obsVecStor.Values = values2;
-                obsVecStor.Indices = indices;
+                obsVecStor.Indices = indices2;
 
                 designMatrixVectors[Cols] = (MathNet.Numerics.LinearAlgebra.Double.SparseVector)MathNet.Numerics.LinearAlgebra.Double.SparseVector.Build.Sparse(obsVecStor);
+                //designMatrixVectors[Cols] = (MathNet.Numerics.LinearAlgebra.Double.SparseVector)MathNet.Numerics.LinearAlgebra.Double.SparseVector.Build.Sparse(10);
 
                 //build the sparse design matrix from the column vector array                
                 //TODO: since we are building the matrix from columns, it should be easy to build a compressed-column-storage right away. That is the storage type needed for the QR factorization.
                 //Storage = Matrix<double>.Build.SparseOfColumnVectors(designMatrixVectors);
+                
+                // fitmask application
+                for (int i = 0; i < designMatrixVectors.Length - 1; i++)
+                {                    
+                    SparseVectorStorage<double> st = designMatrixVectors[i].Storage as SparseVectorStorage<double>;
 
-                // figure out the non-zero value count
+                    Array.Resize(ref st.Indices, st.ValueCount);    // TODO: there are useless trailing zeroes, we need to cut them out
+
+                    int minIndex = st.Indices[0];
+                    int length = st.Indices.Length;
+
+                    List<int> nonMaskedIndices = new List<int>(length);
+                    List<double> nonMaskedValues = new List<double>(length);
+
+                    // extract the masked indices and values (strictly speaking, the complement to masked indices)
+                    for (int k = 0; k < length; k++)
+                    {
+                        if (fitMask[st.Indices[k]])
+                        {
+                            nonMaskedIndices.Add(st.Indices[k]);
+                            nonMaskedValues.Add(st.Values[k]);
+                        }
+                    }
+
+                    // put the masked indices and values in the storage object, replacing the non-masked data
+                    (designMatrixVectors[i].Storage as SparseVectorStorage<double>).Indices = nonMaskedIndices.ToArray();
+                    (designMatrixVectors[i].Storage as SparseVectorStorage<double>).Values = nonMaskedValues.ToArray();
+                    (designMatrixVectors[i].Storage as SparseVectorStorage<double>).ValueCount = nonMaskedIndices.Count;
+                }
+
+                // create the design matrix
                 int nonZeroCount = 0;
 
                 for (int i = 0; i < designMatrixVectors.Length; i++)
@@ -141,7 +170,6 @@ namespace IsotopeFit
                     RowIndices = rowIndices,
                     ColumnPointers = colPointers
                 };
-
             }
 
 
@@ -168,6 +196,7 @@ namespace IsotopeFit
                 //TODO: maybe we could generate only indices and values and return just that. it gets assebled to a matrix manually anyway. might have lower ram demands.
 
                 int isotopePeakCount = Molecules[moleculeIndex].PeakData.Mass.Count;
+                MathNet.Numerics.LinearAlgebra.Double.SparseVector currentColumn = (MathNet.Numerics.LinearAlgebra.Double.SparseVector)MathNet.Numerics.LinearAlgebra.Double.SparseVector.Build.Sparse(Rows);  //TODO: we can make this building also manually, to be more effective - and better as well
 
                 // loop through all isotope peaks of the current molecule
                 for (int i = 0; i < isotopePeakCount; i++)
@@ -179,7 +208,7 @@ namespace IsotopeFit
                     Vector<double> breaks;
                     Matrix<double> coefs;
 
-                    MathNet.Numerics.LinearAlgebra.Double.SparseVector currentColumn;
+                   
 
                     mass = Molecules[moleculeIndex].PeakData.Mass[i];
                     abundance = Molecules[moleculeIndex].PeakData.Abundance[i];  // area of the line and abundance are proportional
@@ -207,18 +236,17 @@ namespace IsotopeFit
                         bs.fitMask[j] = true;
                     }
 
-                    // build the design matrix column for the current molecule
-                    currentColumn = (MathNet.Numerics.LinearAlgebra.Double.SparseVector)MathNet.Numerics.LinearAlgebra.Double.SparseVector.Build.Sparse(Rows);  //TODO: we can make this building also manually, to be more effective - and better as well
+                    // build the design matrix column for the current molecule                    
                     PPInterpolation peakshape = new PPInterpolation(breaks.ToArray(), coefs.ToRowArrays());
                     
                     for (int j = peakLowerLimitIndex; j <= peakUpperLimitIndex; j++)
                     {
-                        // check if the point falls within the fitmask
-                        if (bs.fitMask[j])
-                        {
+                        // TODO: WRONG, i have to calculate all of the points, because they might get unlocked by other fragments fitmasks. fitmask has to be applied only in the end
+                        //if (bs.fitMask[j])
+                        //{
                             // evaluate the peakshape partial polynomial at the j index of mass axis and add the point to the design matrix column
-                            currentColumn[j] = abundance * peakshape.Evaluate(massAxis[j]);
-                        }
+                            currentColumn[j] += abundance * peakshape.Evaluate(massAxis[j]);
+                        //}
                     }
 
                     // add the built column to the column storage
@@ -274,6 +302,8 @@ namespace IsotopeFit
             {
                 Matrix<double> coefs = Matrix<double>.Build.Dense(sh.Coefs.RowCount, sh.Coefs.ColumnCount, 0);
 
+                abundance = 1;  //TODO: remove
+
                 for (int row = 0; row < coefs.RowCount; row++)
                 {
                     for (int col = 0; col < coefs.ColumnCount; col++)
@@ -282,16 +312,16 @@ namespace IsotopeFit
                         switch (col % 4)
                         {
                             case 0:
-                                coefs.At(row, col, sh.Coefs.At(row, col) * abundance / fwhm);
+                                coefs.At(row, col, (sh.Coefs.At(row, col) * abundance / fwhm));  //fwhmDec
                                 break;
                             case 1:
-                                coefs.At(row, col, sh.Coefs.At(row, col) * abundance / Math.Pow(fwhm, 2));
+                                coefs.At(row, col, (sh.Coefs.At(row, col) * abundance / (fwhm * fwhm)));   //Math.Pow(fwhm, 2)
                                 break;
                             case 2:
-                                coefs.At(row, col, sh.Coefs.At(row, col) * abundance / Math.Pow(fwhm, 3));
+                                coefs.At(row, col, (sh.Coefs.At(row, col) * abundance / (fwhm * fwhm * fwhm)));   //Math.Pow(fwhm, 3)
                                 break;
                             case 3:
-                                coefs.At(row, col, sh.Coefs.At(row, col) * abundance / Math.Pow(fwhm, 4));
+                                coefs.At(row, col, (sh.Coefs.At(row, col) * abundance / (fwhm * fwhm * fwhm * fwhm)));   //Math.Pow(fwhm, 4)
                                 break;
                         }
                     }
