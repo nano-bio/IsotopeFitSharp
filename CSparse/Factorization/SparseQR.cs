@@ -1,6 +1,7 @@
 ﻿/*
  * List of changes:
- * - Changed access descriptor of Q and R fields of SparseQR class from protected to public.
+ * - Line 28: Changed access descriptor of Q and R fields of SparseQR class from protected to public.
+ * - Line 29: Added a new public field to store column ordering information for later use.
  * 2017, Michal Ďurian
  */
 
@@ -25,6 +26,7 @@ namespace CSparse.Factorization
     {
         protected SymbolicFactorization S;
         public CompressedColumnStorage<T> Q, R;
+        public int[] columnOrdering;
         protected double[] beta;
         protected int m, n;
 

@@ -1,4 +1,10 @@
-﻿// -----------------------------------------------------------------------
+﻿/*
+ * List of changes:
+ * - Line 60: saved the column ordering information to the newly created SparseQR object.
+ * 2017, Michal Ďurian
+ */
+
+// -----------------------------------------------------------------------
 // <copyright file="SparseQR.cs">
 // Copyright (c) 2006-2016, Timothy A. Davis
 // Copyright (c) 2012-2016, Christian Woltering
@@ -51,6 +57,7 @@ namespace CSparse.Double.Factorization
             if (m >= n)
             {
                 var p = AMD.Generate(A, order);
+                C.columnOrdering = p;
 
                 // Ordering and symbolic analysis
                 C.SymbolicAnalysis(A, p, order == ColumnOrdering.Natural);
