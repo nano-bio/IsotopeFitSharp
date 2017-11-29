@@ -29,6 +29,7 @@ namespace IsotopeFit.Numerics
 
         internal SparseMatrix DesignMatrix { get; private set; }
         internal Vector<double> ObservationVector { get; private set; }
+        internal int[] ColumnOrdering { get; set; }
         public Vector<double> Solution { get; private set; }
 
         /// <summary>
@@ -41,6 +42,9 @@ namespace IsotopeFit.Numerics
         {
             // at the moment we only need the NNLS method, so no need to add switches for more types
             Solution = NNLS(DesignMatrix, ObservationVector);
+
+            // reorder the solution according to the ColumnOrdering information from sparse QR factorization
+            Solution = Vector<double>.Build.DenseOfArray(Enumerable.Zip(ColumnOrdering, Solution, (idx, val) => new { idx, val }).OrderBy(v => v.idx).Select(v => v.val).ToArray());
         }
 
         /// <summary>
@@ -188,7 +192,8 @@ namespace IsotopeFit.Numerics
                             if (z[zColIndex] <= 0)
                             {
                                 //TODO: maybe it does not have to be a list, because we iterate through the inner loop
-                                Q.Add(x[i] / (x[i] - z[zColIndex]));
+                                double derp = x[i] / (x[i] - z[zColIndex]);
+                                Q.Add(derp);
                             }
 
                             zColIndex++;

@@ -76,13 +76,12 @@ namespace IsotopeFit.Numerics
             //    Values = spStor.Values
             //};
 
-            var R = (CSparse.Double.SparseMatrix)CSparse.Double.Factorization.SparseQR.Create(M, CSparse.ColumnOrdering.MinimumDegreeAtA).R;
+            var QR = CSparse.Double.Factorization.SparseQR.Create(M, CSparse.ColumnOrdering.MinimumDegreeAtA);
+            var R = (CSparse.Double.SparseMatrix)QR.R;
+
             R.DropZeros();  //TODO: this might need to be set to machine epsilon
 
-            //now we need to cut the solution
-            //Matrix<double> Mr = Matrix<double>.Build.Dense(R.ColumnCount - 1, R.ColumnCount - 1);
-
-
+            // now we need to cut the solution
             // access by matrix indices does not work with the CSparse format, we have to copy the internal arrays
             CSparse.Double.SparseMatrix Mr = new CSparse.Double.SparseMatrix(R.ColumnCount - 1, R.ColumnCount - 1)
             {
@@ -108,7 +107,11 @@ namespace IsotopeFit.Numerics
             Array.Copy(R.Column(R.ColumnCount - 1), 0, kurva, 0, Mr.ColumnCount);
             Vector<double> vr = Vector<double>.Build.DenseOfArray(kurva);
 
-            return new LeastSquaresSystem(Mr, vr);
+            LeastSquaresSystem factorizedLSS = new LeastSquaresSystem(Mr, vr)
+            {
+                ColumnOrdering = QR.columnOrdering
+            };
+            return factorizedLSS;
         }
 
         ///// <summary>
