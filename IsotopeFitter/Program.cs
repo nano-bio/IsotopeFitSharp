@@ -9,6 +9,7 @@ using System.Diagnostics;
 using MathNet.Numerics.LinearAlgebra;
 
 using IsotopeFit;
+using IsotopeFit.Numerics;
 
 namespace IsotopeFitter
 {
@@ -18,6 +19,7 @@ namespace IsotopeFitter
 
         static void Main(string[] args)
         {
+            var bodka = new System.Globalization.NumberFormatInfo { NumberDecimalSeparator = "." };
             MathNet.Numerics.Control.UseNativeMKL();
 
             Stopwatch time = new Stopwatch();            
@@ -28,21 +30,50 @@ namespace IsotopeFitter
             W.CorrectBaseline();
 
             //TODO: the first fit needs to be spline (matlab spline(x,y,xx)) for that particular test file, not PCHIP. the second one is hardcoded pchip in matlab as well
-            W.CorrectMassOffset();
+            W.CorrectMassOffset(Interpolation.Type.SplineNotAKnot, 0);
+
+            //TODO: resolutionfit
+
+            Debug.Assert(W.SpectralData.MassOffsetCorrAxis.Count == W.SpectralData.PureSignalAxis.Count);
+
+            //using (FileStream f = File.Open("pureMassSig.txt", FileMode.Create))
+            //{
+            //    using (StreamWriter sw = new StreamWriter(f))
+            //    {
+            //        for (int i = 0; i < W.SpectralData.MassOffsetCorrAxis.Count; i++)
+            //        {
+            //            sw.WriteLine(W.SpectralData.MassOffsetCorrAxis[i].ToString(bodka) + " " + W.SpectralData.PureSignalAxis[i].ToString(bodka));
+            //        }
+            //    }
+            //}
 
             W.BuildDesignMatrix();
+
+            //using (FileStream f = File.Open("designMatrix.txt", FileMode.Create))
+            //{
+            //    using (StreamWriter sw = new StreamWriter(f))
+            //    {
+            //        int j = 0;
+
+            //        for (int i = 0; i < W.designMatrix.Storage.Values.Length; i++)
+            //        {
+            //            if (i == W.designMatrix.Storage.ColumnPointers[j]) j++;
+            //            sw.WriteLine(W.designMatrix.Storage.RowIndices[i].ToString(bodka) + " " + j.ToString(bodka) + " " + W.designMatrix.Storage.Values[i].ToString());
+            //        }
+            //    }
+            //}
 
             W.ExtractAbundances();
 
             time.Stop();
 
-            using (FileStream f = File.OpenWrite("abd.txt"))
+            using (FileStream f = File.Open("abd.txt", FileMode.Create))
             {
                 using (StreamWriter sw = new StreamWriter(f))
                 {
                     for (int i = 0; i < W.Molecules.Count; i++)
                     {
-                        sw.WriteLine(W.Molecules[i].CentreOfMass.ToString() + " " + W.Abundances[i].ToString());
+                        sw.WriteLine(W.Molecules[i].CentreOfMass.ToString(bodka) + " " + W.Abundances[i].ToString(bodka));
                     }                    
                 } 
             }
@@ -86,9 +117,9 @@ namespace IsotopeFitter
 
             //calcSpectrum = qwerty.Multiply(abdVec);
 
-            var bodka = new System.Globalization.NumberFormatInfo { NumberDecimalSeparator = "." };
+            
 
-            using (FileStream f = File.OpenWrite("calcSpectrum.txt"))
+            using (FileStream f = File.Open("calcSpectrum.txt", FileMode.Create))
             {
                 using (StreamWriter sw = new StreamWriter(f))
                 {

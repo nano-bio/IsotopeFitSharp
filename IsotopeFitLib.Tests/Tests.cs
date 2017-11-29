@@ -52,7 +52,7 @@ namespace IsotopeFit.Tests
             Workspace Wrk = new Workspace(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\testfile.ifd");
             Wrk.CorrectBaseline();
 
-            Wrk.CorrectMassOffset();
+            Wrk.CorrectMassOffset(Interpolation.Type.SplineNotAKnot, 0);
 
             // solution check
             string[] mOffFile = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\massAxisCorr.txt");
