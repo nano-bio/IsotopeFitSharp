@@ -39,7 +39,7 @@ namespace IsotopeFit
             internal DesignMtrx(IFData.Spectrum spectrum, List<IFData.Molecule> molecules, IFData.Calibration calibration, Interpolation resolutionInterp)
             {
                 massAxis = spectrum.MassOffsetCorrAxis.ToArray();
-                observationVector = (MathNet.Numerics.LinearAlgebra.Double.SparseVector)MathNet.Numerics.LinearAlgebra.Double.SparseVector.Build.SparseOfVector(spectrum.PureSignalAxis);
+                observationVector = (MathNet.Numerics.LinearAlgebra.Double.SparseVector)MathNet.Numerics.LinearAlgebra.Double.SparseVector.Build.SparseOfArray(spectrum.PureSignalAxis);
                 Molecules = molecules;
                 Calibration = calibration;
                 resolutionFit = resolutionInterp;

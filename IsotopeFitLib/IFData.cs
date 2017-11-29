@@ -60,10 +60,10 @@ namespace IsotopeFit
             public int RawLength { get; set; }
             public int CroppedLength { get; set; }
 
-            public Vector<double> RawMassAxis { get; set; }
-            public Vector<double> MassOffsetCorrAxis { get; set; }  // with mass offset corrected
-            public Vector<double> RawSignalAxis { get; set; }
-            public Vector<double> PureSignalAxis { get; set; }     // with baseline subtracted
+            public double[] RawMassAxis { get; set; }
+            public double[] MassOffsetCorrAxis { get; set; }  // with mass offset corrected
+            public double[] RawSignalAxis { get; set; }
+            public double[] PureSignalAxis { get; set; }     // with baseline subtracted
 
             internal Spectrum()
             {
@@ -75,9 +75,9 @@ namespace IsotopeFit
             /// </summary>
             /// <param name="massAxis">Mass axis of the spectrum.</param>
             /// <param name="signalAxis">Signal axis of the spectrum.</param>
-            internal Spectrum(Vector<double> massAxis, Vector<double> signalAxis)
+            internal Spectrum(double[] massAxis, double[] signalAxis)
             {
-                RawLength = massAxis.Count;
+                RawLength = massAxis.Length;
                 RawMassAxis = massAxis;
                 RawSignalAxis = signalAxis;
             }
@@ -91,8 +91,8 @@ namespace IsotopeFit
                 //TODO: include the check to determine is the array is MxN or NxM
 
                 RawLength = data.Length;
-                RawMassAxis = Vector<double>.Build.Dense(RawLength, 0);
-                RawSignalAxis = Vector<double>.Build.Dense(RawLength, 0);
+                RawMassAxis = new double[RawLength];  //Vector<double>.Build.Dense(RawLength, 0);
+                RawSignalAxis = new double[RawLength];  //Vector<double>.Build.Dense(RawLength, 0);
 
                 for (int i = 0; i < RawLength; i++)
                 {

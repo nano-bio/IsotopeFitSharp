@@ -62,7 +62,7 @@ namespace IsotopeFitter.Tests
                 }
             }
 
-            Assert.AreEqual(bgCorr.Count, w.SpectralData.PureSignalAxis.Count);
+            Assert.AreEqual(bgCorr.Count, w.SpectralData.PureSignalAxis.Length);
 
             for (int i = 0; i < bgCorr.Count; i++)
             {
@@ -89,7 +89,7 @@ namespace IsotopeFitter.Tests
                 }
             }
 
-            Assert.AreEqual(mOff.Count, w.SpectralData.MassOffsetCorrAxis.Count);
+            Assert.AreEqual(mOff.Count, w.SpectralData.MassOffsetCorrAxis.Length);
 
             for (int i = 0; i < mOff.Count; i++)
             {

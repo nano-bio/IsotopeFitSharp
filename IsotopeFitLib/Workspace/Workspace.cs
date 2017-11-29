@@ -106,7 +106,8 @@ namespace IsotopeFit
             PPInterpolation baselineFit = new PPInterpolation(BaselineCorrData.XAxis.ToArray(), BaselineCorrData.YAxis.ToArray(), PPInterpolation.PPType.PCHIP);    // in the matlab code it is also hard-coded pchip
 
             MathNet.Numerics.LinearAlgebra.Vector<double> baseline = MathNet.Numerics.LinearAlgebra.Vector<double>.Build.DenseOfArray(baselineFit.Evaluate(SpectralData.RawMassAxis.ToArray()));
-            MathNet.Numerics.LinearAlgebra.Vector<double> correctedSignal = MathNet.Numerics.LinearAlgebra.Vector<double>.Build.Dense(massAxisLength, 0);
+            //MathNet.Numerics.LinearAlgebra.Vector<double> correctedSignal = MathNet.Numerics.LinearAlgebra.Vector<double>.Build.Dense(massAxisLength, 0);
+            double[] correctedSignal = new double[massAxisLength];
 
             for (int i = 0; i < massAxisLength; i++)
             {
@@ -200,7 +201,7 @@ namespace IsotopeFit
             // TODO: It might happen due to the monotonicity check, that during the second evaluation we hit a singularity. This cuts off the nonsense data.
 
             // Store the corrected mass axis in the appropriate place
-            SpectralData.MassOffsetCorrAxis = MathNet.Numerics.LinearAlgebra.Double.DenseVector.Build.DenseOfArray(correctedMassAxis);
+            SpectralData.MassOffsetCorrAxis = correctedMassAxis;  //MathNet.Numerics.LinearAlgebra.Double.DenseVector.Build.DenseOfArray(correctedMassAxis);
         }
 
         /// <summary>

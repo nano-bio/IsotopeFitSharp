@@ -34,7 +34,7 @@ namespace IsotopeFitter
 
             //TODO: resolutionfit
 
-            Debug.Assert(W.SpectralData.MassOffsetCorrAxis.Count == W.SpectralData.PureSignalAxis.Count);
+            Debug.Assert(W.SpectralData.MassOffsetCorrAxis.Length == W.SpectralData.PureSignalAxis.Length);
 
             //using (FileStream f = File.Open("pureMassSig.txt", FileMode.Create))
             //{
