@@ -66,16 +66,17 @@ namespace IsotopeFit
         public double FwhmRange { get; set; }
         public double SearchRange { get; set; }
 
-        public InterpType interpType { get; set; }
+        public Interpolation.Type interpType { get; set; } //InterpType
         
         #endregion
 
-        public enum InterpType
-        {
-            Polynomial,
-            Spline,
-            PCHIP
-        }
+        //public enum InterpType
+        //{
+        //    Polynomial,
+        //    SplineNatural,
+        //    SplineNotAKnot,
+        //    PCHIP
+        //}
 
         #region Methods
 
@@ -147,10 +148,11 @@ namespace IsotopeFit
             // Will hold evaluated data from the first fit and serve as x-axis (yes, x-axis) in the second fit. Because the fit needs to be reversed.
             double[] yAxis = new double[xAxisLength];
 
-            PPInterpolation massOffset = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.MassOffsetList.ToArray(), PPInterpolation.PPType.PCHIP);    //TODO: spline/make choice
+            // TODO: temporarily hardcoded for the spline not-a-knot
+            PPInterpolation massOffset = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.MassOffsetList.ToArray(), PPInterpolation.PPType.SplineNotAKnot);
 
             // Evaluation of the fit at positions given by generated x-axis and storing the correction in YAxis vector.
-            yAxis = massOffset.Evaluate(xAxis.ToArray());   //TODO: this is most likely broken because it can not extrapolate right now
+            yAxis = massOffset.Evaluate(xAxis.ToArray());
 
             for (int i = 0; i < xAxisLength; i++)
             {
@@ -161,7 +163,7 @@ namespace IsotopeFit
             // This could be solved in a more safe way, if the user would actually specify endindex of the raw data, so the uncalibrated range can get cut out.
             double yAxisMax = yAxis.Max();
             int yAxisMaxIndex = Array.BinarySearch(yAxis, yAxisMax);
-            double[] yAxisNew = new double[yAxisMaxIndex + 1];  //TODO: check if the length correct
+            double[] yAxisNew = new double[xAxisLength];  //TODO: check if the length correct  //yAxisMaxIndex + 1
             Array.Copy(yAxis, yAxisNew, yAxisNew.Length);
 
             // Fit to generate corrected mass axis. Note that the X and Y axis are inverted. For this to be correct, it must be corrected in the IFD file generation first.
@@ -201,18 +203,21 @@ namespace IsotopeFit
             Abundances = lss.Solution.ToArray();
         }
 
-        public void ResolutionFit(InterpType t)
+        public void ResolutionFit(Interpolation.Type t)
         {
             switch (t)
             {
-                case InterpType.Polynomial:
+                case Interpolation.Type.Polynomial:
                     int order = 3; // TODO will be defined by user from GUI
                     PolyInterpolation PolyRC = new PolyInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), order);
                     break;
-                case InterpType.Spline:
-                    PPInterpolation SplineRC = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), PPInterpolation.PPType.Spline);
+                case Interpolation.Type.SplineNatural:
+                    throw new NotImplementedException("This has not yet been implemented.");
+                    //break;
+                case Interpolation.Type.SplineNotAKnot:
+                    PPInterpolation SplineRC = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), PPInterpolation.PPType.SplineNotAKnot);
                     break;
-                case InterpType.PCHIP:
+                case Interpolation.Type.PCHIP:
                     PPInterpolation PCHIPRC = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), PPInterpolation.PPType.PCHIP);
                     break;
                 default:

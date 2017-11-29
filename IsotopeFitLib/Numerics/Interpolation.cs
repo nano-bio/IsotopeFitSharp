@@ -13,7 +13,15 @@ namespace IsotopeFit.Numerics
     {
         protected double[] xValues;
         protected double[] yValues;
-        
+
+        public enum Type
+        {
+            Polynomial,
+            SplineNatural,
+            SplineNotAKnot,
+            PCHIP
+        }
+
         public abstract double Evaluate(double x); // TODO changed to public, because of InterpolationTests.cs
         
         public abstract double[] Evaluate(double[] x); // TODO changed to public, because of InterpolationTests.cs
