@@ -11,6 +11,7 @@ using System.Reflection;
 using CSparse.Double;
 
 using IsotopeFit;
+using IsotopeFit.Numerics;
 
 namespace IsotopeFitter.Tests
 {
@@ -33,13 +34,16 @@ namespace IsotopeFitter.Tests
 
             MassOffsetSubtest(ref W);
 
+            //TODO: resolution fit subtest
+            ResolutionFitSubtest(ref W);
+
             DesignMatrixBuildSubtest(ref W);            
 
             ExtractAbundancesSubtest(ref W);
             
             timeTotal.Stop();
             Assert.Pass("Workflow test passed. Elapsed time: {0}", timeTotal.Elapsed);
-        }       
+        }
 
         private void BaselineSubtest(ref Workspace w)
         {
@@ -70,9 +74,9 @@ namespace IsotopeFitter.Tests
         private void MassOffsetSubtest(ref Workspace w)
         {
             //TODO: the first fit needs to be spline (matlab spline(x,y,xx)) for that particular test file, not PCHIP. the second one is hardcoded pchip in matlab as well
-            w.CorrectMassOffset();
+            w.CorrectMassOffset(Interpolation.Type.SplineNotAKnot, 0);
 
-            // compare calculated pure signal with matlab results
+            // compare calculated mass axis with matlab results
             string[] massOffFile = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\2outSubtractMassOffset.txt");
 
             List<double> mOff = new List<double>();
@@ -90,6 +94,34 @@ namespace IsotopeFitter.Tests
             for (int i = 0; i < mOff.Count; i++)
             {
                 Assert.AreEqual(mOff[i], w.SpectralData.MassOffsetCorrAxis[i], 1e-9, "mass offset check failed at index {0}", i);
+            }
+        }
+
+
+        private void ResolutionFitSubtest(ref Workspace w)
+        {
+            w.ResolutionFit(Interpolation.Type.Polynomial, 2);
+
+            // compare calculated resolution coefficients with matlab results
+            string[] resCoefFile = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\3resolutionCoefs.txt");
+
+            List<double> resCoef = new List<double>();
+
+            foreach (string line in resCoefFile)
+            {
+                if (!line.Contains("#") && line != "")
+                {
+                    resCoef.Add(Convert.ToDouble(line.Trim(), dot));
+                }
+            }
+
+            resCoef.Reverse();
+
+            Assert.AreEqual(resCoef.Count, (w.ResolutionInterpolation as PolyInterpolation).Coefs.Length);
+
+            for (int i = 0; i < resCoef.Count; i++)
+            {
+                Assert.AreEqual(resCoef[i], (w.ResolutionInterpolation as PolyInterpolation).Coefs[i], 1e-9, "mass offset check failed at index {0}", i);
             }
         }
 
