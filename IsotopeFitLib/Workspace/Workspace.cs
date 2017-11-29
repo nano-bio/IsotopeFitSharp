@@ -66,19 +66,11 @@ namespace IsotopeFit
         public double FwhmRange { get; set; }
         public double SearchRange { get; set; }
 
-        public Interpolation.Type interpType { get; set; } //InterpType
+        public Interpolation ResolutionInterpolation { get; private set; }
         
         #endregion
 
-        //public enum InterpType
-        //{
-        //    Polynomial,
-        //    SplineNatural,
-        //    SplineNotAKnot,
-        //    PCHIP
-        //}
-
-        #region Methods
+        #region Public Methods
 
         /// <summary>
         /// Loads the contents of an IFD file into the workspace.
@@ -97,22 +89,21 @@ namespace IsotopeFit
             BaselineCorrData = IFDFile.ReadBackgroundCorr(rootElement);
         }
 
-
+        /// <summary>
+        /// Calculates baseline corrected signal from raw signal data and baseline correction points. Stores the result in the corresponding Workspace property.
+        /// </summary>
         public void CorrectBaseline()
         {
             //TODO: can be shortened/optimized
 
-            //TODO: check is all necessary data are already loaded in the workspace. throw exception if not
-            if (SpectralData == null || BaselineCorrData == null)
-            {
-                throw new WorkspaceNotDefinedException("Required data are not present in workspace."); //TODO: specify more precisely
-            }
+            if (SpectralData.RawSignalAxis == null) throw new WorkspaceNotDefinedException("Raw signal axis not specified.");
+            if (BaselineCorrData.XAxis == null || BaselineCorrData.YAxis == null) throw new WorkspaceNotDefinedException("Baseline correction points not specified.");
 
             int massAxisLength = SpectralData.RawLength;
 
             //TODO: Evaluating the bg correction for the whole range might be useless. Specifiyng a mass range would make sense.
             //TODO: crop the mass axis to the last specified point of the baseline? might break usefulness.
-            PPInterpolation baselineFit = new PPInterpolation(BaselineCorrData.XAxis.ToArray(), BaselineCorrData.YAxis.ToArray(), PPInterpolation.PPType.PCHIP);    //TODO: write for more interp types
+            PPInterpolation baselineFit = new PPInterpolation(BaselineCorrData.XAxis.ToArray(), BaselineCorrData.YAxis.ToArray(), PPInterpolation.PPType.PCHIP);    // in the matlab code it is also hard-coded pchip
 
             MathNet.Numerics.LinearAlgebra.Vector<double> baseline = MathNet.Numerics.LinearAlgebra.Vector<double>.Build.DenseOfArray(baselineFit.Evaluate(SpectralData.RawMassAxis.ToArray()));
             MathNet.Numerics.LinearAlgebra.Vector<double> correctedSignal = MathNet.Numerics.LinearAlgebra.Vector<double>.Build.Dense(massAxisLength, 0);
@@ -125,10 +116,17 @@ namespace IsotopeFit
             SpectralData.PureSignalAxis = correctedSignal;
         }
 
-        public void CorrectMassOffset()
+        /// <summary>
+        /// Calculates mass axis corrected for mass offset from previously supplied calibration data and stores the result in appropriate location.
+        /// </summary>
+        /// <param name="interpType">Type of the interpolation to be used.</param>
+        /// <param name="order">Order of the polynomial interpolation. This is relevant only for the polynomial interpolation.</param>
+        public void CorrectMassOffset(Interpolation.Type interpType, int order)
         {
             //TODO: this can be cleaned/optimized, it is an ugly mess right now
-            //TODO: check if required data are present
+
+            if (SpectralData.RawMassAxis == null) throw new WorkspaceNotDefinedException("Raw mass axis not specified.");
+            if (Calibration.COMList == null || Calibration.MassOffsetList == null) throw new WorkspaceNotDefinedException("Mass offset calibration points not specified.");
 
             int massAxisLength = SpectralData.RawLength;    //TODO: might want to use the cropped length as well
             int fitDataLength = Calibration.COMList.Count;
@@ -145,11 +143,31 @@ namespace IsotopeFit
                 xAxis[i] = xAxisMin + i * 0.01;
             }
 
-            // Will hold evaluated data from the first fit and serve as x-axis (yes, x-axis) in the second fit. Because the fit needs to be reversed.
+            // Will hold evaluated data from the first fit and serve as x-axis (yes, x-axis) in the second fit. Because the fit needs to be inverted.
             double[] yAxis = new double[xAxisLength];
 
             // TODO: temporarily hardcoded for the spline not-a-knot
-            PPInterpolation massOffset = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.MassOffsetList.ToArray(), PPInterpolation.PPType.SplineNotAKnot);
+            //PPInterpolation massOffset = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.MassOffsetList.ToArray(), PPInterpolation.PPType.SplineNotAKnot);
+
+            Interpolation massOffset;
+
+            switch (interpType)
+            {
+                case Interpolation.Type.Polynomial:
+                    massOffset = new PolyInterpolation(Calibration.COMList.ToArray(), Calibration.MassOffsetList.ToArray(), order);
+                    break;
+                case Interpolation.Type.SplineNatural:
+                    throw new NotImplementedException();
+                    //break;
+                case Interpolation.Type.SplineNotAKnot:
+                    massOffset = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.MassOffsetList.ToArray(), PPInterpolation.PPType.SplineNotAKnot);
+                    break;
+                case Interpolation.Type.PCHIP:
+                    massOffset = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.MassOffsetList.ToArray(), PPInterpolation.PPType.PCHIP);
+                    break;
+                default:
+                    throw new Interpolation.InterpolationException("Unknown interpolation type specified.");
+            }
 
             // Evaluation of the fit at positions given by generated x-axis and storing the correction in YAxis vector.
             yAxis = massOffset.Evaluate(xAxis.ToArray());
@@ -185,9 +203,36 @@ namespace IsotopeFit
             SpectralData.MassOffsetCorrAxis = MathNet.Numerics.LinearAlgebra.Double.DenseVector.Build.DenseOfArray(correctedMassAxis);
         }
 
+        /// <summary>
+        /// Fits the previously supplied resolution calibration data and stores the calibration results.
+        /// </summary>
+        /// <param name="t">Type of the interpolation ti use.</param>
+        /// <param name="order">Order of the polynomial interpolation. This is relevant only for the polynomial interpolation.</param>
+        public void ResolutionFit(Interpolation.Type t, int order)
+        {
+            switch (t)
+            {
+                case Interpolation.Type.Polynomial:
+                    //int order = 3; // TODO will be defined by user from GUI
+                    ResolutionInterpolation = new PolyInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), order); //PolyInterpolation PolyRC
+                    break;
+                case Interpolation.Type.SplineNatural:
+                    throw new NotImplementedException("This has not yet been implemented.");
+                //break;
+                case Interpolation.Type.SplineNotAKnot:
+                    ResolutionInterpolation = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), PPInterpolation.PPType.SplineNotAKnot); //PPInterpolation SplineRC
+                    break;
+                case Interpolation.Type.PCHIP:
+                    ResolutionInterpolation = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), PPInterpolation.PPType.PCHIP); //PPInterpolation PCHIPRC
+                    break;
+                default:
+                    throw new Interpolation.InterpolationException("Unknown interpolation type.");
+            }
+        }
+
         public void BuildDesignMatrix()
         {
-            designMatrix = new DesignMtrx(SpectralData, Molecules, Calibration);
+            designMatrix = new DesignMtrx(SpectralData, Molecules, Calibration, ResolutionInterpolation);
             designMatrix.Build();
         }
 
@@ -201,30 +246,6 @@ namespace IsotopeFit
             lss.Solve();
 
             Abundances = lss.Solution.ToArray();
-        }
-
-        public void ResolutionFit(Interpolation.Type t)
-        {
-            switch (t)
-            {
-                case Interpolation.Type.Polynomial:
-                    int order = 3; // TODO will be defined by user from GUI
-                    PolyInterpolation PolyRC = new PolyInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), order);
-                    break;
-                case Interpolation.Type.SplineNatural:
-                    throw new NotImplementedException("This has not yet been implemented.");
-                    //break;
-                case Interpolation.Type.SplineNotAKnot:
-                    PPInterpolation SplineRC = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), PPInterpolation.PPType.SplineNotAKnot);
-                    break;
-                case Interpolation.Type.PCHIP:
-                    PPInterpolation PCHIPRC = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), PPInterpolation.PPType.PCHIP);
-                    break;
-                default:
-                    throw new Interpolation.InterpolationException("Unknown interpolation type.");
-            }
-
-            //TODO: save the object somewhere
         }
 
         #endregion
