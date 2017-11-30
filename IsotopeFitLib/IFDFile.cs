@@ -28,14 +28,14 @@ namespace IsotopeFit
             return new IFData.Spectrum((root["raw_peakdata"] as MLDouble).GetArray());
         }
 
-        internal static ulong ReadStartIndex(MLStructure root)
+        internal static int ReadStartIndex(MLStructure root)
         {
-            return (ulong)(root["startind"] as MLDouble).GetArray()[0][0];
+            return (int)(root["startind"] as MLDouble).GetArray()[0][0];
         }
 
-        internal static ulong ReadEndIndex(MLStructure root)
+        internal static int ReadEndIndex(MLStructure root)
         {
-            return (ulong)(root["endind"] as MLDouble).GetArray()[0][0];
+            return (int)(root["endind"] as MLDouble).GetArray()[0][0];
         }
 
         internal static List<IFData.Molecule> ReadMolecules(MLStructure root)
@@ -79,10 +79,10 @@ namespace IsotopeFit
             M.CentreOfMass = (dataField as MLDouble).GetArray()[0][0];
 
             dataField = (molecule as MLStructure)["minind", index] as MLArray;
-            M.MinIndex = (ulong)(dataField as MLDouble).GetArray()[0][0];
+            M.MinIndex = (int)(dataField as MLDouble).GetArray()[0][0];
 
             dataField = (molecule as MLStructure)["maxind", index] as MLArray;
-            M.MaxIndex = (ulong)(dataField as MLDouble).GetArray()[0][0];
+            M.MaxIndex = (int)(dataField as MLDouble).GetArray()[0][0];
 
             dataField = (molecule as MLStructure)["area", index] as MLArray;
             M.Area = (dataField as MLDouble).GetArray()[0][0];
@@ -91,7 +91,7 @@ namespace IsotopeFit
             M.AreaError = (dataField as MLSparse).GetArray()[0][0];
 
             dataField = (molecule as MLStructure)["rootindex", index] as MLArray;
-            M.RootIndex = (ulong)(dataField as MLDouble).GetArray()[0][0];
+            M.RootIndex = (int)(dataField as MLDouble).GetArray()[0][0];
 
             return M;
         }
@@ -105,13 +105,13 @@ namespace IsotopeFit
             MLArray dataField;
 
             dataField = (Cal as MLStructure)["comlist"] as MLArray;
-            C.COMList = IFData.Arr2DToVect((dataField as MLDouble).GetArray());
+            C.COMList = IFData.Arr2DTo1D((dataField as MLDouble).GetArray());
 
             dataField = (Cal as MLStructure)["massoffsetlist"] as MLArray;
-            C.MassOffsetList = IFData.Arr2DToVect((dataField as MLDouble).GetArray());
+            C.MassOffsetList = IFData.Arr2DTo1D((dataField as MLDouble).GetArray());
 
             dataField = (Cal as MLStructure)["resolutionlist"] as MLArray;
-            C.ResolutionList = IFData.Arr2DToVect((dataField as MLDouble).GetArray());
+            C.ResolutionList = IFData.Arr2DTo1D((dataField as MLDouble).GetArray());
 
             dataField = (Cal as MLStructure)["massoffsetmethode"] as MLArray;
             C.MassOffsetMethod = (dataField as MLChar).GetString(0);
@@ -120,10 +120,10 @@ namespace IsotopeFit
             C.ResolutionMethod = (dataField as MLChar).GetString(0);
 
             dataField = (Cal as MLStructure)["massoffsetparam"] as MLArray;
-            C.MassOffsetParam = (ulong)(dataField as MLDouble).GetArray()[0][0];
+            C.MassOffsetParam = (int)(dataField as MLDouble).GetArray()[0][0];
 
             dataField = (Cal as MLStructure)["resolutionparam"] as MLArray;
-            C.ResolutionParam = (ulong)(dataField as MLDouble).GetArray()[0][0];
+            C.ResolutionParam = (int)(dataField as MLDouble).GetArray()[0][0];
 
             dataField = (Cal as MLStructure)["namelist"];
             for (int i = 0; i < dataField.N; i++)
@@ -146,7 +146,7 @@ namespace IsotopeFit
             S.Form = (dataField as MLChar).GetString(0);
 
             dataField = (sh as MLStructure)["breaks"] as MLArray;
-            S.Breaks = IFData.Arr2DToVect((dataField as MLDouble).GetArray());
+            S.Breaks = IFData.Arr2DTo1D((dataField as MLDouble).GetArray());
 
             dataField = (sh as MLStructure)["coefs"] as MLArray;
 
@@ -159,16 +159,14 @@ namespace IsotopeFit
 
             S.Coefs = IFData.Arr2DToMatrix(coefs);
 
-
-
             dataField = (sh as MLStructure)["pieces"] as MLArray;
-            S.Pieces = (ulong)(dataField as MLDouble).GetArray()[0][0];
+            S.Pieces = (int)(dataField as MLDouble).GetArray()[0][0];
 
             dataField = (sh as MLStructure)["order"] as MLArray;
-            S.Order = (ulong)(dataField as MLDouble).GetArray()[0][0];
+            S.Order = (int)(dataField as MLDouble).GetArray()[0][0];
 
             dataField = (sh as MLStructure)["dim"] as MLArray;
-            S.Dim = (ulong)(dataField as MLDouble).GetArray()[0][0];
+            S.Dim = (int)(dataField as MLDouble).GetArray()[0][0];
 
             return S;
         }
@@ -188,16 +186,16 @@ namespace IsotopeFit
             BC.EndMass = (dataField as MLDouble).GetArray()[0][0];
 
             dataField = (BgCorr as MLStructure)["ndiv"] as MLArray;
-            BC.NDiv = (ulong)(dataField as MLDouble).GetArray()[0][0];
+            BC.NDiv = (int)(dataField as MLDouble).GetArray()[0][0];
 
             dataField = (BgCorr as MLStructure)["percent"] as MLArray;
             BC.Percent = (dataField as MLDouble).GetArray()[0][0];
 
             dataField = (BgCorr as MLStructure)["bgm"] as MLArray;
-            BC.XAxis = IFData.Arr2DToVect((dataField as MLDouble).GetArray());
+            BC.XAxis = IFData.Arr2DTo1D((dataField as MLDouble).GetArray());
 
             dataField = (BgCorr as MLStructure)["bgy"] as MLArray;
-            BC.YAxis = IFData.Arr2DToVect((dataField as MLDouble).GetArray());
+            BC.YAxis = IFData.Arr2DTo1D((dataField as MLDouble).GetArray());
 
             return BC;
         }

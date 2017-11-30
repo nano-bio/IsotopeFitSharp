@@ -18,7 +18,7 @@ namespace IsotopeFit
         /// <param name="arr">2D array that was read from an IFD file.</param>
         /// <returns>MathNet vector.</returns>
         [Obsolete]
-        internal static Vector<double> Arr2DToVect(double[][] arr)
+        internal static double[] Arr2DTo1D(double[][] arr)
         {
             bool dim = arr.Length > arr[0].Length;
 
@@ -38,7 +38,7 @@ namespace IsotopeFit
                 }
             }
 
-            return Vector<double>.Build.DenseOfArray(tmp);
+            return tmp;
         }
 
         /// <summary>
@@ -57,26 +57,73 @@ namespace IsotopeFit
         /// </summary>
         public class Spectrum
         {
-            public int RawLength { get; set; }
+            #region Fields
+
+            private double[] rawMassAxis;
+            private double[] rawSignalAxis;
+
+            #endregion
+
+            #region Properties
+
+            public int RawLength { get; private set; }
             public int CroppedLength { get; set; }
+            //TODO: crop start and crop end?
 
-            public double[] RawMassAxis { get; set; }
-            public double[] MassOffsetCorrAxis { get; set; }  // with mass offset corrected
-            public double[] RawSignalAxis { get; set; }
-            public double[] PureSignalAxis { get; set; }     // with baseline subtracted
-
-            internal Spectrum()
+            /// <summary>
+            /// Raw experimental mass axis.
+            /// </summary>
+            public double[] RawMassAxis
             {
-
+                get { return rawMassAxis; }
+                set
+                {
+                    RawLength = value.Length;
+                    rawMassAxis = value;
+                }
             }
+
+            /// <summary>
+            /// Raw experimental signal axis.
+            /// </summary>
+            public double[] RawSignalAxis
+            {
+                get { return rawSignalAxis; }
+                set
+                {
+                    RawLength = value.Length;
+                    rawSignalAxis = value;
+                }
+            }
+
+            /// <summary>
+            /// Mass axis corrected for mass offset.
+            /// </summary>
+            public double[] MassAxis { get; internal set; }
+
+            /// <summary>
+            /// Signal axis with baseline subtracted.
+            /// </summary>
+            public double[] SignalAxis { get; internal set; }
+
+            #endregion
+
+            #region Constructors
+
+            /// <summary>
+            /// Creates an empty Spectrum object, to be filled with data later.
+            /// </summary>
+            public Spectrum() { }
 
             /// <summary>
             /// Creates new storage for mass spectrum data from specified x and y axis.
             /// </summary>
             /// <param name="massAxis">Mass axis of the spectrum.</param>
             /// <param name="signalAxis">Signal axis of the spectrum.</param>
-            internal Spectrum(double[] massAxis, double[] signalAxis)
+            public Spectrum(double[] massAxis, double[] signalAxis)
             {
+                if (massAxis.Length != signalAxis.Length) throw new WorkspaceNotDefinedException("Supplied arrays have different lengths.");
+
                 RawLength = massAxis.Length;
                 RawMassAxis = massAxis;
                 RawSignalAxis = signalAxis;
@@ -100,6 +147,8 @@ namespace IsotopeFit
                     RawSignalAxis[i] = data[i][1];
                 }
             }
+
+            #endregion
         }
 
         /// <summary>
@@ -112,11 +161,11 @@ namespace IsotopeFit
             public double MinMass { get; set; }
             public double MaxMass { get; set; }
             public double CentreOfMass { get; set; }
-            public ulong MinIndex { get; set; }
-            public ulong MaxIndex { get; set; }
+            public int MinIndex { get; set; }
+            public int MaxIndex { get; set; }
             public double Area { get; set; }
             public double AreaError { get; set; }
-            public ulong RootIndex { get; set; }
+            public int RootIndex { get; set; }
 
             internal Molecule()
             {
@@ -128,13 +177,13 @@ namespace IsotopeFit
             /// </summary>
             public class IsotopeData
             {
-                public Vector<double> Mass { get; set; }
-                public Vector<double> Abundance { get; set; }
+                public double[] Mass { get; set; }
+                public double[] Abundance { get; set; }
 
                 internal IsotopeData(double[][] data)
                 {
-                    Mass = Vector<double>.Build.Dense(data.Length, 0);
-                    Abundance = Vector<double>.Build.Dense(data.Length, 0);
+                    Mass = new double[data.Length]; //Vector<double>.Build.Dense(data.Length, 0);
+                    Abundance = new double[data.Length]; //Vector<double>.Build.Dense(data.Length, 0);
 
                     for (int i = 0; i < data.Length; i++)
                     {
@@ -147,13 +196,13 @@ namespace IsotopeFit
 
         public class Calibration
         {
-            public Vector<double> COMList { get; set; }
-            public Vector<double> MassOffsetList { get; set; }
-            public Vector<double> ResolutionList { get; set; }
+            public double[] COMList { get; set; }
+            public double[] MassOffsetList { get; set; }
+            public double[] ResolutionList { get; set; }
             public string MassOffsetMethod { get; set; }
             public string ResolutionMethod { get; set; }
-            public ulong MassOffsetParam { get; set; }
-            public ulong ResolutionParam { get; set; }
+            public int MassOffsetParam { get; set; }
+            public int ResolutionParam { get; set; }
             public List<string> Namelist { get; set; }
             public LineShape Shape { get; set; }
 
@@ -165,11 +214,11 @@ namespace IsotopeFit
             public class LineShape
             {
                 public string Form { get; set; }
-                public Vector<double> Breaks { get; set; }
+                public double[] Breaks { get; set; }
                 public Matrix<double> Coefs { get; set; }
-                public ulong Pieces { get; set; }
-                public ulong Order { get; set; }
-                public ulong Dim { get; set; }
+                public int Pieces { get; set; }
+                public int Order { get; set; }
+                public int Dim { get; set; }
             }
         }
 
@@ -177,10 +226,10 @@ namespace IsotopeFit
         {
             public double StartMass { get; set; }
             public double EndMass { get; set; }
-            public ulong NDiv { get; set; }
+            public int NDiv { get; set; }
             public double Percent { get; set; }
-            public Vector<double> XAxis { get; set; }
-            public Vector<double> YAxis { get; set; }
+            public double[] XAxis { get; set; }
+            public double[] YAxis { get; set; }
 
             internal BaselineCorr()
             {

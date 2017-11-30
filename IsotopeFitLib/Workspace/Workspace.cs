@@ -36,6 +36,8 @@ namespace IsotopeFit
         public Workspace()
         {
             //throw new NotImplementedException();
+            SpectralData = new IFData.Spectrum();
+            BaselineCorrData = new IFData.BaselineCorr();
         }
 
         /// <summary>
@@ -56,8 +58,8 @@ namespace IsotopeFit
         #region Properties
 
         public IFData.Spectrum SpectralData { get; set; }
-        public ulong StartIndex { get; set; }
-        public ulong EndIndex { get; set; }
+        public int StartIndex { get; set; }
+        public int EndIndex { get; set; }
         public List<IFData.Molecule> Molecules { get; set; }
         public IFData.Calibration Calibration { get; set; }
         public IFData.BaselineCorr BaselineCorrData { get; set; }
@@ -67,7 +69,9 @@ namespace IsotopeFit
         public double SearchRange { get; set; }
 
         public Interpolation ResolutionInterpolation { get; private set; }
-        
+
+        public WorkspaceStatus Status { get; private set; }
+
         #endregion
 
         #region Public Methods
@@ -96,8 +100,11 @@ namespace IsotopeFit
         {
             //TODO: can be shortened/optimized
 
-            if (SpectralData.RawSignalAxis == null) throw new WorkspaceNotDefinedException("Raw signal axis not specified.");
+            if (SpectralData.RawSignalAxis == null || SpectralData.RawMassAxis == null) throw new WorkspaceNotDefinedException("Raw spectral data not specified.");
+            if (SpectralData.RawSignalAxis.Length != SpectralData.RawMassAxis.Length) throw new WorkspaceNotDefinedException("Supplied spectral data axis have different lengths.");
+
             if (BaselineCorrData.XAxis == null || BaselineCorrData.YAxis == null) throw new WorkspaceNotDefinedException("Baseline correction points not specified.");
+            if (BaselineCorrData.XAxis.Length != BaselineCorrData.YAxis.Length) throw new WorkspaceNotDefinedException("Supplied baseline correction point arrays have different lengths.");
 
             int massAxisLength = SpectralData.RawLength;
 
@@ -114,7 +121,7 @@ namespace IsotopeFit
                 correctedSignal[i] = SpectralData.RawSignalAxis[i] - baseline[i];
             }
 
-            SpectralData.PureSignalAxis = correctedSignal;
+            SpectralData.SignalAxis = correctedSignal;
         }
 
         /// <summary>
@@ -130,7 +137,7 @@ namespace IsotopeFit
             if (Calibration.COMList == null || Calibration.MassOffsetList == null) throw new WorkspaceNotDefinedException("Mass offset calibration points not specified.");
 
             int massAxisLength = SpectralData.RawLength;    //TODO: might want to use the cropped length as well
-            int fitDataLength = Calibration.COMList.Count;
+            int fitDataLength = Calibration.COMList.Length;
 
             // generate the x-axis for the fit
             double xAxisMin = SpectralData.RawMassAxis.Min();
@@ -201,7 +208,7 @@ namespace IsotopeFit
             // TODO: It might happen due to the monotonicity check, that during the second evaluation we hit a singularity. This cuts off the nonsense data.
 
             // Store the corrected mass axis in the appropriate place
-            SpectralData.MassOffsetCorrAxis = correctedMassAxis;  //MathNet.Numerics.LinearAlgebra.Double.DenseVector.Build.DenseOfArray(correctedMassAxis);
+            SpectralData.MassAxis = correctedMassAxis;  //MathNet.Numerics.LinearAlgebra.Double.DenseVector.Build.DenseOfArray(correctedMassAxis);
         }
 
         /// <summary>
@@ -237,7 +244,7 @@ namespace IsotopeFit
             designMatrix.Build();
         }
 
-        public void ExtractAbundances()
+        public void FitAbundances()
         {
             LeastSquaresSystem lss = new LeastSquaresSystem(designMatrix.Storage, null);    // we dont give the observation vector here, because it was already added to the matrix during the build
             
@@ -250,5 +257,15 @@ namespace IsotopeFit
         }
 
         #endregion
+
+        public class WorkspaceStatus
+        {
+            public bool BaselineCorrected { get; internal set; }
+            public bool MassOffsetCorrected { get; internal set; }
+            public bool DesignMatrixBuilt { get; internal set; }
+            public bool AbundancesFitted { get; internal set; }
+
+            public string[] MessageLog { get; internal set; }
+        }
     }
 }

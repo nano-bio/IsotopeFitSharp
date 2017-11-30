@@ -62,11 +62,11 @@ namespace IsotopeFitter.Tests
                 }
             }
 
-            Assert.AreEqual(bgCorr.Count, w.SpectralData.PureSignalAxis.Length);
+            Assert.AreEqual(bgCorr.Count, w.SpectralData.SignalAxis.Length);
 
             for (int i = 0; i < bgCorr.Count; i++)
             {
-                Assert.AreEqual(bgCorr[i],w.SpectralData.PureSignalAxis[i], 1e-9, "baseline check failed at index {0}", i);
+                Assert.AreEqual(bgCorr[i],w.SpectralData.SignalAxis[i], 1e-9, "baseline check failed at index {0}", i);
             }
         }
 
@@ -89,11 +89,11 @@ namespace IsotopeFitter.Tests
                 }
             }
 
-            Assert.AreEqual(mOff.Count, w.SpectralData.MassOffsetCorrAxis.Length);
+            Assert.AreEqual(mOff.Count, w.SpectralData.MassAxis.Length);
 
             for (int i = 0; i < mOff.Count; i++)
             {
-                Assert.AreEqual(mOff[i], w.SpectralData.MassOffsetCorrAxis[i], 1e-9, "mass offset check failed at index {0}", i);
+                Assert.AreEqual(mOff[i], w.SpectralData.MassAxis[i], 1e-9, "mass offset check failed at index {0}", i);
             }
         }
 
@@ -202,7 +202,7 @@ namespace IsotopeFitter.Tests
 
         private void ExtractAbundancesSubtest(ref Workspace w)
         {
-            w.ExtractAbundances();
+            w.FitAbundances();
 
             // compare with matlab calculated abundances
             string[] abdFile = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\6abundancesFromLsqnonneg.txt");

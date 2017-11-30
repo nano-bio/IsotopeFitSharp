@@ -38,8 +38,8 @@ namespace IsotopeFit
             /// </summary>
             internal DesignMtrx(IFData.Spectrum spectrum, List<IFData.Molecule> molecules, IFData.Calibration calibration, Interpolation resolutionInterp)
             {
-                massAxis = spectrum.MassOffsetCorrAxis.ToArray();
-                observationVector = (MathNet.Numerics.LinearAlgebra.Double.SparseVector)MathNet.Numerics.LinearAlgebra.Double.SparseVector.Build.SparseOfArray(spectrum.PureSignalAxis);
+                massAxis = spectrum.MassAxis.ToArray();
+                observationVector = (MathNet.Numerics.LinearAlgebra.Double.SparseVector)MathNet.Numerics.LinearAlgebra.Double.SparseVector.Build.SparseOfArray(spectrum.SignalAxis);
                 Molecules = molecules;
                 Calibration = calibration;
                 resolutionFit = resolutionInterp;
@@ -193,7 +193,7 @@ namespace IsotopeFit
             {
                 //TODO: maybe we could generate only indices and values and return just that. it gets assebled to a matrix manually anyway. might have lower ram demands.
 
-                int isotopePeakCount = Molecules[moleculeIndex].PeakData.Mass.Count;
+                int isotopePeakCount = Molecules[moleculeIndex].PeakData.Mass.Length;
                 MathNet.Numerics.LinearAlgebra.Double.SparseVector currentColumn = (MathNet.Numerics.LinearAlgebra.Double.SparseVector)MathNet.Numerics.LinearAlgebra.Double.SparseVector.Build.Sparse(Rows);  //TODO: we can make this building also manually, to be more effective - and better as well
 
                 // loop through all isotope peaks of the current molecule
@@ -277,7 +277,7 @@ namespace IsotopeFit
             /// <returns>Mathnet vector of recalculated piecewise polynomial breaks.</returns>
             private Vector<double> TransformLineShapeBreaks(IFData.Calibration.LineShape sh, double fwhm, double mass)
             {
-                Vector<double> breaks = Vector<double>.Build.Dense(sh.Breaks.Count, 0); 
+                Vector<double> breaks = Vector<double>.Build.Dense(sh.Breaks.Length, 0); 
 
                 for (int i = 0; i < breaks.Count; i++)
                 {

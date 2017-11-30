@@ -34,7 +34,7 @@ namespace IsotopeFitter
 
             //TODO: resolutionfit
 
-            Debug.Assert(W.SpectralData.MassOffsetCorrAxis.Length == W.SpectralData.PureSignalAxis.Length);
+            Debug.Assert(W.SpectralData.MassAxis.Length == W.SpectralData.SignalAxis.Length);
 
             //using (FileStream f = File.Open("pureMassSig.txt", FileMode.Create))
             //{
@@ -63,7 +63,7 @@ namespace IsotopeFitter
             //    }
             //}
 
-            W.ExtractAbundances();
+            W.FitAbundances();
 
             time.Stop();
 
@@ -125,7 +125,7 @@ namespace IsotopeFitter
                 {
                     for (int i = 0; i < W.SpectralData.RawLength; i++)
                     {
-                        sw.WriteLine(W.SpectralData.MassOffsetCorrAxis[i].ToString(bodka) + " " + calcSpectrum[i].ToString(bodka) + " " + W.SpectralData.PureSignalAxis[i].ToString(bodka));
+                        sw.WriteLine(W.SpectralData.MassAxis[i].ToString(bodka) + " " + calcSpectrum[i].ToString(bodka) + " " + W.SpectralData.SignalAxis[i].ToString(bodka));
                     }
                 }
             }

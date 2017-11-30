@@ -36,11 +36,11 @@ namespace IsotopeFit.Tests
                 }
             }
 
-            Assert.AreEqual(bgCorr.Count, Wrk.SpectralData.PureSignalAxis.Length);
+            Assert.AreEqual(bgCorr.Count, Wrk.SpectralData.SignalAxis.Length);
 
             for (int i = 0; i < bgCorr.Count; i++)
             {
-                Assert.AreEqual(bgCorr[i], Wrk.SpectralData.PureSignalAxis[i], 1e-9);
+                Assert.AreEqual(bgCorr[i], Wrk.SpectralData.SignalAxis[i], 1e-9);
             }
 
             Assert.Pass("Baseline subtraction test passed");
@@ -67,11 +67,11 @@ namespace IsotopeFit.Tests
                 }
             }
 
-            Assert.AreEqual(mOff.Count, Wrk.SpectralData.MassOffsetCorrAxis.Length);
+            Assert.AreEqual(mOff.Count, Wrk.SpectralData.MassAxis.Length);
 
             for (int i = 0; i < mOff.Count; i++)
             {
-                Assert.AreEqual(mOff[i], Wrk.SpectralData.MassOffsetCorrAxis[i], 1e-9);
+                Assert.AreEqual(mOff[i], Wrk.SpectralData.MassAxis[i], 1e-9);
             }
 
             Assert.Pass("Mass offset correction test passed");
