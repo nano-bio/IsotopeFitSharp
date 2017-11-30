@@ -84,15 +84,15 @@ namespace IsotopeFitter
 
             //now we have to remove the last vector from the design matrix
 
-            double[] values = new double[W.designMatrix.Storage.ColumnPointers[W.designMatrix.Storage.ColumnPointers.Length - 2]];
-            int[] rowIndices = new int[W.designMatrix.Storage.ColumnPointers[W.designMatrix.Storage.ColumnPointers.Length - 2]];
-            int[] colPointers = new int[W.designMatrix.Storage.ColumnPointers.Length - 1];
+            double[] values = new double[W.DesignMatrix.Storage.ColumnPointers[W.DesignMatrix.Storage.ColumnPointers.Length - 2]];
+            int[] rowIndices = new int[W.DesignMatrix.Storage.ColumnPointers[W.DesignMatrix.Storage.ColumnPointers.Length - 2]];
+            int[] colPointers = new int[W.DesignMatrix.Storage.ColumnPointers.Length - 1];
 
-            Array.Copy(W.designMatrix.Storage.Values, values, values.Length);
-            Array.Copy(W.designMatrix.Storage.RowIndices, rowIndices, rowIndices.Length);
-            Array.Copy(W.designMatrix.Storage.ColumnPointers, colPointers, colPointers.Length);
+            Array.Copy(W.DesignMatrix.Storage.Values, values, values.Length);
+            Array.Copy(W.DesignMatrix.Storage.RowIndices, rowIndices, rowIndices.Length);
+            Array.Copy(W.DesignMatrix.Storage.ColumnPointers, colPointers, colPointers.Length);
 
-            CSparse.Double.SparseMatrix qwerty = new CSparse.Double.SparseMatrix(W.designMatrix.Storage.RowCount, W.designMatrix.Storage.ColumnCount - 1)
+            CSparse.Double.SparseMatrix qwerty = new CSparse.Double.SparseMatrix(W.DesignMatrix.Storage.RowCount, W.DesignMatrix.Storage.ColumnCount - 1)
             {
                 Values = values,
                 RowIndices = rowIndices,

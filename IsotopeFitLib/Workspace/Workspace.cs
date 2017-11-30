@@ -24,7 +24,7 @@ namespace IsotopeFit
     public partial class Workspace
     {
         #region Fields
-        public DesignMtrx designMatrix;
+        //public DesignMtrx designMatrix;
 
         #endregion
 
@@ -35,8 +35,8 @@ namespace IsotopeFit
         /// </summary>
         public Workspace()
         {
-            //throw new NotImplementedException();
             SpectralData = new IFData.Spectrum();
+            Calibration = new IFData.Calibration();
             BaselineCorrData = new IFData.BaselineCorr();
         }
 
@@ -69,6 +69,7 @@ namespace IsotopeFit
         public double SearchRange { get; set; }
 
         public Interpolation ResolutionInterpolation { get; private set; }
+        public DesignMtrx DesignMatrix { get; internal set; }
 
         public WorkspaceStatus Status { get; private set; }
 
@@ -94,7 +95,7 @@ namespace IsotopeFit
         }
 
         /// <summary>
-        /// Calculates baseline corrected signal from raw signal data and baseline correction points. Stores the result in the corresponding Workspace property.
+        /// Calculates baseline corrected signal from raw signal data and baseline correction points. Stores the result in the Workspace.SpectralData.SignalAxis property.
         /// </summary>
         public void CorrectBaseline()
         {
@@ -125,7 +126,7 @@ namespace IsotopeFit
         }
 
         /// <summary>
-        /// Calculates mass axis corrected for mass offset from previously supplied calibration data and stores the result in appropriate location.
+        /// Calculates mass axis corrected for mass offset from previously supplied calibration data and stores the result in the Workspace.SpectralData.MassAxis property.
         /// </summary>
         /// <param name="interpType">Type of the interpolation to be used.</param>
         /// <param name="order">Order of the polynomial interpolation. This is relevant only for the polynomial interpolation.</param>
@@ -212,7 +213,7 @@ namespace IsotopeFit
         }
 
         /// <summary>
-        /// Fits the previously supplied resolution calibration data and stores the calibration results.
+        /// Fits the previously supplied resolution calibration data and stores the calibration results in the Workspace.ResolutionInterpolation property.
         /// </summary>
         /// <param name="t">Type of the interpolation ti use.</param>
         /// <param name="order">Order of the polynomial interpolation. This is relevant only for the polynomial interpolation.</param>
@@ -238,15 +239,22 @@ namespace IsotopeFit
             }
         }
 
+        /// <summary>
+        /// Builds the design matrix from currently supplied data and stores the result in the Workspace.DesignMatrix property.
+        /// </summary>
         public void BuildDesignMatrix()
         {
-            designMatrix = new DesignMtrx(SpectralData, Molecules, Calibration, ResolutionInterpolation);
-            designMatrix.Build();
+            // TODO: merge this with the fit abundances maybe? If we do the design matrix updating, we will still need this function.
+            DesignMatrix = new DesignMtrx(SpectralData, Molecules, Calibration, ResolutionInterpolation);
+            DesignMatrix.Build();
         }
 
+        /// <summary>
+        /// Performs the fit of the data and stores the result in the Workspace.Abundances property.
+        /// </summary>
         public void FitAbundances()
         {
-            LeastSquaresSystem lss = new LeastSquaresSystem(designMatrix.Storage, null);    // we dont give the observation vector here, because it was already added to the matrix during the build
+            LeastSquaresSystem lss = new LeastSquaresSystem(DesignMatrix.Storage, null);    // we dont give the observation vector here, because it was already added to the matrix during the build
             
             //TODO: this is ugly, hide this inside the LeastSquaresSystem class
             lss = Algorithm.LeaSqrSparseQRHouseholder(lss);
@@ -258,14 +266,19 @@ namespace IsotopeFit
 
         #endregion
 
+        /// <summary>
+        /// Class for storing the Workspace status flags and message log for the user.
+        /// </summary>
         public class WorkspaceStatus
         {
+            internal WorkspaceStatus() { }
+
             public bool BaselineCorrected { get; internal set; }
             public bool MassOffsetCorrected { get; internal set; }
             public bool DesignMatrixBuilt { get; internal set; }
             public bool AbundancesFitted { get; internal set; }
 
-            public string[] MessageLog { get; internal set; }
+            public List<double> MessageLog { get; internal set; }
         }
     }
 }

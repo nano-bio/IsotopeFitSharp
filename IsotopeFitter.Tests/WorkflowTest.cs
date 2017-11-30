@@ -158,22 +158,22 @@ namespace IsotopeFitter.Tests
                 colPointers[item.Key + 1] = cumsum;
             }
 
-            int bue = w.designMatrix.Storage.RowIndices.Max();
+            int bue = w.DesignMatrix.Storage.RowIndices.Max();
 
             // comparisons of the matrix internal data fields
-            Assert.AreEqual(values.Length, w.designMatrix.Storage.Values.Length - (w.designMatrix.Storage.ColumnPointers.Last() - w.designMatrix.Storage.ColumnPointers[w.designMatrix.Storage.ColumnPointers.Length - 2]), "different values array length in the design matrix"); //TODO: this will be a problem with non-zero observation vector
-            Assert.AreEqual(rowIndices.Length, w.designMatrix.Storage.RowIndices.Length - (w.designMatrix.Storage.ColumnPointers.Last() - w.designMatrix.Storage.ColumnPointers[w.designMatrix.Storage.ColumnPointers.Length - 2]), "different row indices array length in the design matrix");
-            Assert.AreEqual(colPointers.Length, w.designMatrix.Storage.ColumnPointers.Length - 1, "different column pointers array length in the design matrix");   // -1 because the calculated design matrix contains an extra column for the observation vector
+            Assert.AreEqual(values.Length, w.DesignMatrix.Storage.Values.Length - (w.DesignMatrix.Storage.ColumnPointers.Last() - w.DesignMatrix.Storage.ColumnPointers[w.DesignMatrix.Storage.ColumnPointers.Length - 2]), "different values array length in the design matrix"); //TODO: this will be a problem with non-zero observation vector
+            Assert.AreEqual(rowIndices.Length, w.DesignMatrix.Storage.RowIndices.Length - (w.DesignMatrix.Storage.ColumnPointers.Last() - w.DesignMatrix.Storage.ColumnPointers[w.DesignMatrix.Storage.ColumnPointers.Length - 2]), "different row indices array length in the design matrix");
+            Assert.AreEqual(colPointers.Length, w.DesignMatrix.Storage.ColumnPointers.Length - 1, "different column pointers array length in the design matrix");   // -1 because the calculated design matrix contains an extra column for the observation vector
 
             for (int i = 0; i < rowIndices.Length; i++)
             {
-                Assert.AreEqual(rowIndices[i], w.designMatrix.Storage.RowIndices[i], "design matrix row index comparison fail at {0}", i);
-                Assert.AreEqual(values[i], w.designMatrix.Storage.Values[i], 1e-9, "design matrix values comparison fail at {0}", i);
+                Assert.AreEqual(rowIndices[i], w.DesignMatrix.Storage.RowIndices[i], "design matrix row index comparison fail at {0}", i);
+                Assert.AreEqual(values[i], w.DesignMatrix.Storage.Values[i], 1e-9, "design matrix values comparison fail at {0}", i);
             }
 
             for (int i = 0; i < colPointers.Length; i++)
             {
-                Assert.AreEqual(colPointers[i], w.designMatrix.Storage.ColumnPointers[i], "design matrix column pointers comparison fail at {0}", i);
+                Assert.AreEqual(colPointers[i], w.DesignMatrix.Storage.ColumnPointers[i], "design matrix column pointers comparison fail at {0}", i);
             }
 
             // check the observation vector
@@ -189,10 +189,10 @@ namespace IsotopeFitter.Tests
                 }
             }
 
-            int lastColumnCount = w.designMatrix.Storage.ColumnPointers.Last() - w.designMatrix.Storage.ColumnPointers[w.designMatrix.Storage.ColumnPointers.Length - 2];
+            int lastColumnCount = w.DesignMatrix.Storage.ColumnPointers.Last() - w.DesignMatrix.Storage.ColumnPointers[w.DesignMatrix.Storage.ColumnPointers.Length - 2];
             double[] obsVec = new double[lastColumnCount];
 
-            Array.Copy(w.designMatrix.Storage.Values, w.designMatrix.Storage.Values.Length - lastColumnCount, obsVec, 0, lastColumnCount);
+            Array.Copy(w.DesignMatrix.Storage.Values, w.DesignMatrix.Storage.Values.Length - lastColumnCount, obsVec, 0, lastColumnCount);
 
             for (int i = 0; i < obsVecCorrect.Count; i++)
             {
