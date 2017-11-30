@@ -38,6 +38,7 @@ namespace IsotopeFit
         public Workspace(string path)
         {
             LoadIFDFile(path);
+            IFDLoaded = true;
         }
 
         #endregion
@@ -88,7 +89,7 @@ namespace IsotopeFit
 
         public WorkspaceStatus Status { get; private set; }
 
-
+        internal bool IFDLoaded { get; private set; }
 
         #endregion
 
@@ -113,6 +114,7 @@ namespace IsotopeFit
         /// <summary>
         /// Calculates baseline corrected signal from raw signal data and baseline correction points. Stores the result in the Workspace.SpectralData.SignalAxis property.
         /// </summary>
+        /// <remarks>Uses the PCHIP interpolation.</remarks>
         public void CorrectBaseline()
         {
             //TODO: can be shortened/optimized
@@ -128,17 +130,13 @@ namespace IsotopeFit
             //TODO: Evaluating the bg correction for the whole range might be useless. Specifiyng a mass range would make sense.
             //TODO: crop the mass axis to the last specified point of the baseline? might break usefulness.
             PPInterpolation baselineFit = new PPInterpolation(BaselineCorrData.XAxis.ToArray(), BaselineCorrData.YAxis.ToArray(), PPInterpolation.PPType.PCHIP);    // in the matlab code it is also hard-coded pchip
-
-            MathNet.Numerics.LinearAlgebra.Vector<double> baseline = MathNet.Numerics.LinearAlgebra.Vector<double>.Build.DenseOfArray(baselineFit.Evaluate(SpectralData.RawMassAxis.ToArray()));
-            //MathNet.Numerics.LinearAlgebra.Vector<double> correctedSignal = MathNet.Numerics.LinearAlgebra.Vector<double>.Build.Dense(massAxisLength, 0);
-            double[] correctedSignal = new double[massAxisLength];
+                        
+            SpectralData.SignalAxis = new double[massAxisLength];
 
             for (int i = 0; i < massAxisLength; i++)
             {
-                correctedSignal[i] = SpectralData.RawSignalAxis[i] - baseline[i];
+                SpectralData.SignalAxis[i] = SpectralData.RawSignalAxis[i] - baselineFit.Evaluate(SpectralData.RawMassAxis[i]);
             }
-
-            SpectralData.SignalAxis = correctedSignal;
         }
 
         /// <summary>
@@ -153,9 +151,11 @@ namespace IsotopeFit
 
             if (SpectralData.RawMassAxis == null) throw new WorkspaceNotDefinedException("Raw mass axis not specified.");
 
-            // check if we have entries in the calibration namelist
-            if (Calibration.NameList.Count != 0)    //TODO: this needs to be tested
+            // check if we have loaded an IFD file, then we can continue. Otherwise we are working with IFJ or GUI and we need to create the lists.
+            if (!IFDLoaded)
             {
+                if (Calibration.NameList.Count == 0) throw new WorkspaceNotDefinedException("Calibration namelist empty.");
+
                 int n = Calibration.NameList.Count;
 
                 double[] comList = new double[n];
@@ -255,22 +255,24 @@ namespace IsotopeFit
         /// <param name="order">Order of the polynomial interpolation. This is relevant only for the polynomial interpolation.</param>
         public void ResolutionFit(Interpolation.Type t, int order)
         {
-            // check if we have entries in the calibration namelist
-            if (Calibration.NameList.Count != 0)    //TODO: this needs to be tested
+            // check if we have loaded an IFD file, then we can continue. Otherwise we are working with IFJ or GUI and we need to create the lists.
+            if (!IFDLoaded)
             {
+                if (Calibration.NameList.Count == 0) throw new WorkspaceNotDefinedException("Calibration namelist empty.");
+
                 int n = Calibration.NameList.Count;
 
                 double[] comList = new double[n];
-                double[] resolutionList = new double[n];
+                double[] massOffsetList = new double[n];
 
                 for (int i = 0; i < n; i++)
                 {
                     comList[i] = (Clusters[Calibration.NameList[i]] as IFData.Cluster).CentreOfMass;
-                    resolutionList[i] = (Clusters[Calibration.NameList[i]] as IFData.Cluster).Resolution;
+                    massOffsetList[i] = (Clusters[Calibration.NameList[i]] as IFData.Cluster).MassOffset;
                 }
 
                 Calibration.COMList = comList;
-                Calibration.ResolutionList = resolutionList;
+                Calibration.MassOffsetList = massOffsetList;
             }
 
             if (Calibration.COMList == null || Calibration.MassOffsetList == null) throw new WorkspaceNotDefinedException("Resolution calibration points not specified.");
