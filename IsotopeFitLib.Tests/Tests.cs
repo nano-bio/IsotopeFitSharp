@@ -176,7 +176,7 @@ namespace IsotopeFit.Tests
             Assert.AreEqual(416375, Wrk.EndIndex);
 
             // molecules check
-            IFData.Molecule M = Wrk.Molecules[121];
+            IFData.Cluster M = Wrk.Cluster[121];
             Assert.AreEqual(2.45148615736600e+2d, M.PeakData.Mass[1], 1e-12);
             Assert.AreEqual(8.80748376064873e-2d, M.PeakData.Abundance[1], 1e-12);
             Assert.AreEqual("[TMAl][DMAl - 1H]3[H]4", M.Name);

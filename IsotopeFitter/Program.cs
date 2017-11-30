@@ -71,9 +71,9 @@ namespace IsotopeFitter
             {
                 using (StreamWriter sw = new StreamWriter(f))
                 {
-                    for (int i = 0; i < W.Molecules.Count; i++)
+                    for (int i = 0; i < W.Cluster.Count; i++)
                     {
-                        sw.WriteLine(W.Molecules[i].CentreOfMass.ToString(bodka) + " " + W.Abundances[i].ToString(bodka));
+                        sw.WriteLine(W.Cluster[i].CentreOfMass.ToString(bodka) + " " + W.Abundances[i].ToString(bodka));
                     }                    
                 } 
             }

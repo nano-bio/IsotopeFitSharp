@@ -36,7 +36,7 @@ namespace IsotopeFit
             /// <summary>
             /// Create new design matrix and initialize data sources for further calculations.
             /// </summary>
-            internal DesignMtrx(IFData.Spectrum spectrum, List<IFData.Molecule> molecules, IFData.Calibration calibration, Interpolation resolutionInterp)
+            internal DesignMtrx(IFData.Spectrum spectrum, List<IFData.Cluster> molecules, IFData.Calibration calibration, Interpolation resolutionInterp)
             {
                 massAxis = spectrum.MassAxis.ToArray();
                 observationVector = (MathNet.Numerics.LinearAlgebra.Double.SparseVector)MathNet.Numerics.LinearAlgebra.Double.SparseVector.Build.SparseOfArray(spectrum.SignalAxis);
@@ -53,7 +53,7 @@ namespace IsotopeFit
             #region Properties
 
             //private Vector<double> MassAxis { get; set; }
-            private List<IFData.Molecule> Molecules { get; set; }
+            private List<IFData.Cluster> Molecules { get; set; }
             private IFData.Calibration Calibration { get; set; }            
 
             public SparseMatrix Storage { get; private set; }   //TODO: maybe a field would suffice and change it directly to a sparse matrix

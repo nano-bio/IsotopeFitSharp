@@ -38,7 +38,7 @@ namespace IsotopeFit
             return (int)(root["endind"] as MLDouble).GetArray()[0][0];
         }
 
-        internal static List<IFData.Molecule> ReadMolecules(MLStructure root)
+        internal static List<IFData.Cluster> ReadMolecules(MLStructure root)
         {
             //root["molecules"]
             //str = (Arr as MLStructure)["peakdata", i] as MLArray;
@@ -47,7 +47,7 @@ namespace IsotopeFit
             MLArray Mol = root["molecules"] as MLArray;
 
             int num = Mol.N;
-            List<IFData.Molecule> Molecules = new List<IFData.Molecule>(num);
+            List<IFData.Cluster> Molecules = new List<IFData.Cluster>(num);
 
             for (int i = 0; i < num; i++)
             {
@@ -57,14 +57,14 @@ namespace IsotopeFit
             return Molecules;
         }
 
-        private static IFData.Molecule ReadMolecule(MLArray molecule, int index)
+        private static IFData.Cluster ReadMolecule(MLArray molecule, int index)
         {
-            IFData.Molecule M = new IFData.Molecule();
+            IFData.Cluster M = new IFData.Cluster();
 
             MLArray dataField;
 
             dataField = (molecule as MLStructure)["peakdata", index] as MLArray;
-            M.PeakData = new IFData.Molecule.IsotopeData((dataField as MLDouble).GetArray());
+            M.PeakData = new IFData.Cluster.IsotopeData((dataField as MLDouble).GetArray());
 
             dataField = (molecule as MLStructure)["name", index] as MLArray;
             M.Name = (dataField as MLChar).GetString(0);

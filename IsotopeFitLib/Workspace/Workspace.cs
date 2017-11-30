@@ -58,11 +58,32 @@ namespace IsotopeFit
         #region Properties
 
         public IFData.Spectrum SpectralData { get; set; }
+
+        /// <summary>
+        /// Crop start index. Not implemented at the moment.
+        /// </summary>
         public int StartIndex { get; set; }
+
+        /// <summary>
+        /// Crop end index. Not implemented at the moment.
+        /// </summary>
         public int EndIndex { get; set; }
-        public List<IFData.Molecule> Molecules { get; set; }
+
+        /// <summary>
+        /// Object containing the clusters to be fitted.
+        /// </summary>
+        public List<IFData.Cluster> Cluster { get; set; }   //TODO: we might need to change the type from list to something custom and add helper functions to add and remove entries. I dont know how the List<> works when binding with Python.
+
+        /// <summary>
+        /// Object containing the data necessary for mass offset correction, resolution fit and peak shape.
+        /// </summary>
         public IFData.Calibration Calibration { get; set; }
+
+        /// <summary>
+        /// Object containing the data necessary for baseline correction.
+        /// </summary>
         public IFData.BaselineCorr BaselineCorrData { get; set; }
+
         public double[] Abundances { get; private set; }
 
         public double FwhmRange { get; set; }
@@ -89,7 +110,7 @@ namespace IsotopeFit
             SpectralData = IFDFile.ReadRawData(rootElement);
             StartIndex = IFDFile.ReadStartIndex(rootElement);
             EndIndex = IFDFile.ReadEndIndex(rootElement);
-            Molecules = IFDFile.ReadMolecules(rootElement);
+            Cluster = IFDFile.ReadMolecules(rootElement);
             Calibration = IFDFile.ReadCalibration(rootElement);
             BaselineCorrData = IFDFile.ReadBackgroundCorr(rootElement);
         }
@@ -223,16 +244,16 @@ namespace IsotopeFit
             {
                 case Interpolation.Type.Polynomial:
                     //int order = 3; // TODO will be defined by user from GUI
-                    ResolutionInterpolation = new PolyInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), order); //PolyInterpolation PolyRC
+                    ResolutionInterpolation = new PolyInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), order);
                     break;
                 case Interpolation.Type.SplineNatural:
-                    throw new NotImplementedException("This has not yet been implemented.");
+                    throw new NotImplementedException("Natural spline interpolation has not yet been implemented.");
                 //break;
                 case Interpolation.Type.SplineNotAKnot:
-                    ResolutionInterpolation = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), PPInterpolation.PPType.SplineNotAKnot); //PPInterpolation SplineRC
+                    ResolutionInterpolation = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), PPInterpolation.PPType.SplineNotAKnot);
                     break;
                 case Interpolation.Type.PCHIP:
-                    ResolutionInterpolation = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), PPInterpolation.PPType.PCHIP); //PPInterpolation PCHIPRC
+                    ResolutionInterpolation = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), PPInterpolation.PPType.PCHIP);
                     break;
                 default:
                     throw new Interpolation.InterpolationException("Unknown interpolation type.");
@@ -245,7 +266,7 @@ namespace IsotopeFit
         public void BuildDesignMatrix()
         {
             // TODO: merge this with the fit abundances maybe? If we do the design matrix updating, we will still need this function.
-            DesignMatrix = new DesignMtrx(SpectralData, Molecules, Calibration, ResolutionInterpolation);
+            DesignMatrix = new DesignMtrx(SpectralData, Cluster, Calibration, ResolutionInterpolation);
             DesignMatrix.Build();
         }
 

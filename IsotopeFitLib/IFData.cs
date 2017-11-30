@@ -154,7 +154,7 @@ namespace IsotopeFit
         /// <summary>
         /// Class for storing data about a single molecule/fragment.
         /// </summary>
-        public class Molecule
+        public class Cluster
         {
             public IsotopeData PeakData { get; set; }
             public string Name { get; set; }
@@ -167,7 +167,7 @@ namespace IsotopeFit
             public double AreaError { get; set; }
             public int RootIndex { get; set; }
 
-            internal Molecule()
+            internal Cluster()
             {
                 //PeakData = new IsotopeData();
             }
