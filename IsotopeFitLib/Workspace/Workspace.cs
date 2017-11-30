@@ -63,7 +63,7 @@ namespace IsotopeFit
         /// <summary>
         /// Object containing the clusters to be fitted.
         /// </summary>
-        public OrderedDictionary Clusters { get; set; }
+        public OrderedDictionary Clusters { get; set; } //TODO: maybe I should add a convenience functions for adding a cluster to the dictionary, that way I can check the inputs immediately
 
         /// <summary>
         /// Object containing the data necessary for mass offset correction, resolution fit and peak shape.
@@ -72,7 +72,7 @@ namespace IsotopeFit
 
         /// <summary>
         /// Object containing the data necessary for baseline correction.
-        /// </summary>
+        /// </summary> 
         public IFData.BaselineCorr BaselineCorrData { get; set; }
 
         /// <summary>
@@ -152,6 +152,25 @@ namespace IsotopeFit
             //TODO: implement check for the Calibration.Namelist and then decide which strategy will we follow
 
             if (SpectralData.RawMassAxis == null) throw new WorkspaceNotDefinedException("Raw mass axis not specified.");
+
+            // check if we have entries in the calibration namelist
+            if (Calibration.NameList.Count != 0)    //TODO: this needs to be tested
+            {
+                int n = Calibration.NameList.Count;
+
+                double[] comList = new double[n];
+                double[] massOffsetList = new double[n];
+
+                for (int i = 0; i < n; i++)
+                {
+                    comList[i] = (Clusters[Calibration.NameList[i]] as IFData.Cluster).CentreOfMass;
+                    massOffsetList[i] = (Clusters[Calibration.NameList[i]] as IFData.Cluster).MassOffset;
+                }
+
+                Calibration.COMList = comList;
+                Calibration.MassOffsetList = massOffsetList;
+            }
+
             if (Calibration.COMList == null || Calibration.MassOffsetList == null) throw new WorkspaceNotDefinedException("Mass offset calibration points not specified.");
 
             int massAxisLength = SpectralData.RawLength;    //TODO: might want to use the cropped length as well
@@ -232,14 +251,33 @@ namespace IsotopeFit
         /// <summary>
         /// Fits the previously supplied resolution calibration data and stores the calibration results in the Workspace.ResolutionInterpolation property.
         /// </summary>
-        /// <param name="t">Type of the interpolation ti use.</param>
+        /// <param name="t">Type of the interpolation to use.</param>
         /// <param name="order">Order of the polynomial interpolation. This is relevant only for the polynomial interpolation.</param>
         public void ResolutionFit(Interpolation.Type t, int order)
         {
+            // check if we have entries in the calibration namelist
+            if (Calibration.NameList.Count != 0)    //TODO: this needs to be tested
+            {
+                int n = Calibration.NameList.Count;
+
+                double[] comList = new double[n];
+                double[] resolutionList = new double[n];
+
+                for (int i = 0; i < n; i++)
+                {
+                    comList[i] = (Clusters[Calibration.NameList[i]] as IFData.Cluster).CentreOfMass;
+                    resolutionList[i] = (Clusters[Calibration.NameList[i]] as IFData.Cluster).Resolution;
+                }
+
+                Calibration.COMList = comList;
+                Calibration.ResolutionList = resolutionList;
+            }
+
+            if (Calibration.COMList == null || Calibration.MassOffsetList == null) throw new WorkspaceNotDefinedException("Resolution calibration points not specified.");
+
             switch (t)
             {
                 case Interpolation.Type.Polynomial:
-                    //int order = 3; // TODO will be defined by user from GUI
                     ResolutionInterpolation = new PolyInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), order);
                     break;
                 case Interpolation.Type.SplineNatural:

@@ -167,6 +167,8 @@ namespace IsotopeFit
             public int MaxIndex { get; set; }
             public double Area { get; set; }
             public double AreaError { get; set; }
+            public double MassOffset { get; set; }
+            public double Resolution { get; set; }
             public int RootIndex { get; set; }
 
             public Cluster()
@@ -213,6 +215,7 @@ namespace IsotopeFit
             internal Calibration()
             {
                 NameList = new List<string>();
+                Shape = new LineShape();
             }
 
             public class LineShape
