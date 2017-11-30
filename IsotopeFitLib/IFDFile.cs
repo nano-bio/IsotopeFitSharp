@@ -10,7 +10,6 @@ using DotNetDoctor.csmatio.types;
 
 namespace IsotopeFit
 {
-    [Obsolete]
     public static class IFDFile
     {
         /// <summary>
@@ -44,7 +43,6 @@ namespace IsotopeFit
             MLArray cArr = root["molecules"] as MLArray;
 
             int num = cArr.N;
-            //List<IFData.Cluster> Molecules = new List<IFData.Cluster>(num);
             OrderedDictionary clusters = new OrderedDictionary();
 
             for (int i = 0; i < num; i++)
