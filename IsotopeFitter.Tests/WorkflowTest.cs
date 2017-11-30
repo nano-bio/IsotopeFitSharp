@@ -11,7 +11,7 @@ using System.Reflection;
 using CSparse.Double;
 
 using IsotopeFit;
-using IsotopeFit.Numerics;
+//using IsotopeFit.Numerics;
 
 namespace IsotopeFitter.Tests
 {
@@ -23,7 +23,7 @@ namespace IsotopeFitter.Tests
         [Test, Category("IsotopeFitter")]
         public void WorkflowTests()
         {
-            MathNet.Numerics.Control.UseNativeMKL();
+            //MathNet.Numerics.Control.UseNativeMKL();
 
             Workspace W = new Workspace(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\finaltestfile.ifd");
 
@@ -121,7 +121,7 @@ namespace IsotopeFitter.Tests
 
             for (int i = 0; i < resCoef.Count; i++)
             {
-                Assert.AreEqual(resCoef[i], (w.ResolutionInterpolation as PolyInterpolation).Coefs[i], 1e-9, "mass offset check failed at index {0}", i);
+                Assert.AreEqual(resCoef[i], (w.ResolutionInterpolation as PolyInterpolation).Coefs[i], 1e-9, "resolution check failed at index {0}", i);
             }
         }
 

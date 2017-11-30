@@ -12,8 +12,6 @@ namespace IsotopeFit
     //[ComVisible(true)]
     public static class IFData
     {
-        //TODO: those vectors will maybe have to be changed to C arrays for better python compatibility
-
         /// <summary>
         /// Utility function that converts a 2D array into a MathNet vector.
         /// </summary>
@@ -134,14 +132,15 @@ namespace IsotopeFit
             /// <summary>
             /// Creates new storage for raw data and populates it with supplied data.
             /// </summary>
+            /// <remarks>The <paramref name="data"/> is required to have a Nx2 dimension.</remarks>
             /// <param name="data">Data to be stored in the new instance.</param>
             internal Spectrum(double[][] data)
             {
-                //TODO: include the check to determine is the array is MxN or NxM
+                if (data == null || data[0].Length != 2) throw new WorkspaceNotDefinedException("The supplied data are invalid.");
 
                 RawLength = data.Length;
-                RawMassAxis = new double[RawLength];  //Vector<double>.Build.Dense(RawLength, 0);
-                RawSignalAxis = new double[RawLength];  //Vector<double>.Build.Dense(RawLength, 0);
+                RawMassAxis = new double[RawLength];
+                RawSignalAxis = new double[RawLength];
 
                 for (int i = 0; i < RawLength; i++)
                 {

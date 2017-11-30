@@ -63,7 +63,7 @@ namespace IsotopeFit
         {
             //TODO: this function can be rewritten to work with sparse matrices and vectors - faster, less ram consumption, nicer
 
-            //TODO: this needs to be set at the start of all calculations, right after Isotopefitter is called
+            //TODO: this can be set here as well, we dont really call that many mathnet functions
             //MathNet.Numerics.Control.UseNativeMKL();
             //MathNet.Numerics.Control.UseMultiThreading();
 
@@ -71,13 +71,8 @@ namespace IsotopeFit
             int m = C.RowCount;
             int n = C.ColumnCount;
 
-            
-
             // related to matrix C
-            //Matrix<double> CT = C.Transpose();
             SparseMatrix CT = (SparseMatrix)C.Transpose();
-
-            //double[][] Carr = C.ToColumnArrays();
             double[][] Carr = new double[C.ColumnCount][];  //TODO: not effective
 
             for (int i = 0; i < C.ColumnCount; i++)

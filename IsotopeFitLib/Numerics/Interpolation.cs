@@ -22,9 +22,8 @@ namespace IsotopeFit
             PCHIP
         }
 
-        public abstract double Evaluate(double x); // TODO changed to public, because of InterpolationTests.cs
-        
-        public abstract double[] Evaluate(double[] x); // TODO changed to public, because of InterpolationTests.cs
+        public abstract double Evaluate(double x);        
+        public abstract double[] Evaluate(double[] x);
 
         [Serializable]
         public class InterpolationException : Exception

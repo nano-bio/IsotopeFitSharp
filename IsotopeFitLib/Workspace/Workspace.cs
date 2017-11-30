@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 
-using IsotopeFit.Numerics;
+//using IsotopeFit.Numerics;
 
 namespace IsotopeFit
 {
@@ -25,6 +25,8 @@ namespace IsotopeFit
         /// </summary>
         public Workspace()
         {
+            MathNet.Numerics.Control.UseNativeMKL();
+
             SpectralData = new IFData.Spectrum();
             Clusters = new OrderedDictionary();
             Calibration = new IFData.Calibration();
@@ -32,13 +34,14 @@ namespace IsotopeFit
         }
 
         /// <summary>
-        /// Create an IsotopeFit workspace and load an IFD file into it.
+        /// Create an IsotopeFit workspace and load an IFD/IFJ file into it.
         /// </summary>
         /// <param name="IFDfile">Path to the IFD file to be loaded.</param>
         public Workspace(string path)
         {
-            LoadIFDFile(path);
-            IFDLoaded = true;
+            MathNet.Numerics.Control.UseNativeMKL();
+
+            LoadIFDFile(path);            
         }
 
         #endregion
@@ -49,6 +52,9 @@ namespace IsotopeFit
 
         #region Properties
 
+        /// <summary>
+        /// Object containing spectral data, both raw and calibrated.
+        /// </summary>
         public IFData.Spectrum SpectralData { get; set; }
 
         /// <summary>
@@ -85,7 +91,7 @@ namespace IsotopeFit
         public double SearchRange { get; set; }
 
         public Interpolation ResolutionInterpolation { get; private set; }
-        public DesignMtrx DesignMatrix { get; internal set; }
+        public DesignMtrx DesignMatrix { get; private set; }
 
         public WorkspaceStatus Status { get; private set; }
 
@@ -101,6 +107,8 @@ namespace IsotopeFit
         /// <param name="path">Path to the IFD file.</param>
         public void LoadIFDFile(string path)
         {
+            //TODO: make more robust, recognize the filetype
+
             var rootElement = IFDFile.Open(path);
 
             SpectralData = IFDFile.ReadRawData(rootElement);
@@ -109,12 +117,15 @@ namespace IsotopeFit
             Clusters = IFDFile.ReadMolecules(rootElement);
             Calibration = IFDFile.ReadCalibration(rootElement);
             BaselineCorrData = IFDFile.ReadBackgroundCorr(rootElement);
+
+            IFDLoaded = true;
         }
 
         /// <summary>
-        /// Calculates baseline corrected signal from raw signal data and baseline correction points. Stores the result in the Workspace.SpectralData.SignalAxis property.
+        /// Calculates baseline corrected signal from raw signal data and baseline correction points. Stores the result in the <see cref="Workspace.SpectralData.SignalAxis"/> property.
         /// </summary>
         /// <remarks>Uses the PCHIP interpolation.</remarks>
+        /// <exception cref="WorkspaceNotDefinedException">Thrown when some of the required data have not been loaded in the <see cref="Workspace"/>.</exception>
         public void CorrectBaseline()
         {
             //TODO: can be shortened/optimized
@@ -144,6 +155,7 @@ namespace IsotopeFit
         /// </summary>
         /// <param name="interpType">Type of the interpolation to be used.</param>
         /// <param name="order">Order of the polynomial interpolation. This is relevant only for the polynomial interpolation.</param>
+        /// <exception cref="WorkspaceNotDefinedException">Thrown when some of the required data have not been loaded in the <see cref="Workspace"/>.</exception>
         public void CorrectMassOffset(Interpolation.Type interpType, int order)
         {
             //TODO: this can be cleaned/optimized, it is an ugly mess right now
@@ -173,27 +185,23 @@ namespace IsotopeFit
 
             if (Calibration.COMList == null || Calibration.MassOffsetList == null) throw new WorkspaceNotDefinedException("Mass offset calibration points not specified.");
 
-            int massAxisLength = SpectralData.RawLength;    //TODO: might want to use the cropped length as well
-            int fitDataLength = Calibration.COMList.Length;
+            //int massAxisLength = SpectralData.RawLength;    //TODO: might want to use the cropped length as well
+            //int fitDataLength = Calibration.COMList.Length;
 
             // generate the x-axis for the fit
             double xAxisMin = SpectralData.RawMassAxis.Min();
             double xAxisMax = SpectralData.RawMassAxis.Max();
 
-            int xAxisLength = (int)((xAxisMax - xAxisMin) / 0.01);   //TODO: allow to set granularity of the x axis
-            MathNet.Numerics.LinearAlgebra.Vector<double> xAxis = MathNet.Numerics.LinearAlgebra.Vector<double>.Build.Dense(xAxisLength);
+            int xAxisLength = (int)((xAxisMax - xAxisMin) / 0.01);   //TODO: allow to set granularity of the x axis?
+            //MathNet.Numerics.LinearAlgebra.Vector<double> xAxis = MathNet.Numerics.LinearAlgebra.Vector<double>.Build.Dense(xAxisLength);
+            double[] xAxis = new double[xAxisLength];
 
             for (int i = 0; i < xAxisLength; i++)
             {
                 xAxis[i] = xAxisMin + i * 0.01;
             }
 
-            // Will hold evaluated data from the first fit and serve as x-axis (yes, x-axis) in the second fit. Because the fit needs to be inverted.
-            double[] yAxis = new double[xAxisLength];
-
-            // TODO: temporarily hardcoded for the spline not-a-knot
-            //PPInterpolation massOffset = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.MassOffsetList.ToArray(), PPInterpolation.PPType.SplineNotAKnot);
-
+            // first interpolation
             Interpolation massOffset;
 
             switch (interpType)
@@ -214,17 +222,20 @@ namespace IsotopeFit
                     throw new Interpolation.InterpolationException("Unknown interpolation type specified.");
             }
 
+            // Will hold evaluated data from the first fit and serve as x-axis (yes, x-axis) in the second fit. Because the fit needs to be inverted.
             // Evaluation of the fit at positions given by generated x-axis and storing the correction in YAxis vector.
-            yAxis = massOffset.Evaluate(xAxis.ToArray());
+            double[] yAxis = new double[xAxisLength];
+            //yAxis = massOffset.Evaluate(xAxis.ToArray());
 
             for (int i = 0; i < xAxisLength; i++)
             {
-                yAxis[i] += xAxis[i];
+                //yAxis[i] += xAxis[i];
+                yAxis[i] = massOffset.Evaluate(xAxis[i]) + xAxis[i];
             }
 
             // This is a sanity check for YAxis monotonicity. That is required by the second fit, where the YAxis server as x-axis. Matlab does this without telling.
             // This could be solved in a more safe way, if the user would actually specify endindex of the raw data, so the uncalibrated range can get cut out.
-            double yAxisMax = yAxis.Max();
+            double yAxisMax = yAxis.Max();  //TODO: this is not yet robust
             int yAxisMaxIndex = Array.BinarySearch(yAxis, yAxisMax);
             double[] yAxisNew = new double[xAxisLength];  //TODO: check if the length correct  //yAxisMaxIndex + 1
             Array.Copy(yAxis, yAxisNew, yAxisNew.Length);
@@ -236,23 +247,18 @@ namespace IsotopeFit
 
             correctedMassAxis = massOffset2.Evaluate(SpectralData.RawMassAxis.ToArray());
 
-            //TODO: this is the old C++ evaluation
-            //for (int i = 0; SpectralData.RawMassAxis[i] < yAxisNew.Last(); i++)
-            //{
-            //    correctedMassAxis[i] = massOffset2.Evaluate(SpectralData.RawMassAxis[i]);
-            //}
-
             // TODO: It might happen due to the monotonicity check, that during the second evaluation we hit a singularity. This cuts off the nonsense data.
 
             // Store the corrected mass axis in the appropriate place
-            SpectralData.MassAxis = correctedMassAxis;  //MathNet.Numerics.LinearAlgebra.Double.DenseVector.Build.DenseOfArray(correctedMassAxis);
+            SpectralData.MassAxis = correctedMassAxis;
         }
 
         /// <summary>
-        /// Fits the previously supplied resolution calibration data and stores the calibration results in the Workspace.ResolutionInterpolation property.
+        /// Fits the previously supplied resolution calibration data and stores the calibration results in the <see cref="Workspace.ResolutionInterpolation"/> property.
         /// </summary>
         /// <param name="t">Type of the interpolation to use.</param>
         /// <param name="order">Order of the polynomial interpolation. This is relevant only for the polynomial interpolation.</param>
+        /// <exception cref="WorkspaceNotDefinedException">Thrown when some of the required data have not been loaded in the <see cref="Workspace"/>.</exception>
         public void ResolutionFit(Interpolation.Type t, int order)
         {
             // check if we have loaded an IFD file, then we can continue. Otherwise we are working with IFJ or GUI and we need to create the lists.
@@ -297,7 +303,7 @@ namespace IsotopeFit
         }
 
         /// <summary>
-        /// Builds the design matrix from currently supplied data and stores the result in the Workspace.DesignMatrix property.
+        /// Builds the design matrix from currently supplied data and stores the result in the <see cref="Workspace.DesignMatrix"/> property.
         /// </summary>
         public void BuildDesignMatrix()
         {
@@ -307,7 +313,7 @@ namespace IsotopeFit
         }
 
         /// <summary>
-        /// Performs the fit of the data and stores the result in the Workspace.Abundances property.
+        /// Performs the fit of the data and stores the result in the <see cref="Workspace.Abundances"/> property.
         /// </summary>
         public void FitAbundances()
         {
