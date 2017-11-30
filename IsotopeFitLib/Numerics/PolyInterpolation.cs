@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using MathNet.Numerics;
 using MathNet.Numerics.LinearRegression;
 
-namespace IsotopeFit.Numerics
+namespace IsotopeFit
 {
     /// <summary>
     /// Derived class that handles polynomial interpolations and evaluation of data. 

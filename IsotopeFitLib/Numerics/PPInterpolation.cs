@@ -9,7 +9,7 @@ using MathNet.Numerics.Interpolation;
 using MathNet.Numerics.Properties;
 using System.IO;
 
-namespace IsotopeFit.Numerics
+namespace IsotopeFit
 {
     /// <summary>
     /// Derived class that handles piecewise polynomial interpolations and evaluation of data. 

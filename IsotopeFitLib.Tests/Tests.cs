@@ -9,7 +9,7 @@ using System.Reflection;
 
 using MathNet.Numerics.LinearAlgebra;
 
-using IsotopeFit.Numerics;
+//using IsotopeFit.Numerics;
 
 namespace IsotopeFit.Tests
 {

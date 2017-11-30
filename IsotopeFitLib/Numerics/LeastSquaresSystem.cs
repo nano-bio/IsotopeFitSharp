@@ -9,7 +9,7 @@ using MathNet.Numerics.LinearAlgebra.Factorization;
 
 using CSparse.Double;
 
-namespace IsotopeFit.Numerics
+namespace IsotopeFit
 {
     /// <summary>
     /// Class for handling least squares systems.

@@ -12,7 +12,7 @@ using MathNet.Numerics.LinearAlgebra.Double;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Storage;
 
-using IsotopeFit.Numerics;
+using IsotopeFit;
 
 namespace IsotopeFitLib.Tests
 {

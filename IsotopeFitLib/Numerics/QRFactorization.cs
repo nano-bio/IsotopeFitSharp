@@ -12,7 +12,7 @@ using MathNet.Numerics.LinearAlgebra.Storage;
 using CSparse.Double;
 using CSparse.Storage;
 
-namespace IsotopeFit.Numerics
+namespace IsotopeFit
 {
     public static partial class Algorithm
     {

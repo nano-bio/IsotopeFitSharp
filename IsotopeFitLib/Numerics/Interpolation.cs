@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IsotopeFit.Numerics
+namespace IsotopeFit
 {
     /// <summary>
     /// Base class that handles data interpolations and related data.
