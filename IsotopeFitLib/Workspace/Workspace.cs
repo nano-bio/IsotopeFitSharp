@@ -85,7 +85,8 @@ namespace IsotopeFit
         /// <summary>
         /// Object containing the fitted cluster abundances.
         /// </summary>
-        public double[] Abundances { get; private set; }
+        public OrderedDictionary Abundances { get; private set; }
+        //public double[] Abundances { get; private set; }
 
         public double FwhmRange { get; set; }
         public double SearchRange { get; set; }
@@ -324,7 +325,12 @@ namespace IsotopeFit
 
             lss.Solve();
 
-            Abundances = lss.Solution.ToArray();
+            Abundances = new OrderedDictionary(Clusters.Count);
+
+            for (int i = 0; i < Clusters.Count; i++)
+            {
+                Abundances.Add((Clusters[i] as IFData.Cluster).Name, lss.Solution[i]);
+            }
         }
 
         #endregion
