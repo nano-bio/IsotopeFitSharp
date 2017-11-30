@@ -10,22 +10,11 @@ using IsotopeFit.Numerics;
 
 namespace IsotopeFit
 {
-   /*
-    * TODO:
-    * 1) zbastlit design matrix a ako posledny stlpec dat vektor pozorovani
-    * 2) transponovat a napchat do csparse
-    * 3) urobit QR
-    * 4) vyrypat R a narezat ho na skutocne R a faktorizovany vektor pozorovani
-    * 5) pokracovat v NNLS
-    * 
-    * Volitelne skusit ako si s ulohou poradi CSparse leasqr solver.
-    */
-
-    [ComVisible(true)]  //TODO: the ComVisible attribute can be set globally for the whole library. might be nicer.
+    //[ComVisible(true)]
     public partial class Workspace
     {
         #region Fields
-        //public DesignMtrx designMatrix;
+        
 
         #endregion
 
@@ -37,10 +26,9 @@ namespace IsotopeFit
         public Workspace()
         {
             SpectralData = new IFData.Spectrum();
+            Clusters = new OrderedDictionary();
             Calibration = new IFData.Calibration();
             BaselineCorrData = new IFData.BaselineCorr();
-
-            Clusters = new OrderedDictionary();
         }
 
         /// <summary>
@@ -110,7 +98,6 @@ namespace IsotopeFit
         /// Loads the contents of an IFD file into the workspace.
         /// </summary>
         /// <param name="path">Path to the IFD file.</param>
-        [Obsolete]
         public void LoadIFDFile(string path)
         {
             var rootElement = IFDFile.Open(path);

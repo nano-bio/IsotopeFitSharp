@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 using MathNet.Numerics.LinearAlgebra;
 
 namespace IsotopeFit
 {
+    //[ComVisible(true)]
     public static class IFData
     {
         //TODO: those vectors will maybe have to be changed to C arrays for better python compatibility
@@ -167,9 +169,9 @@ namespace IsotopeFit
             public double AreaError { get; set; }
             public int RootIndex { get; set; }
 
-            internal Cluster()
+            public Cluster()
             {
-                //PeakData = new IsotopeData();
+                PeakData = new IsotopeData();
             }
 
             /// <summary>
@@ -180,10 +182,12 @@ namespace IsotopeFit
                 public double[] Mass { get; set; }
                 public double[] Abundance { get; set; }
 
+                internal IsotopeData() { }
+
                 internal IsotopeData(double[][] data)
                 {
-                    Mass = new double[data.Length]; //Vector<double>.Build.Dense(data.Length, 0);
-                    Abundance = new double[data.Length]; //Vector<double>.Build.Dense(data.Length, 0);
+                    Mass = new double[data.Length];
+                    Abundance = new double[data.Length];
 
                     for (int i = 0; i < data.Length; i++)
                     {
@@ -203,12 +207,12 @@ namespace IsotopeFit
             public string ResolutionMethod { get; set; }
             public int MassOffsetParam { get; set; }
             public int ResolutionParam { get; set; }
-            public List<string> Namelist { get; set; }
+            public List<string> NameList { get; set; }
             public LineShape Shape { get; set; }
 
             internal Calibration()
             {
-                Namelist = new List<string>();
+                NameList = new List<string>();
             }
 
             public class LineShape
