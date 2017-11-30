@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,6 +39,8 @@ namespace IsotopeFit
             SpectralData = new IFData.Spectrum();
             Calibration = new IFData.Calibration();
             BaselineCorrData = new IFData.BaselineCorr();
+
+            Clusters = new OrderedDictionary();
         }
 
         /// <summary>
@@ -72,7 +75,7 @@ namespace IsotopeFit
         /// <summary>
         /// Object containing the clusters to be fitted.
         /// </summary>
-        public List<IFData.Cluster> Cluster { get; set; }   //TODO: we might need to change the type from list to something custom and add helper functions to add and remove entries. I dont know how the List<> works when binding with Python.
+        public OrderedDictionary Clusters { get; set; }
 
         /// <summary>
         /// Object containing the data necessary for mass offset correction, resolution fit and peak shape.
@@ -84,6 +87,9 @@ namespace IsotopeFit
         /// </summary>
         public IFData.BaselineCorr BaselineCorrData { get; set; }
 
+        /// <summary>
+        /// Object containing the fitted cluster abundances.
+        /// </summary>
         public double[] Abundances { get; private set; }
 
         public double FwhmRange { get; set; }
@@ -93,6 +99,8 @@ namespace IsotopeFit
         public DesignMtrx DesignMatrix { get; internal set; }
 
         public WorkspaceStatus Status { get; private set; }
+
+
 
         #endregion
 
@@ -110,7 +118,7 @@ namespace IsotopeFit
             SpectralData = IFDFile.ReadRawData(rootElement);
             StartIndex = IFDFile.ReadStartIndex(rootElement);
             EndIndex = IFDFile.ReadEndIndex(rootElement);
-            Cluster = IFDFile.ReadMolecules(rootElement);
+            Clusters = IFDFile.ReadMolecules(rootElement);
             Calibration = IFDFile.ReadCalibration(rootElement);
             BaselineCorrData = IFDFile.ReadBackgroundCorr(rootElement);
         }
@@ -154,6 +162,7 @@ namespace IsotopeFit
         public void CorrectMassOffset(Interpolation.Type interpType, int order)
         {
             //TODO: this can be cleaned/optimized, it is an ugly mess right now
+            //TODO: implement check for the Calibration.Namelist and then decide which strategy will we follow
 
             if (SpectralData.RawMassAxis == null) throw new WorkspaceNotDefinedException("Raw mass axis not specified.");
             if (Calibration.COMList == null || Calibration.MassOffsetList == null) throw new WorkspaceNotDefinedException("Mass offset calibration points not specified.");
@@ -266,7 +275,7 @@ namespace IsotopeFit
         public void BuildDesignMatrix()
         {
             // TODO: merge this with the fit abundances maybe? If we do the design matrix updating, we will still need this function.
-            DesignMatrix = new DesignMtrx(SpectralData, Cluster, Calibration, ResolutionInterpolation);
+            DesignMatrix = new DesignMtrx(SpectralData, Clusters, Calibration, ResolutionInterpolation);
             DesignMatrix.Build();
         }
 

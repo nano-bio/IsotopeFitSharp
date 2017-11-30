@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -36,11 +37,23 @@ namespace IsotopeFit
             /// <summary>
             /// Create new design matrix and initialize data sources for further calculations.
             /// </summary>
-            internal DesignMtrx(IFData.Spectrum spectrum, List<IFData.Cluster> molecules, IFData.Calibration calibration, Interpolation resolutionInterp)
+            //internal DesignMtrx(IFData.Spectrum spectrum, List<IFData.Cluster> molecules, IFData.Calibration calibration, Interpolation resolutionInterp)
+            //{
+            //    massAxis = spectrum.MassAxis.ToArray();
+            //    observationVector = (MathNet.Numerics.LinearAlgebra.Double.SparseVector)MathNet.Numerics.LinearAlgebra.Double.SparseVector.Build.SparseOfArray(spectrum.SignalAxis);
+            //    //Molecules = molecules;
+            //    Calibration = calibration;
+            //    resolutionFit = resolutionInterp;
+
+            //    Rows = spectrum.RawLength;
+            //    Cols = molecules.Count;
+            //}
+
+            internal DesignMtrx(IFData.Spectrum spectrum, OrderedDictionary molecules, IFData.Calibration calibration, Interpolation resolutionInterp)
             {
                 massAxis = spectrum.MassAxis.ToArray();
                 observationVector = (MathNet.Numerics.LinearAlgebra.Double.SparseVector)MathNet.Numerics.LinearAlgebra.Double.SparseVector.Build.SparseOfArray(spectrum.SignalAxis);
-                Molecules = molecules;
+                MoleculesDict = molecules;
                 Calibration = calibration;
                 resolutionFit = resolutionInterp;
 
@@ -53,7 +66,9 @@ namespace IsotopeFit
             #region Properties
 
             //private Vector<double> MassAxis { get; set; }
-            private List<IFData.Cluster> Molecules { get; set; }
+            //private List<IFData.Cluster> Molecules { get; set; }
+            private OrderedDictionary MoleculesDict { get; set; }
+
             private IFData.Calibration Calibration { get; set; }            
 
             public SparseMatrix Storage { get; private set; }   //TODO: maybe a field would suffice and change it directly to a sparse matrix
@@ -193,7 +208,8 @@ namespace IsotopeFit
             {
                 //TODO: maybe we could generate only indices and values and return just that. it gets assebled to a matrix manually anyway. might have lower ram demands.
 
-                int isotopePeakCount = Molecules[moleculeIndex].PeakData.Mass.Length;
+                //int isotopePeakCount = Molecules[moleculeIndex].PeakData.Mass.Length;
+                int isotopePeakCount = (MoleculesDict[moleculeIndex] as IFData.Cluster).PeakData.Mass.Length;
                 MathNet.Numerics.LinearAlgebra.Double.SparseVector currentColumn = (MathNet.Numerics.LinearAlgebra.Double.SparseVector)MathNet.Numerics.LinearAlgebra.Double.SparseVector.Build.Sparse(Rows);  //TODO: we can make this building also manually, to be more effective - and better as well
 
                 // loop through all isotope peaks of the current molecule
@@ -206,8 +222,10 @@ namespace IsotopeFit
                     Vector<double> breaks;
                     Matrix<double> coefs;
 
-                    mass = Molecules[moleculeIndex].PeakData.Mass[i];
-                    abundance = Molecules[moleculeIndex].PeakData.Abundance[i];  // area of the line and abundance are proportional
+                    //mass = Molecules[moleculeIndex].PeakData.Mass[i];
+                    mass = (MoleculesDict[moleculeIndex] as IFData.Cluster).PeakData.Mass[i];
+                    //abundance = Molecules[moleculeIndex].PeakData.Abundance[i];  // area of the line and abundance are proportional
+                    abundance = (MoleculesDict[moleculeIndex] as IFData.Cluster).PeakData.Abundance[i];  // area of the line and abundance are proportional
                     resolution = bs.resolutionFit.Evaluate(mass);
                     fwhm = mass / resolution;
 

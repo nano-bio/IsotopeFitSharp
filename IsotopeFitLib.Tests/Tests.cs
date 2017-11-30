@@ -176,7 +176,7 @@ namespace IsotopeFit.Tests
             Assert.AreEqual(416375, Wrk.EndIndex);
 
             // molecules check
-            IFData.Cluster M = Wrk.Cluster[121];
+            IFData.Cluster M = Wrk.Clusters[121] as IFData.Cluster;
             Assert.AreEqual(2.45148615736600e+2d, M.PeakData.Mass[1], 1e-12);
             Assert.AreEqual(8.80748376064873e-2d, M.PeakData.Abundance[1], 1e-12);
             Assert.AreEqual("[TMAl][DMAl - 1H]3[H]4", M.Name);
@@ -196,7 +196,7 @@ namespace IsotopeFit.Tests
             Assert.AreEqual("Polynomial", Wrk.Calibration.ResolutionMethod);
             Assert.AreEqual(0, Wrk.Calibration.MassOffsetParam);
             Assert.AreEqual(2, Wrk.Calibration.ResolutionParam);
-            Assert.AreEqual("[DMAl][N2][TMAl][H]", Wrk.Calibration.Namelist[46]);
+            Assert.AreEqual("[DMAl][N2][TMAl][H]", Wrk.Calibration.NameList[46]);
 
             //shape check
             Assert.AreEqual("pp", Wrk.Calibration.Shape.Form);

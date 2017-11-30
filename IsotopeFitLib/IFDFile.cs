@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,26 +39,24 @@ namespace IsotopeFit
             return (int)(root["endind"] as MLDouble).GetArray()[0][0];
         }
 
-        internal static List<IFData.Cluster> ReadMolecules(MLStructure root)
+        internal static OrderedDictionary ReadMolecules(MLStructure root)
         {
-            //root["molecules"]
-            //str = (Arr as MLStructure)["peakdata", i] as MLArray;
-            //m.PeakData = (str as MLDouble).GetArray();
+            MLArray cArr = root["molecules"] as MLArray;
 
-            MLArray Mol = root["molecules"] as MLArray;
-
-            int num = Mol.N;
-            List<IFData.Cluster> Molecules = new List<IFData.Cluster>(num);
+            int num = cArr.N;
+            //List<IFData.Cluster> Molecules = new List<IFData.Cluster>(num);
+            OrderedDictionary clusters = new OrderedDictionary();
 
             for (int i = 0; i < num; i++)
             {
-                Molecules.Add(ReadMolecule(Mol, i));
+                IFData.Cluster c = ReadCluster(cArr, i);
+                clusters.Add(c.Name, c);
             }
 
-            return Molecules;
+            return clusters;
         }
 
-        private static IFData.Cluster ReadMolecule(MLArray molecule, int index)
+        private static IFData.Cluster ReadCluster(MLArray molecule, int index)
         {
             IFData.Cluster M = new IFData.Cluster();
 
@@ -128,7 +127,7 @@ namespace IsotopeFit
             dataField = (Cal as MLStructure)["namelist"];
             for (int i = 0; i < dataField.N; i++)
             {
-                C.Namelist.Add(((dataField as MLCell).Cells[i] as MLChar).GetString(0));
+                C.NameList.Add(((dataField as MLCell).Cells[i] as MLChar).GetString(0));
             }
 
             C.Shape = ReadShape((Cal as MLStructure)["shape"]);
