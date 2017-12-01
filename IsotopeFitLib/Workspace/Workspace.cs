@@ -126,7 +126,7 @@ namespace IsotopeFit
         /// Calculates baseline corrected signal from raw signal data and baseline correction points. Stores the result in the <see cref="Workspace.SpectralData"/>.SignalAxis property.
         /// </summary>
         /// <remarks>
-        /// This method uses the PCHIP interpolation.
+        /// This method uses the PCHIP interpolation to obtain the baseline values, which are stored in the <see cref="Workspace.SpectralData"/>.Baseline property.
         /// Optional arguments are meant to be used by GUI to ease the process of loading data to the <see cref="Workspace"/>. If not supplied, the funcion will use previously stored values.
         /// </remarks>
         /// <param name="xAxis">Optional x-axis for the baseline correction.</param>
@@ -151,12 +151,14 @@ namespace IsotopeFit
             //TODO: Evaluating the bg correction for the whole range might be useless. Specifiyng a mass range would make sense.
             //TODO: crop the mass axis to the last specified point of the baseline? might break usefulness.
             PPInterpolation baselineFit = new PPInterpolation(BaselineCorrData.XAxis, BaselineCorrData.YAxis, PPInterpolation.PPType.PCHIP);    // in the matlab code it is also hard-coded pchip
-                        
+
+            SpectralData.Baseline = new double[massAxisLength];
             SpectralData.SignalAxis = new double[massAxisLength];
 
             for (int i = 0; i < massAxisLength; i++)
             {
-                SpectralData.SignalAxis[i] = SpectralData.RawSignalAxis[i] - baselineFit.Evaluate(SpectralData.RawMassAxis[i]);
+                SpectralData.Baseline[i] = baselineFit.Evaluate(SpectralData.RawMassAxis[i]);
+                SpectralData.SignalAxis[i] = SpectralData.RawSignalAxis[i] - SpectralData.Baseline[i];
             }
         }
 

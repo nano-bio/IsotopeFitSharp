@@ -106,6 +106,11 @@ namespace IsotopeFit
             /// </summary>
             public double[] SignalAxis { get; internal set; }
 
+            /// <summary>
+            /// Contains the last calculated baseline that was subtracted from <see cref="Spectrum.RawSignalAxis"/> to obtain <see cref="Spectrum.SignalAxis"/>.
+            /// </summary>
+            public double[] Baseline { get; internal set; }
+
             #endregion
 
             #region Constructors
