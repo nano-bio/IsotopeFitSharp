@@ -123,17 +123,26 @@ namespace IsotopeFit
         }
 
         /// <summary>
-        /// Calculates baseline corrected signal from raw signal data and baseline correction points. Stores the result in the <see cref="Workspace.SpectralData.SignalAxis"/> property.
+        /// Calculates baseline corrected signal from raw signal data and baseline correction points. Stores the result in the <see cref="Workspace.SpectralData"/>.SignalAxis property.
         /// </summary>
-        /// <remarks>Uses the PCHIP interpolation.</remarks>
+        /// <remarks>
+        /// This method uses the PCHIP interpolation.
+        /// Optional arguments are meant to be used by GUI to ease the process of loading data to the <see cref="Workspace"/>. If not supplied, the funcion will use previously stored values.
+        /// </remarks>
+        /// <param name="xAxis">Optional x-axis for the baseline correction.</param>
+        /// <param name="yAxis">Optional y-axis for the baseline correction.</param>
         /// <exception cref="WorkspaceNotDefinedException">Thrown when some of the required data have not been loaded in the <see cref="Workspace"/>.</exception>
-        public void CorrectBaseline()
+        public void CorrectBaseline(double[] xAxis = null, double[] yAxis = null)
         {
-            //TODO: can be shortened/optimized
-
+            // raw spectral data are required
             if (SpectralData.RawSignalAxis == null || SpectralData.RawMassAxis == null) throw new WorkspaceNotDefinedException("Raw spectral data not specified.");
             if (SpectralData.RawSignalAxis.Length != SpectralData.RawMassAxis.Length) throw new WorkspaceNotDefinedException("Supplied spectral data axis have different lengths.");
 
+            // if there are optional background correction points specified, save them to the workspace and use those
+            if (xAxis != null) BaselineCorrData.XAxis = xAxis;
+            if (yAxis != null) BaselineCorrData.YAxis = yAxis;
+
+            // safety check, they can still be null in come use cases
             if (BaselineCorrData.XAxis == null || BaselineCorrData.YAxis == null) throw new WorkspaceNotDefinedException("Baseline correction points not specified.");
             if (BaselineCorrData.XAxis.Length != BaselineCorrData.YAxis.Length) throw new WorkspaceNotDefinedException("Supplied baseline correction point arrays have different lengths.");
 
@@ -141,7 +150,7 @@ namespace IsotopeFit
 
             //TODO: Evaluating the bg correction for the whole range might be useless. Specifiyng a mass range would make sense.
             //TODO: crop the mass axis to the last specified point of the baseline? might break usefulness.
-            PPInterpolation baselineFit = new PPInterpolation(BaselineCorrData.XAxis.ToArray(), BaselineCorrData.YAxis.ToArray(), PPInterpolation.PPType.PCHIP);    // in the matlab code it is also hard-coded pchip
+            PPInterpolation baselineFit = new PPInterpolation(BaselineCorrData.XAxis, BaselineCorrData.YAxis, PPInterpolation.PPType.PCHIP);    // in the matlab code it is also hard-coded pchip
                         
             SpectralData.SignalAxis = new double[massAxisLength];
 
@@ -152,39 +161,49 @@ namespace IsotopeFit
         }
 
         /// <summary>
-        /// Calculates mass axis corrected for mass offset from previously supplied calibration data and stores the result in the Workspace.SpectralData.MassAxis property.
+        /// Calculates mass axis corrected for mass offset from previously supplied calibration data and stores the result in the <see cref="Workspace.SpectralData"/>.MassAxis property.
         /// </summary>
+        /// <remarks>
+        /// In case of polynomial inerpolation, the order is considered the highest exponent value of the desired interpolating polynomial, e.g. order = 2 will produce quadratic polynomial.
+        /// Optional arguments are meant to be used by GUI to ease the process of loading data to the <see cref="Workspace"/>. If not supplied, the method will use previously stored values.
+        /// </remarks>
         /// <param name="interpType">Type of the interpolation to be used.</param>
-        /// <param name="order">Order of the polynomial interpolation. This is relevant only for the polynomial interpolation.</param>
-        /// <exception cref="WorkspaceNotDefinedException">Thrown when some of the required data have not been loaded in the <see cref="Workspace"/>.</exception>
-        public void CorrectMassOffset(Interpolation.Type interpType, int order)
+        /// <param name="order">Order of the polynomial interpolation. Ignored if any other interpolation type is selected.</param>
+        /// <param name="comList">Optional array of centre-of-mass points to be used for the correction.</param>
+        /// <param name="massOffsetList">Optional array of mass offset points to be used for the correction.</param>
+        /// <exception cref="WorkspaceNotDefinedException">Thrown when some of the required data have not been loaded in the <see cref="Workspace"/> or their lengths are different.</exception>
+        public void CorrectMassOffset(Interpolation.Type interpType, int order, double[] comList = null, double[] massOffsetList = null)
         {
             //TODO: this can be cleaned/optimized, it is an ugly mess right now
-            //TODO: implement check for the Calibration.Namelist and then decide which strategy will we follow
 
+            // required data
             if (SpectralData.RawMassAxis == null) throw new WorkspaceNotDefinedException("Raw mass axis not specified.");
 
-            // check if we have loaded an IFD file, then we can continue. Otherwise we are working with IFJ or GUI and we need to create the lists.
-            if (!IFDLoaded)
+            // there are three use cases
+            if (!IFDLoaded && comList == null && massOffsetList == null)    // this is the IFJFile or GUI use case, when the COMList and MassOffsetList must be built
             {
                 if (Calibration.NameList.Count == 0) throw new WorkspaceNotDefinedException("Calibration namelist empty.");
 
                 int n = Calibration.NameList.Count;
 
-                double[] comList = new double[n];
-                double[] massOffsetList = new double[n];
+                Calibration.COMList = new double[n];
+                Calibration.MassOffsetList = new double[n];
 
                 for (int i = 0; i < n; i++)
                 {
-                    comList[i] = (Clusters[Calibration.NameList[i]] as IFData.Cluster).CentreOfMass;
-                    massOffsetList[i] = (Clusters[Calibration.NameList[i]] as IFData.Cluster).MassOffset;
+                    Calibration.COMList[i] = (Clusters[Calibration.NameList[i]] as IFData.Cluster).CentreOfMass;
+                    Calibration.MassOffsetList[i] = (Clusters[Calibration.NameList[i]] as IFData.Cluster).MassOffset;
                 }
-
-                Calibration.COMList = comList;
-                Calibration.MassOffsetList = massOffsetList;
+            }
+            else    // this is the second use case for GUI, because only the GUI will supply the optional arguments if needed. IFDFile case just passes over those ifs
+            {
+                if (comList != null) Calibration.COMList = comList;
+                if (massOffsetList != null) Calibration.MassOffsetList = massOffsetList;
             }
 
+            // but we still need to check, because in the third use case (IFDFile) the data must still be valid
             if (Calibration.COMList == null || Calibration.MassOffsetList == null) throw new WorkspaceNotDefinedException("Mass offset calibration points not specified.");
+            if (Calibration.COMList.Length != Calibration.MassOffsetList.Length) throw new WorkspaceNotDefinedException("Supplied mass offset correction point arrays have different lengths.");
 
             //int massAxisLength = SpectralData.RawLength;    //TODO: might want to use the cropped length as well
             //int fitDataLength = Calibration.COMList.Length;
@@ -257,37 +276,47 @@ namespace IsotopeFit
         /// <summary>
         /// Fits the previously supplied resolution calibration data and stores the calibration results in the <see cref="Workspace.ResolutionInterpolation"/> property.
         /// </summary>
+        /// <remarks>
+        /// In case of polynomial inerpolation, the order is considered the highest exponent value of the desired interpolating polynomial, e.g. order = 2 will produce quadratic polynomial.
+        /// Optional arguments are meant to be used by GUI to ease the process of loading data to the <see cref="Workspace"/>. If not supplied, the method will use previously stored values.
+        /// </remarks>
         /// <param name="t">Type of the interpolation to use.</param>
         /// <param name="order">Order of the polynomial interpolation. This is relevant only for the polynomial interpolation.</param>
-        /// <exception cref="WorkspaceNotDefinedException">Thrown when some of the required data have not been loaded in the <see cref="Workspace"/>.</exception>
-        public void ResolutionFit(Interpolation.Type t, int order)
+        /// <param name="comList">Optional array of centre-of-mass points to be used for the calibration.</param>
+        /// <param name="resolutionList">Optional array of resolution points to be used for the calibration.</param>
+        /// <exception cref="WorkspaceNotDefinedException">Thrown when some of the required data have not been loaded in the <see cref="Workspace"/> or their lengths are different.</exception>
+        public void ResolutionFit(Interpolation.Type t, int order, double[] comList = null, double[] resolutionList = null)
         {
-            // check if we have loaded an IFD file, then we can continue. Otherwise we are working with IFJ or GUI and we need to create the lists.
-            if (!IFDLoaded)
+            // there are three use cases
+            if (!IFDLoaded && comList == null && resolutionList == null) // this covers the use cases for IFJFile and GUI, when the COMList and ResolutionList have to be built.
             {
                 if (Calibration.NameList.Count == 0) throw new WorkspaceNotDefinedException("Calibration namelist empty.");
 
                 int n = Calibration.NameList.Count;
 
-                double[] comList = new double[n];
-                double[] massOffsetList = new double[n];
+                Calibration.COMList = new double[n];
+                Calibration.ResolutionList = new double[n];
 
                 for (int i = 0; i < n; i++)
                 {
-                    comList[i] = (Clusters[Calibration.NameList[i]] as IFData.Cluster).CentreOfMass;
-                    massOffsetList[i] = (Clusters[Calibration.NameList[i]] as IFData.Cluster).MassOffset;
+                    Calibration.COMList[i] = (Clusters[Calibration.NameList[i]] as IFData.Cluster).CentreOfMass;
+                    Calibration.ResolutionList[i] = (Clusters[Calibration.NameList[i]] as IFData.Cluster).Resolution;
                 }
-
-                Calibration.COMList = comList;
-                Calibration.MassOffsetList = massOffsetList;
+            }
+            else    // this is the second use case for GUI, because only the GUI will supply the optional arguments if needed. IFDFile case just passes over those ifs
+            {
+                if (comList != null) Calibration.COMList = comList;
+                if (resolutionList != null) Calibration.ResolutionList = resolutionList;
             }
 
-            if (Calibration.COMList == null || Calibration.MassOffsetList == null) throw new WorkspaceNotDefinedException("Resolution calibration points not specified.");
+            // safety check, because in the third use case (IFDFile) the data must still be valid
+            if (Calibration.COMList == null || Calibration.ResolutionList == null) throw new WorkspaceNotDefinedException("Resolution calibration points not specified.");
+            if (Calibration.COMList.Length != Calibration.ResolutionList.Length) throw new WorkspaceNotDefinedException("Supplied resolution calibration point arrays have different lengths.");
 
             switch (t)
             {
                 case Interpolation.Type.Polynomial:
-                    ResolutionInterpolation = new PolyInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), order);
+                    ResolutionInterpolation = new PolyInterpolation(Calibration.COMList, Calibration.ResolutionList, order);
                     break;
                 case Interpolation.Type.SplineNatural:
                     throw new NotImplementedException("Natural spline interpolation has not yet been implemented.");
