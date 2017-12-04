@@ -1,0 +1,150 @@
+\hypertarget{class_isotope_fit_1_1_poly_interpolation}{}\section{Isotope\+Fit.\+Poly\+Interpolation Class Reference}
+\label{class_isotope_fit_1_1_poly_interpolation}\index{Isotope\+Fit.\+Poly\+Interpolation@{Isotope\+Fit.\+Poly\+Interpolation}}
+
+
+Derived class that handles polynomial interpolations and evaluation of data.  
+
+
+Inheritance diagram for Isotope\+Fit.\+Poly\+Interpolation\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_isotope_fit_1_1_poly_interpolation}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_isotope_fit_1_1_poly_interpolation_a0ad4d407eb80baf6c38b3b752048e285}{Poly\+Interpolation} (double\mbox{[}$\,$\mbox{]} x, double\mbox{[}$\,$\mbox{]} y, int order)
+\begin{DoxyCompactList}\small\item\em Creates new interpolation object and calculates polynomial interpolation parameters. \end{DoxyCompactList}\item 
+\hyperlink{class_isotope_fit_1_1_poly_interpolation_afb26a6b07ac8ca8fb710682c437f6d7f}{Poly\+Interpolation} (double\mbox{[}$\,$\mbox{]} coefs)
+\begin{DoxyCompactList}\small\item\em Creates new interpolation object and stores already known interpolation coeficients. \end{DoxyCompactList}\item 
+override double \hyperlink{class_isotope_fit_1_1_poly_interpolation_a9638e5613d8a6537b73db6fe37ccd9e8}{Evaluate} (double x)
+\begin{DoxyCompactList}\small\item\em Initializes a polynomial evaluation of a selected point x. \end{DoxyCompactList}\item 
+override double \mbox{[}$\,$\mbox{]} \hyperlink{class_isotope_fit_1_1_poly_interpolation_ad6c5b40f7a718d934c5a3ed7f55c5eb3}{Evaluate} (double\mbox{[}$\,$\mbox{]} x)
+\begin{DoxyCompactList}\small\item\em Initializes a polynomial evaluation of a selected array of points x. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_isotope_fit_1_1_poly_interpolation_a15443a5303b14cf3a4257209c356d5d8}\label{class_isotope_fit_1_1_poly_interpolation_a15443a5303b14cf3a4257209c356d5d8}} 
+double \mbox{[}$\,$\mbox{]} {\bfseries Coefs}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_isotope_fit_1_1_poly_interpolation_a9145d70d1259efee946f5deed75666d8}\label{class_isotope_fit_1_1_poly_interpolation_a9145d70d1259efee946f5deed75666d8}} 
+int {\bfseries Order}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Derived class that handles polynomial interpolations and evaluation of data. 
+
+
+
+Definition at line 15 of file Poly\+Interpolation.\+cs.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_isotope_fit_1_1_poly_interpolation_a0ad4d407eb80baf6c38b3b752048e285}\label{class_isotope_fit_1_1_poly_interpolation_a0ad4d407eb80baf6c38b3b752048e285}} 
+\index{Isotope\+Fit\+::\+Poly\+Interpolation@{Isotope\+Fit\+::\+Poly\+Interpolation}!Poly\+Interpolation@{Poly\+Interpolation}}
+\index{Poly\+Interpolation@{Poly\+Interpolation}!Isotope\+Fit\+::\+Poly\+Interpolation@{Isotope\+Fit\+::\+Poly\+Interpolation}}
+\subsubsection{\texorpdfstring{Poly\+Interpolation()}{PolyInterpolation()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Isotope\+Fit.\+Poly\+Interpolation.\+Poly\+Interpolation (\begin{DoxyParamCaption}\item[{double \mbox{[}$\,$\mbox{]}}]{x,  }\item[{double \mbox{[}$\,$\mbox{]}}]{y,  }\item[{int}]{order }\end{DoxyParamCaption})}
+
+
+
+Creates new interpolation object and calculates polynomial interpolation parameters. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & Array of x values.\\
+\hline
+{\em y} & Array of y values.\\
+\hline
+{\em order} & Order of polynomial.\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 25 of file Poly\+Interpolation.\+cs.
+
+\mbox{\Hypertarget{class_isotope_fit_1_1_poly_interpolation_afb26a6b07ac8ca8fb710682c437f6d7f}\label{class_isotope_fit_1_1_poly_interpolation_afb26a6b07ac8ca8fb710682c437f6d7f}} 
+\index{Isotope\+Fit\+::\+Poly\+Interpolation@{Isotope\+Fit\+::\+Poly\+Interpolation}!Poly\+Interpolation@{Poly\+Interpolation}}
+\index{Poly\+Interpolation@{Poly\+Interpolation}!Isotope\+Fit\+::\+Poly\+Interpolation@{Isotope\+Fit\+::\+Poly\+Interpolation}}
+\subsubsection{\texorpdfstring{Poly\+Interpolation()}{PolyInterpolation()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Isotope\+Fit.\+Poly\+Interpolation.\+Poly\+Interpolation (\begin{DoxyParamCaption}\item[{double \mbox{[}$\,$\mbox{]}}]{coefs }\end{DoxyParamCaption})}
+
+
+
+Creates new interpolation object and stores already known interpolation coeficients. 
+
+Input polynomial coefficients have to be sorted by increasing power from left to right in array. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em coefs} & Array of polynomial coefficients.\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 47 of file Poly\+Interpolation.\+cs.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_isotope_fit_1_1_poly_interpolation_a9638e5613d8a6537b73db6fe37ccd9e8}\label{class_isotope_fit_1_1_poly_interpolation_a9638e5613d8a6537b73db6fe37ccd9e8}} 
+\index{Isotope\+Fit\+::\+Poly\+Interpolation@{Isotope\+Fit\+::\+Poly\+Interpolation}!Evaluate@{Evaluate}}
+\index{Evaluate@{Evaluate}!Isotope\+Fit\+::\+Poly\+Interpolation@{Isotope\+Fit\+::\+Poly\+Interpolation}}
+\subsubsection{\texorpdfstring{Evaluate()}{Evaluate()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily override double Isotope\+Fit.\+Poly\+Interpolation.\+Evaluate (\begin{DoxyParamCaption}\item[{double}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Initializes a polynomial evaluation of a selected point x. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & Single x value.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Single evaluated y value.
+\end{DoxyReturn}
+
+
+Implements \hyperlink{class_isotope_fit_1_1_interpolation}{Isotope\+Fit.\+Interpolation}.
+
+
+
+Definition at line 80 of file Poly\+Interpolation.\+cs.
+
+\mbox{\Hypertarget{class_isotope_fit_1_1_poly_interpolation_ad6c5b40f7a718d934c5a3ed7f55c5eb3}\label{class_isotope_fit_1_1_poly_interpolation_ad6c5b40f7a718d934c5a3ed7f55c5eb3}} 
+\index{Isotope\+Fit\+::\+Poly\+Interpolation@{Isotope\+Fit\+::\+Poly\+Interpolation}!Evaluate@{Evaluate}}
+\index{Evaluate@{Evaluate}!Isotope\+Fit\+::\+Poly\+Interpolation@{Isotope\+Fit\+::\+Poly\+Interpolation}}
+\subsubsection{\texorpdfstring{Evaluate()}{Evaluate()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily override double \mbox{[}$\,$\mbox{]} Isotope\+Fit.\+Poly\+Interpolation.\+Evaluate (\begin{DoxyParamCaption}\item[{double \mbox{[}$\,$\mbox{]}}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Initializes a polynomial evaluation of a selected array of points x. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & Array of x values.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Array of evaluated y values.
+\end{DoxyReturn}
+
+
+Implements \hyperlink{class_isotope_fit_1_1_interpolation}{Isotope\+Fit.\+Interpolation}.
+
+
+
+Definition at line 90 of file Poly\+Interpolation.\+cs.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Isotope\+Fit\+Lib/\+Numerics/Poly\+Interpolation.\+cs\end{DoxyCompactItemize}

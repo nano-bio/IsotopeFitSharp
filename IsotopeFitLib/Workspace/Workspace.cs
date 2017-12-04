@@ -11,6 +11,9 @@ using System.Runtime.InteropServices;
 namespace IsotopeFit
 {
     //[ComVisible(true)]
+	/// <summary>
+	/// This class is the main entry point for outside usage.
+	/// </summary>
     public partial class Workspace
     {
         #region Fields

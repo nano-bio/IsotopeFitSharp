@@ -1,0 +1,60 @@
+\hypertarget{class_isotope_fit_1_1_interpolation}{}\section{Isotope\+Fit.\+Interpolation Class Reference}
+\label{class_isotope_fit_1_1_interpolation}\index{Isotope\+Fit.\+Interpolation@{Isotope\+Fit.\+Interpolation}}
+
+
+Base class that handles data interpolations and related data.  
+
+
+Inheritance diagram for Isotope\+Fit.\+Interpolation\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_isotope_fit_1_1_interpolation}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_isotope_fit_1_1_interpolation_1_1_interpolation_exception}{Interpolation\+Exception}
+\end{DoxyCompactItemize}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_isotope_fit_1_1_interpolation_af374d540896ff406c38322a30a4477b4}\label{class_isotope_fit_1_1_interpolation_af374d540896ff406c38322a30a4477b4}} 
+enum {\bfseries Type} \{ {\bfseries Polynomial}, 
+{\bfseries Spline\+Natural}, 
+{\bfseries Spline\+Not\+A\+Knot}, 
+{\bfseries P\+C\+H\+IP}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_isotope_fit_1_1_interpolation_ac9c7f5985c6f956e03db0b0de233d514}\label{class_isotope_fit_1_1_interpolation_ac9c7f5985c6f956e03db0b0de233d514}} 
+abstract double {\bfseries Evaluate} (double x)
+\item 
+\mbox{\Hypertarget{class_isotope_fit_1_1_interpolation_afe9c495f3e3eae57b1019428f7f70192}\label{class_isotope_fit_1_1_interpolation_afe9c495f3e3eae57b1019428f7f70192}} 
+abstract double \mbox{[}$\,$\mbox{]} {\bfseries Evaluate} (double\mbox{[}$\,$\mbox{]} x)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_isotope_fit_1_1_interpolation_acf6347fae287029b998501472537d0a4}\label{class_isotope_fit_1_1_interpolation_acf6347fae287029b998501472537d0a4}} 
+double \mbox{[}$\,$\mbox{]} {\bfseries x\+Values}
+\item 
+\mbox{\Hypertarget{class_isotope_fit_1_1_interpolation_adaf07c17ecb29957a3daf18b35947468}\label{class_isotope_fit_1_1_interpolation_adaf07c17ecb29957a3daf18b35947468}} 
+double \mbox{[}$\,$\mbox{]} {\bfseries y\+Values}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Base class that handles data interpolations and related data. 
+
+
+
+Definition at line 12 of file Interpolation.\+cs.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Isotope\+Fit\+Lib/\+Numerics/Interpolation.\+cs\end{DoxyCompactItemize}
