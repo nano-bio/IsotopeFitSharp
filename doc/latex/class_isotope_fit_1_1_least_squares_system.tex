@@ -1,0 +1,75 @@
+\hypertarget{class_isotope_fit_1_1_least_squares_system}{}\section{Isotope\+Fit.\+Least\+Squares\+System Class Reference}
+\label{class_isotope_fit_1_1_least_squares_system}\index{Isotope\+Fit.\+Least\+Squares\+System@{Isotope\+Fit.\+Least\+Squares\+System}}
+
+
+Class for handling least squares systems.  
+
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_isotope_fit_1_1_least_squares_system_aec0b3973e7239d006b752a4e079f80d0}{Least\+Squares\+System} (Sparse\+Matrix des\+Mat, Vector$<$ double $>$ obs\+Vec)
+\begin{DoxyCompactList}\small\item\em Creates new least squares system and populates it with the supplied data. \end{DoxyCompactList}\item 
+void \hyperlink{class_isotope_fit_1_1_least_squares_system_ac72b8568e9ecb97077102658f56aba3f}{Solve} ()
+\begin{DoxyCompactList}\small\item\em Calls the least square solver method and stores the result in the Solution property. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_isotope_fit_1_1_least_squares_system_a843dc1bf5e21d7a6a6ac9d5339386f92}\label{class_isotope_fit_1_1_least_squares_system_a843dc1bf5e21d7a6a6ac9d5339386f92}} 
+Vector$<$ double $>$ {\bfseries Solution}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for handling least squares systems. 
+
+
+
+Definition at line 17 of file Least\+Squares\+System.\+cs.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_isotope_fit_1_1_least_squares_system_aec0b3973e7239d006b752a4e079f80d0}\label{class_isotope_fit_1_1_least_squares_system_aec0b3973e7239d006b752a4e079f80d0}} 
+\index{Isotope\+Fit\+::\+Least\+Squares\+System@{Isotope\+Fit\+::\+Least\+Squares\+System}!Least\+Squares\+System@{Least\+Squares\+System}}
+\index{Least\+Squares\+System@{Least\+Squares\+System}!Isotope\+Fit\+::\+Least\+Squares\+System@{Isotope\+Fit\+::\+Least\+Squares\+System}}
+\subsubsection{\texorpdfstring{Least\+Squares\+System()}{LeastSquaresSystem()}}
+{\footnotesize\ttfamily Isotope\+Fit.\+Least\+Squares\+System.\+Least\+Squares\+System (\begin{DoxyParamCaption}\item[{Sparse\+Matrix}]{des\+Mat,  }\item[{Vector$<$ double $>$}]{obs\+Vec }\end{DoxyParamCaption})}
+
+
+
+Creates new least squares system and populates it with the supplied data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em des\+Mat} & Design matrix of the least squares system.\\
+\hline
+{\em obs\+Vec} & Vector of observations of the least squares system.\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 24 of file Least\+Squares\+System.\+cs.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_isotope_fit_1_1_least_squares_system_ac72b8568e9ecb97077102658f56aba3f}\label{class_isotope_fit_1_1_least_squares_system_ac72b8568e9ecb97077102658f56aba3f}} 
+\index{Isotope\+Fit\+::\+Least\+Squares\+System@{Isotope\+Fit\+::\+Least\+Squares\+System}!Solve@{Solve}}
+\index{Solve@{Solve}!Isotope\+Fit\+::\+Least\+Squares\+System@{Isotope\+Fit\+::\+Least\+Squares\+System}}
+\subsubsection{\texorpdfstring{Solve()}{Solve()}}
+{\footnotesize\ttfamily void Isotope\+Fit.\+Least\+Squares\+System.\+Solve (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Calls the least square solver method and stores the result in the Solution property. 
+
+At the moment, only non-\/negative least squares solver is implemented. 
+
+Definition at line 41 of file Least\+Squares\+System.\+cs.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Isotope\+Fit\+Lib/\+Numerics/Least\+Squares\+System.\+cs\end{DoxyCompactItemize}

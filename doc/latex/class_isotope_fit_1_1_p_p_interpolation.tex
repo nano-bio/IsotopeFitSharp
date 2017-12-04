@@ -1,0 +1,164 @@
+\hypertarget{class_isotope_fit_1_1_p_p_interpolation}{}\section{Isotope\+Fit.\+P\+P\+Interpolation Class Reference}
+\label{class_isotope_fit_1_1_p_p_interpolation}\index{Isotope\+Fit.\+P\+P\+Interpolation@{Isotope\+Fit.\+P\+P\+Interpolation}}
+
+
+Derived class that handles piecewise polynomial interpolations and evaluation of data.  
+
+
+Inheritance diagram for Isotope\+Fit.\+P\+P\+Interpolation\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_isotope_fit_1_1_p_p_interpolation}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_isotope_fit_1_1_p_p_interpolation_ab16ae4c5036a290c4db168e75973ff1e}\label{class_isotope_fit_1_1_p_p_interpolation_ab16ae4c5036a290c4db168e75973ff1e}} 
+enum {\bfseries P\+P\+Type} \{ {\bfseries Spline\+Natural}, 
+{\bfseries Spline\+Not\+A\+Knot}, 
+{\bfseries P\+C\+H\+IP}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_isotope_fit_1_1_p_p_interpolation_afaeb635a338f06714d3b12e3865ac4f2}{P\+P\+Interpolation} (double\mbox{[}$\,$\mbox{]} x, double\mbox{[}$\,$\mbox{]} y, P\+P\+Type t)
+\begin{DoxyCompactList}\small\item\em Creates new interpolation object and calculates piecewise polynomial interpolation parameters. \end{DoxyCompactList}\item 
+\hyperlink{class_isotope_fit_1_1_p_p_interpolation_a22298333495a707643412a540e461188}{P\+P\+Interpolation} (double\mbox{[}$\,$\mbox{]} breaks, double\mbox{[}$\,$\mbox{]}\mbox{[}$\,$\mbox{]} coefs)
+\begin{DoxyCompactList}\small\item\em Creates new interpolation object and stores already known interpolation parameters. \end{DoxyCompactList}\item 
+override double \hyperlink{class_isotope_fit_1_1_p_p_interpolation_a1849081f6f187cb948c7f8f7dba866af}{Evaluate} (double x)
+\begin{DoxyCompactList}\small\item\em Initializes a piecewise cubic polynomial evaluation of a selected point x. \end{DoxyCompactList}\item 
+override double \mbox{[}$\,$\mbox{]} \hyperlink{class_isotope_fit_1_1_p_p_interpolation_a5a4a1dbfcaa78e520dfc965e64ed227c}{Evaluate} (double\mbox{[}$\,$\mbox{]} x)
+\begin{DoxyCompactList}\small\item\em Initializes a piecewise cubic polynomial evaluation of a selected array of points x. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_isotope_fit_1_1_p_p_interpolation_a0e77da81cfa5f6377e81d5855ee82a32}\label{class_isotope_fit_1_1_p_p_interpolation_a0e77da81cfa5f6377e81d5855ee82a32}} 
+P\+P\+Type {\bfseries pp\+Type}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_isotope_fit_1_1_p_p_interpolation_ac9ccf388cee3f262e6db2c6ba757429d}\label{class_isotope_fit_1_1_p_p_interpolation_ac9ccf388cee3f262e6db2c6ba757429d}} 
+double \mbox{[}$\,$\mbox{]} {\bfseries Breaks}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_isotope_fit_1_1_p_p_interpolation_ae7548d6f546a8b4ac1b1d6f4e70d7819}\label{class_isotope_fit_1_1_p_p_interpolation_ae7548d6f546a8b4ac1b1d6f4e70d7819}} 
+double \mbox{[}$\,$\mbox{]}\mbox{[}$\,$\mbox{]} {\bfseries Coefs}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Derived class that handles piecewise polynomial interpolations and evaluation of data. 
+
+
+
+Definition at line 17 of file P\+P\+Interpolation.\+cs.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_isotope_fit_1_1_p_p_interpolation_afaeb635a338f06714d3b12e3865ac4f2}\label{class_isotope_fit_1_1_p_p_interpolation_afaeb635a338f06714d3b12e3865ac4f2}} 
+\index{Isotope\+Fit\+::\+P\+P\+Interpolation@{Isotope\+Fit\+::\+P\+P\+Interpolation}!P\+P\+Interpolation@{P\+P\+Interpolation}}
+\index{P\+P\+Interpolation@{P\+P\+Interpolation}!Isotope\+Fit\+::\+P\+P\+Interpolation@{Isotope\+Fit\+::\+P\+P\+Interpolation}}
+\subsubsection{\texorpdfstring{P\+P\+Interpolation()}{PPInterpolation()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Isotope\+Fit.\+P\+P\+Interpolation.\+P\+P\+Interpolation (\begin{DoxyParamCaption}\item[{double \mbox{[}$\,$\mbox{]}}]{x,  }\item[{double \mbox{[}$\,$\mbox{]}}]{y,  }\item[{P\+P\+Type}]{t }\end{DoxyParamCaption})}
+
+
+
+Creates new interpolation object and calculates piecewise polynomial interpolation parameters. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & Array of x values.\\
+\hline
+{\em y} & Array of y values.\\
+\hline
+{\em t} & Piecewise polynomial interpolation type.\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 27 of file P\+P\+Interpolation.\+cs.
+
+\mbox{\Hypertarget{class_isotope_fit_1_1_p_p_interpolation_a22298333495a707643412a540e461188}\label{class_isotope_fit_1_1_p_p_interpolation_a22298333495a707643412a540e461188}} 
+\index{Isotope\+Fit\+::\+P\+P\+Interpolation@{Isotope\+Fit\+::\+P\+P\+Interpolation}!P\+P\+Interpolation@{P\+P\+Interpolation}}
+\index{P\+P\+Interpolation@{P\+P\+Interpolation}!Isotope\+Fit\+::\+P\+P\+Interpolation@{Isotope\+Fit\+::\+P\+P\+Interpolation}}
+\subsubsection{\texorpdfstring{P\+P\+Interpolation()}{PPInterpolation()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Isotope\+Fit.\+P\+P\+Interpolation.\+P\+P\+Interpolation (\begin{DoxyParamCaption}\item[{double \mbox{[}$\,$\mbox{]}}]{breaks,  }\item[{double}]{coefs\mbox{[}$\,$\mbox{]}\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Creates new interpolation object and stores already known interpolation parameters. 
+
+Input polynomial coefficients have to be sorted by increasing power from left to right in 2D array. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em breaks} & Array of break points.\\
+\hline
+{\em coefs} & 2D array of polynomial coefficients.\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 44 of file P\+P\+Interpolation.\+cs.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_isotope_fit_1_1_p_p_interpolation_a1849081f6f187cb948c7f8f7dba866af}\label{class_isotope_fit_1_1_p_p_interpolation_a1849081f6f187cb948c7f8f7dba866af}} 
+\index{Isotope\+Fit\+::\+P\+P\+Interpolation@{Isotope\+Fit\+::\+P\+P\+Interpolation}!Evaluate@{Evaluate}}
+\index{Evaluate@{Evaluate}!Isotope\+Fit\+::\+P\+P\+Interpolation@{Isotope\+Fit\+::\+P\+P\+Interpolation}}
+\subsubsection{\texorpdfstring{Evaluate()}{Evaluate()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily override double Isotope\+Fit.\+P\+P\+Interpolation.\+Evaluate (\begin{DoxyParamCaption}\item[{double}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Initializes a piecewise cubic polynomial evaluation of a selected point x. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & Single x value.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Single evaluated y value.
+\end{DoxyReturn}
+
+
+Implements \hyperlink{class_isotope_fit_1_1_interpolation}{Isotope\+Fit.\+Interpolation}.
+
+
+
+Definition at line 311 of file P\+P\+Interpolation.\+cs.
+
+\mbox{\Hypertarget{class_isotope_fit_1_1_p_p_interpolation_a5a4a1dbfcaa78e520dfc965e64ed227c}\label{class_isotope_fit_1_1_p_p_interpolation_a5a4a1dbfcaa78e520dfc965e64ed227c}} 
+\index{Isotope\+Fit\+::\+P\+P\+Interpolation@{Isotope\+Fit\+::\+P\+P\+Interpolation}!Evaluate@{Evaluate}}
+\index{Evaluate@{Evaluate}!Isotope\+Fit\+::\+P\+P\+Interpolation@{Isotope\+Fit\+::\+P\+P\+Interpolation}}
+\subsubsection{\texorpdfstring{Evaluate()}{Evaluate()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily override double \mbox{[}$\,$\mbox{]} Isotope\+Fit.\+P\+P\+Interpolation.\+Evaluate (\begin{DoxyParamCaption}\item[{double \mbox{[}$\,$\mbox{]}}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Initializes a piecewise cubic polynomial evaluation of a selected array of points x. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & Array of x values.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Array of evaluated y values.
+\end{DoxyReturn}
+
+
+Implements \hyperlink{class_isotope_fit_1_1_interpolation}{Isotope\+Fit.\+Interpolation}.
+
+
+
+Definition at line 321 of file P\+P\+Interpolation.\+cs.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Isotope\+Fit\+Lib/\+Numerics/P\+P\+Interpolation.\+cs\end{DoxyCompactItemize}
