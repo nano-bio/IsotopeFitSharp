@@ -172,8 +172,8 @@ namespace IsotopeFit.Tests
             Assert.AreEqual(173.00000000000000d, Wrk.SpectralData.RawSignalAxis[9999], 1e-12);
 
             // start and end index check
-            Assert.AreEqual(1, Wrk.StartIndex);
-            Assert.AreEqual(416375, Wrk.EndIndex);
+            Assert.AreEqual(1, Wrk.SpectralData.CropStartIndex);
+            Assert.AreEqual(416375, Wrk.SpectralData.CropEndIndex);
 
             // molecules check
             IFData.Cluster M = Wrk.Clusters[121] as IFData.Cluster;

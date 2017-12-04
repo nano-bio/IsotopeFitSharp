@@ -6,21 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 
-//using IsotopeFit.Numerics;
-
 namespace IsotopeFit
 {
-    //[ComVisible(true)]
 	/// <summary>
-	/// This class is the main entry point for outside usage.
+	/// This class is the main interface for outside usage.
 	/// </summary>
     public partial class Workspace
     {
-        #region Fields
-        
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -49,26 +41,12 @@ namespace IsotopeFit
 
         #endregion
 
-        #region Destructors
-
-        #endregion
-
         #region Properties
 
         /// <summary>
         /// Object containing spectral data, both raw and calibrated.
         /// </summary>
         public IFData.Spectrum SpectralData { get; set; }
-
-        /// <summary>
-        /// Crop start index. Not implemented at the moment.
-        /// </summary>
-        public int StartIndex { get; set; }
-
-        /// <summary>
-        /// Crop end index. Not implemented at the moment.
-        /// </summary>
-        public int EndIndex { get; set; }
 
         /// <summary>
         /// Object containing the clusters, abundance of which is to be calculated. See also <see cref="IFData.Cluster"/>.
@@ -116,13 +94,31 @@ namespace IsotopeFit
             var rootElement = IFDFile.Open(path);
 
             SpectralData = IFDFile.ReadRawData(rootElement);
-            StartIndex = IFDFile.ReadStartIndex(rootElement);
-            EndIndex = IFDFile.ReadEndIndex(rootElement);
+            SpectralData.CropStartIndex = IFDFile.ReadStartIndex(rootElement);
+            SpectralData.CropEndIndex = IFDFile.ReadEndIndex(rootElement);
             Clusters = IFDFile.ReadMolecules(rootElement);
             Calibration = IFDFile.ReadCalibration(rootElement);
             BaselineCorrData = IFDFile.ReadBackgroundCorr(rootElement);
 
             IFDLoaded = true;
+        }
+
+        /// <summary>
+        /// Convenience function to set the mass axis cropping indices.
+        /// </summary>
+        /// <remarks>
+        /// <para>The spectral data outside the specified interval will not be discarded, merely ignored in later calculations.</para>
+        /// </remarks>
+        /// <param name="startIndex">Start index of the interval to select.</param>
+        /// <param name="endIndex">End index of the interval to select.</param>
+        public void CropMassAxis(int startIndex, int endIndex)
+        {
+            if (startIndex >= endIndex) throw new WorkspaceException("Crop start index must be less than the end index.");
+            if (startIndex < 0 || startIndex <= SpectralData.RawLength) throw new WorkspaceException("Crop start index must be non-negative and less than raw mass axis length.");
+            if (endIndex < 0 || endIndex <= SpectralData.RawLength) throw new WorkspaceException("Crop start index must be non-negative and less than raw mass axis length.");
+
+            SpectralData.CropStartIndex = startIndex;
+            SpectralData.CropEndIndex = endIndex;
         }
 
         /// <summary>

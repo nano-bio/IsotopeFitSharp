@@ -108,6 +108,16 @@ namespace IsotopeFit
             /// </summary>
             public double[] SignalAxis { get; internal set; }
 
+            /// <summary>
+            /// Crop start index. Not implemented at the moment.
+            /// </summary>
+            public int CropStartIndex { get; set; }
+
+            /// <summary>
+            /// Crop end index. Not implemented at the moment.
+            /// </summary>
+            public int CropEndIndex { get; set; }
+
             ///// <summary>
             ///// Contains the last calculated baseline that was subtracted from <see cref="Spectrum.RawSignalAxis"/> to obtain <see cref="Spectrum.SignalAxis"/>.
             ///// </summary>
