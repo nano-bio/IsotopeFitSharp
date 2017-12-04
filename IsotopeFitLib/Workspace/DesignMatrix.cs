@@ -28,7 +28,7 @@ namespace IsotopeFit
 
             bool[] fitMask;
 
-            Interpolation resolutionFit;
+            //Interpolation resolutionFit;
 
             #endregion
 
@@ -49,13 +49,13 @@ namespace IsotopeFit
             //    Cols = molecules.Count;
             //}
 
-            internal DesignMtrx(IFData.Spectrum spectrum, OrderedDictionary molecules, IFData.Calibration calibration, Interpolation resolutionInterp)
+            internal DesignMtrx(IFData.Spectrum spectrum, OrderedDictionary molecules, IFData.Calibration calibration)
             {
                 massAxis = spectrum.MassAxis.ToArray();
                 observationVector = (MathNet.Numerics.LinearAlgebra.Double.SparseVector)MathNet.Numerics.LinearAlgebra.Double.SparseVector.Build.SparseOfArray(spectrum.SignalAxis);
                 MoleculesDict = molecules;
                 Calibration = calibration;
-                resolutionFit = resolutionInterp;
+                //resolutionFit = calibration.ResolutionInterpolation;
 
                 Rows = spectrum.RawLength;
                 Cols = molecules.Count;
@@ -193,7 +193,7 @@ namespace IsotopeFit
             /// <returns>New instance of thread workspace.</returns>
             private BuildState BuildInit()
             {                
-                return new BuildState(Rows, resolutionFit);
+                return new BuildState(Rows, Calibration.ResolutionInterp);
             }
 
             /// <summary>

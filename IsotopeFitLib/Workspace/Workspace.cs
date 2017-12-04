@@ -68,7 +68,7 @@ namespace IsotopeFit
         public int EndIndex { get; set; }
 
         /// <summary>
-        /// Object containing the clusters to be fitted.
+        /// Object containing the clusters, abundance of which is to be calculated. See also <see cref="IFData.Cluster"/>.
         /// </summary>
         public OrderedDictionary Clusters { get; set; } //TODO: maybe I should add a convenience functions for adding a cluster to the dictionary, that way I can check the inputs immediately
 
@@ -91,7 +91,7 @@ namespace IsotopeFit
         public double FwhmRange { get; set; }
         public double SearchRange { get; set; }
 
-        public Interpolation ResolutionInterpolation { get; private set; }
+        //public Interpolation ResolutionInterpolation { get; private set; }
         public DesignMtrx DesignMatrix { get; private set; }
 
         public WorkspaceStatus Status { get; private set; }
@@ -126,39 +126,42 @@ namespace IsotopeFit
         /// Calculates baseline corrected signal from raw signal data and baseline correction points. Stores the result in the <see cref="Workspace.SpectralData"/>.SignalAxis property.
         /// </summary>
         /// <remarks>
-        /// This method uses the PCHIP interpolation to obtain the baseline values, which are stored in the <see cref="Workspace.SpectralData"/>.Baseline property.
-        /// Optional arguments are meant to be used by GUI to ease the process of loading data to the <see cref="Workspace"/>. If not supplied, the funcion will use previously stored values.
+        /// <para>This method uses the PCHIP interpolation to obtain the baseline values, which are stored in the <see cref="Workspace.SpectralData"/>.Baseline property.</para>
+        /// <para>Optional arguments <paramref name="xAxis"/> and <paramref name="yAxis"/> are meant to ease the process of loading data to the <see cref="Workspace"/>.
+        /// If not supplied, the funcion will use previously stored values.</para>
         /// </remarks>
         /// <param name="xAxis">Optional x-axis for the baseline correction.</param>
         /// <param name="yAxis">Optional y-axis for the baseline correction.</param>
-        /// <exception cref="WorkspaceNotDefinedException">Thrown when some of the required data have not been loaded in the <see cref="Workspace"/>.</exception>
+        /// <exception cref="WorkspaceException">Thrown when some of the required data have not been loaded in the <see cref="Workspace"/>.</exception>
         public void CorrectBaseline(double[] xAxis = null, double[] yAxis = null)
         {
             // raw spectral data are required
-            if (SpectralData.RawSignalAxis == null || SpectralData.RawMassAxis == null) throw new WorkspaceNotDefinedException("Raw spectral data not specified.");
-            if (SpectralData.RawSignalAxis.Length != SpectralData.RawMassAxis.Length) throw new WorkspaceNotDefinedException("Supplied spectral data axis have different lengths.");
+            if (SpectralData.RawSignalAxis == null || SpectralData.RawMassAxis == null) throw new WorkspaceException("Raw spectral data not specified.");
+            if (SpectralData.RawSignalAxis.Length != SpectralData.RawMassAxis.Length) throw new WorkspaceException("Supplied spectral data axis have different lengths.");
 
             // if there are optional background correction points specified, save them to the workspace and use those
             if (xAxis != null) BaselineCorrData.XAxis = xAxis;
             if (yAxis != null) BaselineCorrData.YAxis = yAxis;
 
             // safety check, they can still be null in come use cases
-            if (BaselineCorrData.XAxis == null || BaselineCorrData.YAxis == null) throw new WorkspaceNotDefinedException("Baseline correction points not specified.");
-            if (BaselineCorrData.XAxis.Length != BaselineCorrData.YAxis.Length) throw new WorkspaceNotDefinedException("Supplied baseline correction point arrays have different lengths.");
+            if (BaselineCorrData.XAxis == null || BaselineCorrData.YAxis == null) throw new WorkspaceException("Baseline correction points not specified.");
+            if (BaselineCorrData.XAxis.Length != BaselineCorrData.YAxis.Length) throw new WorkspaceException("Supplied baseline correction point arrays have different lengths.");
 
             int massAxisLength = SpectralData.RawLength;
 
             //TODO: Evaluating the bg correction for the whole range might be useless. Specifiyng a mass range would make sense.
             //TODO: crop the mass axis to the last specified point of the baseline? might break usefulness.
-            PPInterpolation baselineFit = new PPInterpolation(BaselineCorrData.XAxis, BaselineCorrData.YAxis, PPInterpolation.PPType.PCHIP);    // in the matlab code it is also hard-coded pchip
+            //PPInterpolation baselineFit = new PPInterpolation(BaselineCorrData.XAxis, BaselineCorrData.YAxis, PPInterpolation.PPType.PCHIP);    // in the matlab code it is also hard-coded pchip
+            BaselineCorrData.BaselineInterpolation = new PPInterpolation(BaselineCorrData.XAxis, BaselineCorrData.YAxis, PPInterpolation.PPType.PCHIP);    // in the matlab code it is also hard-coded pchip
 
-            SpectralData.Baseline = new double[massAxisLength];
+            //SpectralData.Baseline = new double[massAxisLength];
             SpectralData.SignalAxis = new double[massAxisLength];
 
             for (int i = 0; i < massAxisLength; i++)
             {
-                SpectralData.Baseline[i] = baselineFit.Evaluate(SpectralData.RawMassAxis[i]);
-                SpectralData.SignalAxis[i] = SpectralData.RawSignalAxis[i] - SpectralData.Baseline[i];
+                //SpectralData.Baseline[i] = BaselineCorrData.BaselineInterpolation.Evaluate(SpectralData.RawMassAxis[i]);
+                //SpectralData.SignalAxis[i] = SpectralData.RawSignalAxis[i] - SpectralData.Baseline[i];
+                SpectralData.SignalAxis[i] = SpectralData.RawSignalAxis[i] - BaselineCorrData.BaselineInterpolation.Evaluate(SpectralData.RawMassAxis[i]);
             }
         }
 
@@ -166,25 +169,29 @@ namespace IsotopeFit
         /// Calculates mass axis corrected for mass offset from previously supplied calibration data and stores the result in the <see cref="Workspace.SpectralData"/>.MassAxis property.
         /// </summary>
         /// <remarks>
-        /// In case of polynomial inerpolation, the order is considered the highest exponent value of the desired interpolating polynomial, e.g. order = 2 will produce quadratic polynomial.
-        /// Optional arguments are meant to be used by GUI to ease the process of loading data to the <see cref="Workspace"/>. If not supplied, the method will use previously stored values.
+        /// <para>In case of polynomial inerpolation, the order is considered the highest exponent value of the desired interpolating polynomial, e.g. order = 2 will produce quadratic polynomial.</para>
+        /// <para>Optional arguments <paramref name="comList"/> and <paramref name="massOffsetList"/> are meant to ease the process of loading data to the <see cref="Workspace"/>.
+        /// If not supplied, the method will use previously stored values.</para>
         /// </remarks>
         /// <param name="interpType">Type of the interpolation to be used.</param>
-        /// <param name="order">Order of the polynomial interpolation. Ignored if any other interpolation type is selected.</param>
+        /// <param name="order">Order of the polynomial interpolation. Is marked as optional, but is required if polynomial interpolation is selected.</param>
         /// <param name="comList">Optional array of centre-of-mass points to be used for the correction.</param>
         /// <param name="massOffsetList">Optional array of mass offset points to be used for the correction.</param>
-        /// <exception cref="WorkspaceNotDefinedException">Thrown when some of the required data have not been loaded in the <see cref="Workspace"/> or their lengths are different.</exception>
-        public void CorrectMassOffset(Interpolation.Type interpType, int order, double[] comList = null, double[] massOffsetList = null)
+        /// <exception cref="WorkspaceException">Thrown when some of the required data have not been loaded in the <see cref="Workspace"/> or their lengths are different.</exception>
+        public void CorrectMassOffset(Interpolation.Type interpType, int order = -1, double[] comList = null, double[] massOffsetList = null)
         {
             //TODO: this can be cleaned/optimized, it is an ugly mess right now
 
+            // if a polynomial fir is requested, check that the order was supplied as well
+            if (interpType == Interpolation.Type.Polynomial && order < 0) throw new WorkspaceException("The polynomial order must be specified for the polynomial interpolation type.");
+
             // required data
-            if (SpectralData.RawMassAxis == null) throw new WorkspaceNotDefinedException("Raw mass axis not specified.");
+            if (SpectralData.RawMassAxis == null) throw new WorkspaceException("Raw mass axis not specified.");
 
             // there are three use cases
             if (!IFDLoaded && comList == null && massOffsetList == null)    // this is the IFJFile or GUI use case, when the COMList and MassOffsetList must be built
             {
-                if (Calibration.NameList.Count == 0) throw new WorkspaceNotDefinedException("Calibration namelist empty.");
+                if (Calibration.NameList.Count == 0) throw new WorkspaceException("Calibration namelist empty.");
 
                 int n = Calibration.NameList.Count;
 
@@ -204,8 +211,8 @@ namespace IsotopeFit
             }
 
             // but we still need to check, because in the third use case (IFDFile) the data must still be valid
-            if (Calibration.COMList == null || Calibration.MassOffsetList == null) throw new WorkspaceNotDefinedException("Mass offset calibration points not specified.");
-            if (Calibration.COMList.Length != Calibration.MassOffsetList.Length) throw new WorkspaceNotDefinedException("Supplied mass offset correction point arrays have different lengths.");
+            if (Calibration.COMList == null || Calibration.MassOffsetList == null) throw new WorkspaceException("Mass offset calibration points not specified.");
+            if (Calibration.COMList.Length != Calibration.MassOffsetList.Length) throw new WorkspaceException("Supplied mass offset correction point arrays have different lengths.");
 
             //int massAxisLength = SpectralData.RawLength;    //TODO: might want to use the cropped length as well
             //int fitDataLength = Calibration.COMList.Length;
@@ -224,21 +231,21 @@ namespace IsotopeFit
             }
 
             // first interpolation
-            Interpolation massOffset;
+            //Interpolation massOffset;
 
             switch (interpType)
             {
                 case Interpolation.Type.Polynomial:
-                    massOffset = new PolyInterpolation(Calibration.COMList.ToArray(), Calibration.MassOffsetList.ToArray(), order);
+                    Calibration.MassOffsetInterp = new PolyInterpolation(Calibration.COMList, Calibration.MassOffsetList, order);
                     break;
                 case Interpolation.Type.SplineNatural:
                     throw new NotImplementedException();
                     //break;
                 case Interpolation.Type.SplineNotAKnot:
-                    massOffset = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.MassOffsetList.ToArray(), PPInterpolation.PPType.SplineNotAKnot);
+                    Calibration.MassOffsetInterp = new PPInterpolation(Calibration.COMList, Calibration.MassOffsetList, PPInterpolation.PPType.SplineNotAKnot);
                     break;
                 case Interpolation.Type.PCHIP:
-                    massOffset = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.MassOffsetList.ToArray(), PPInterpolation.PPType.PCHIP);
+                    Calibration.MassOffsetInterp = new PPInterpolation(Calibration.COMList, Calibration.MassOffsetList, PPInterpolation.PPType.PCHIP);
                     break;
                 default:
                     throw new Interpolation.InterpolationException("Unknown interpolation type specified.");
@@ -252,7 +259,7 @@ namespace IsotopeFit
             for (int i = 0; i < xAxisLength; i++)
             {
                 //yAxis[i] += xAxis[i];
-                yAxis[i] = massOffset.Evaluate(xAxis[i]) + xAxis[i];
+                yAxis[i] = Calibration.MassOffsetInterp.Evaluate(xAxis[i]) + xAxis[i];
             }
 
             // This is a sanity check for YAxis monotonicity. That is required by the second fit, where the YAxis server as x-axis. Matlab does this without telling.
@@ -263,11 +270,11 @@ namespace IsotopeFit
             Array.Copy(yAxis, yAxisNew, yAxisNew.Length);
 
             // Fit to generate corrected mass axis. Note that the X and Y axis are inverted. For this to be correct, it must be corrected in the IFD file generation first.
-            PPInterpolation massOffset2 = new PPInterpolation(yAxisNew, xAxis.ToArray(), PPInterpolation.PPType.PCHIP);    //TODO: i think those vectors can have different lengths now
+            PPInterpolation correctMassInterp = new PPInterpolation(yAxisNew, xAxis, PPInterpolation.PPType.PCHIP);    //TODO: i think those vectors can have different lengths now
 
             double[] correctedMassAxis = new double[yAxis.Length];
 
-            correctedMassAxis = massOffset2.Evaluate(SpectralData.RawMassAxis.ToArray());
+            correctedMassAxis = correctMassInterp.Evaluate(SpectralData.RawMassAxis);
 
             // TODO: It might happen due to the monotonicity check, that during the second evaluation we hit a singularity. This cuts off the nonsense data.
 
@@ -286,13 +293,13 @@ namespace IsotopeFit
         /// <param name="order">Order of the polynomial interpolation. This is relevant only for the polynomial interpolation.</param>
         /// <param name="comList">Optional array of centre-of-mass points to be used for the calibration.</param>
         /// <param name="resolutionList">Optional array of resolution points to be used for the calibration.</param>
-        /// <exception cref="WorkspaceNotDefinedException">Thrown when some of the required data have not been loaded in the <see cref="Workspace"/> or their lengths are different.</exception>
+        /// <exception cref="WorkspaceException">Thrown when some of the required data have not been loaded in the <see cref="Workspace"/> or their lengths are different.</exception>
         public void ResolutionFit(Interpolation.Type t, int order, double[] comList = null, double[] resolutionList = null)
         {
             // there are three use cases
             if (!IFDLoaded && comList == null && resolutionList == null) // this covers the use cases for IFJFile and GUI, when the COMList and ResolutionList have to be built.
             {
-                if (Calibration.NameList.Count == 0) throw new WorkspaceNotDefinedException("Calibration namelist empty.");
+                if (Calibration.NameList.Count == 0) throw new WorkspaceException("Calibration namelist empty.");
 
                 int n = Calibration.NameList.Count;
 
@@ -312,22 +319,22 @@ namespace IsotopeFit
             }
 
             // safety check, because in the third use case (IFDFile) the data must still be valid
-            if (Calibration.COMList == null || Calibration.ResolutionList == null) throw new WorkspaceNotDefinedException("Resolution calibration points not specified.");
-            if (Calibration.COMList.Length != Calibration.ResolutionList.Length) throw new WorkspaceNotDefinedException("Supplied resolution calibration point arrays have different lengths.");
+            if (Calibration.COMList == null || Calibration.ResolutionList == null) throw new WorkspaceException("Resolution calibration points not specified.");
+            if (Calibration.COMList.Length != Calibration.ResolutionList.Length) throw new WorkspaceException("Supplied resolution calibration point arrays have different lengths.");
 
             switch (t)
             {
                 case Interpolation.Type.Polynomial:
-                    ResolutionInterpolation = new PolyInterpolation(Calibration.COMList, Calibration.ResolutionList, order);
+                    Calibration.ResolutionInterp = new PolyInterpolation(Calibration.COMList, Calibration.ResolutionList, order);
                     break;
                 case Interpolation.Type.SplineNatural:
                     throw new NotImplementedException("Natural spline interpolation has not yet been implemented.");
                 //break;
                 case Interpolation.Type.SplineNotAKnot:
-                    ResolutionInterpolation = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), PPInterpolation.PPType.SplineNotAKnot);
+                    Calibration.ResolutionInterp = new PPInterpolation(Calibration.COMList, Calibration.ResolutionList, PPInterpolation.PPType.SplineNotAKnot);
                     break;
                 case Interpolation.Type.PCHIP:
-                    ResolutionInterpolation = new PPInterpolation(Calibration.COMList.ToArray(), Calibration.ResolutionList.ToArray(), PPInterpolation.PPType.PCHIP);
+                    Calibration.ResolutionInterp = new PPInterpolation(Calibration.COMList, Calibration.ResolutionList, PPInterpolation.PPType.PCHIP);
                     break;
                 default:
                     throw new Interpolation.InterpolationException("Unknown interpolation type.");
@@ -340,7 +347,7 @@ namespace IsotopeFit
         public void BuildDesignMatrix()
         {
             // TODO: merge this with the fit abundances maybe? If we do the design matrix updating, we will still need this function.
-            DesignMatrix = new DesignMtrx(SpectralData, Clusters, Calibration, ResolutionInterpolation);
+            DesignMatrix = new DesignMtrx(SpectralData, Clusters, Calibration);
             DesignMatrix.Build();
         }
 

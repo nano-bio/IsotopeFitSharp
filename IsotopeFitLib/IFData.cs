@@ -9,7 +9,9 @@ using MathNet.Numerics.LinearAlgebra;
 
 namespace IsotopeFit
 {
-    //[ComVisible(true)]
+    /// <summary>
+    /// Static class containing definitions of all IsotopeFit data storage classes.
+    /// </summary>
     public static class IFData
     {
         /// <summary>
@@ -106,10 +108,10 @@ namespace IsotopeFit
             /// </summary>
             public double[] SignalAxis { get; internal set; }
 
-            /// <summary>
-            /// Contains the last calculated baseline that was subtracted from <see cref="Spectrum.RawSignalAxis"/> to obtain <see cref="Spectrum.SignalAxis"/>.
-            /// </summary>
-            public double[] Baseline { get; internal set; }
+            ///// <summary>
+            ///// Contains the last calculated baseline that was subtracted from <see cref="Spectrum.RawSignalAxis"/> to obtain <see cref="Spectrum.SignalAxis"/>.
+            ///// </summary>
+            //public double[] Baseline { get; internal set; }
 
             #endregion
 
@@ -127,7 +129,7 @@ namespace IsotopeFit
             /// <param name="signalAxis">Signal axis of the spectrum.</param>
             public Spectrum(double[] massAxis, double[] signalAxis)
             {
-                if (massAxis.Length != signalAxis.Length) throw new WorkspaceNotDefinedException("Supplied arrays have different lengths.");
+                if (massAxis.Length != signalAxis.Length) throw new WorkspaceException("Supplied arrays have different lengths.");
 
                 RawLength = massAxis.Length;
                 RawMassAxis = massAxis;
@@ -141,7 +143,7 @@ namespace IsotopeFit
             /// <param name="data">Data to be stored in the new instance.</param>
             internal Spectrum(double[][] data)
             {
-                if (data == null || data[0].Length != 2) throw new WorkspaceNotDefinedException("The supplied data are invalid.");
+                if (data == null || data[0].Length != 2) throw new WorkspaceException("The supplied data are invalid.");
 
                 RawLength = data.Length;
                 RawMassAxis = new double[RawLength];
@@ -158,23 +160,59 @@ namespace IsotopeFit
         }
 
         /// <summary>
-        /// Class for storing data about a single molecule/fragment.
+        /// Class for storing data about a single cluster/molecule/fragment.
         /// </summary>
         public class Cluster
         {
+            /// <summary>
+            /// Stores the isotopical data for the cluster.
+            /// </summary>
             public IsotopeData PeakData { get; set; }
+
+            /// <summary>
+            /// Name of the cluster. NOT the ID!
+            /// </summary>
             public string Name { get; set; }
+
             public double MinMass { get; set; }
             public double MaxMass { get; set; }
+
+            /// <summary>
+            /// Centre of mass of the cluster, used for mass offset correction.
+            /// </summary>
+            /// <remarks>
+            /// This value needs to be set only for those clusters, that were chosen as calibration clusters by the <see cref="Calibration.NameList"/> ID list.
+            /// </remarks> 
             public double CentreOfMass { get; set; }
+
             public int MinIndex { get; set; }
             public int MaxIndex { get; set; }
+
             public double Area { get; set; }
             public double AreaError { get; set; }
+
+            /// <summary>
+            /// Mass offset of the cluster, used for mass offset correction.
+            /// </summary>
+            /// <remarks>
+            /// This value needs to be set only for those clusters, that were chosen as calibration clusters by the <see cref="Calibration.NameList"/> ID list.
+            /// </remarks> 
             public double MassOffset { get; set; }
+
+            /// <summary>
+            /// Resolution of the particular cluster line, used for resolution calibration.
+            /// </summary>
+            /// <remarks>
+            /// This value needs to be set only for those clusters, that were chosen as calibration clusters by the <see cref="Calibration.NameList"/> ID list.
+            /// </remarks>
             public double Resolution { get; set; }
+
+            [Obsolete]
             public int RootIndex { get; set; }
 
+            /// <summary>
+            /// Creates an empty cluster object.
+            /// </summary>
             public Cluster()
             {
                 PeakData = new IsotopeData();
@@ -216,6 +254,9 @@ namespace IsotopeFit
             public List<string> NameList { get; set; }
             public LineShape Shape { get; set; }
 
+            public Interpolation MassOffsetInterp { get; internal set; }
+            public Interpolation ResolutionInterp { get; internal set; }
+
             internal Calibration()
             {
                 NameList = new List<string>();
@@ -241,6 +282,8 @@ namespace IsotopeFit
             public double Percent { get; set; }
             public double[] XAxis { get; set; }
             public double[] YAxis { get; set; }
+
+            public Interpolation BaselineInterpolation { get; internal set; }
 
             internal BaselineCorr()
             {

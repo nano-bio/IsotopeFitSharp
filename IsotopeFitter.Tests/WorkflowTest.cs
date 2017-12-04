@@ -117,11 +117,11 @@ namespace IsotopeFitter.Tests
 
             resCoef.Reverse();
 
-            Assert.AreEqual(resCoef.Count, (w.ResolutionInterpolation as PolyInterpolation).Coefs.Length);
+            Assert.AreEqual(resCoef.Count, (w.Calibration.ResolutionInterp as PolyInterpolation).Coefs.Length);
 
             for (int i = 0; i < resCoef.Count; i++)
             {
-                Assert.AreEqual(resCoef[i], (w.ResolutionInterpolation as PolyInterpolation).Coefs[i], 1e-9, "resolution check failed at index {0}", i);
+                Assert.AreEqual(resCoef[i], (w.Calibration.ResolutionInterp as PolyInterpolation).Coefs[i], 1e-9, "resolution check failed at index {0}", i);
             }
         }
 
