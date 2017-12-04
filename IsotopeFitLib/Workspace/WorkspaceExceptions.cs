@@ -8,12 +8,12 @@ namespace IsotopeFit
 {
 
     [Serializable]
-    public class WorkspaceNotDefinedException : Exception
+    public class WorkspaceException : Exception
     {
-        public WorkspaceNotDefinedException() { }
-        public WorkspaceNotDefinedException(string message) : base(message) { }
-        public WorkspaceNotDefinedException(string message, Exception inner) : base(message, inner) { }
-        protected WorkspaceNotDefinedException(
+        public WorkspaceException() { }
+        public WorkspaceException(string message) : base(message) { }
+        public WorkspaceException(string message, Exception inner) : base(message, inner) { }
+        protected WorkspaceException(
           System.Runtime.Serialization.SerializationInfo info,
           System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
