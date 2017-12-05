@@ -66,29 +66,29 @@ namespace IsotopeFit
             dataField = (molecule as MLStructure)["name", index] as MLArray;
             M.Name = (dataField as MLChar).GetString(0);
 
-            dataField = (molecule as MLStructure)["minmass", index] as MLArray;
-            M.MinMass = (dataField as MLDouble).GetArray()[0][0];
+            //dataField = (molecule as MLStructure)["minmass", index] as MLArray;
+            //M.MinMass = (dataField as MLDouble).GetArray()[0][0];
             
-            dataField = (molecule as MLStructure)["maxmass", index] as MLArray;
-            M.MaxMass = (dataField as MLDouble).GetArray()[0][0];
+            //dataField = (molecule as MLStructure)["maxmass", index] as MLArray;
+            //M.MaxMass = (dataField as MLDouble).GetArray()[0][0];
 
             dataField = (molecule as MLStructure)["com", index] as MLArray;
             M.CentreOfMass = (dataField as MLDouble).GetArray()[0][0];
 
-            dataField = (molecule as MLStructure)["minind", index] as MLArray;
-            M.MinIndex = (int)(dataField as MLDouble).GetArray()[0][0];
+            //dataField = (molecule as MLStructure)["minind", index] as MLArray;
+            //M.MinIndex = (int)(dataField as MLDouble).GetArray()[0][0];
 
-            dataField = (molecule as MLStructure)["maxind", index] as MLArray;
-            M.MaxIndex = (int)(dataField as MLDouble).GetArray()[0][0];
+            //dataField = (molecule as MLStructure)["maxind", index] as MLArray;
+            //M.MaxIndex = (int)(dataField as MLDouble).GetArray()[0][0];
 
-            dataField = (molecule as MLStructure)["area", index] as MLArray;
-            M.Area = (dataField as MLDouble).GetArray()[0][0];
+            //dataField = (molecule as MLStructure)["area", index] as MLArray;
+            //M.Area = (dataField as MLDouble).GetArray()[0][0];
 
-            dataField = (molecule as MLStructure)["areaerror", index] as MLArray;
-            M.AreaError = (dataField as MLSparse).GetArray()[0][0];
+            //dataField = (molecule as MLStructure)["areaerror", index] as MLArray;
+            //M.AreaError = (dataField as MLSparse).GetArray()[0][0];
 
-            dataField = (molecule as MLStructure)["rootindex", index] as MLArray;
-            M.RootIndex = (int)(dataField as MLDouble).GetArray()[0][0];
+            //dataField = (molecule as MLStructure)["rootindex", index] as MLArray;
+            //M.RootIndex = (int)(dataField as MLDouble).GetArray()[0][0];
 
             return M;
         }
@@ -139,8 +139,8 @@ namespace IsotopeFit
 
             MLArray dataField;
 
-            dataField = (sh as MLStructure)["form"];
-            S.Form = (dataField as MLChar).GetString(0);
+            //dataField = (sh as MLStructure)["form"];
+            //S.Form = (dataField as MLChar).GetString(0);
 
             dataField = (sh as MLStructure)["breaks"] as MLArray;
             S.Breaks = IFData.Arr2DTo1D((dataField as MLDouble).GetArray());
@@ -154,16 +154,16 @@ namespace IsotopeFit
                coefs[i] = coefs[i].Reverse().ToArray();
             }
 
-            S.Coefs = IFData.Arr2DToMatrix(coefs);
+            S.Coeffs = IFData.Arr2DToMatrix(coefs);
 
-            dataField = (sh as MLStructure)["pieces"] as MLArray;
-            S.Pieces = (int)(dataField as MLDouble).GetArray()[0][0];
+            //dataField = (sh as MLStructure)["pieces"] as MLArray;
+            //S.Pieces = (int)(dataField as MLDouble).GetArray()[0][0];
 
-            dataField = (sh as MLStructure)["order"] as MLArray;
-            S.Order = (int)(dataField as MLDouble).GetArray()[0][0];
+            //dataField = (sh as MLStructure)["order"] as MLArray;
+            //S.Order = (int)(dataField as MLDouble).GetArray()[0][0];
 
-            dataField = (sh as MLStructure)["dim"] as MLArray;
-            S.Dim = (int)(dataField as MLDouble).GetArray()[0][0];
+            //dataField = (sh as MLStructure)["dim"] as MLArray;
+            //S.Dim = (int)(dataField as MLDouble).GetArray()[0][0];
 
             return S;
         }
@@ -176,17 +176,17 @@ namespace IsotopeFit
 
             MLArray dataField;
 
-            dataField = (BgCorr as MLStructure)["startmass"] as MLArray;
-            BC.StartMass = (dataField as MLDouble).GetArray()[0][0];
+            //dataField = (BgCorr as MLStructure)["startmass"] as MLArray;
+            //BC.StartMass = (dataField as MLDouble).GetArray()[0][0];
 
-            dataField = (BgCorr as MLStructure)["endmass"] as MLArray;
-            BC.EndMass = (dataField as MLDouble).GetArray()[0][0];
+            //dataField = (BgCorr as MLStructure)["endmass"] as MLArray;
+            //BC.EndMass = (dataField as MLDouble).GetArray()[0][0];
 
-            dataField = (BgCorr as MLStructure)["ndiv"] as MLArray;
-            BC.NDiv = (int)(dataField as MLDouble).GetArray()[0][0];
+            //dataField = (BgCorr as MLStructure)["ndiv"] as MLArray;
+            //BC.NDiv = (int)(dataField as MLDouble).GetArray()[0][0];
 
-            dataField = (BgCorr as MLStructure)["percent"] as MLArray;
-            BC.Percent = (dataField as MLDouble).GetArray()[0][0];
+            //dataField = (BgCorr as MLStructure)["percent"] as MLArray;
+            //BC.Percent = (dataField as MLDouble).GetArray()[0][0];
 
             dataField = (BgCorr as MLStructure)["bgm"] as MLArray;
             BC.XAxis = IFData.Arr2DTo1D((dataField as MLDouble).GetArray());

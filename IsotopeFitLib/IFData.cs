@@ -19,7 +19,6 @@ namespace IsotopeFit
         /// </summary>
         /// <param name="arr">2D array that was read from an IFD file.</param>
         /// <returns>MathNet vector.</returns>
-        [Obsolete]
         internal static double[] Arr2DTo1D(double[][] arr)
         {
             bool dim = arr.Length > arr[0].Length;
@@ -48,7 +47,6 @@ namespace IsotopeFit
         /// </summary>
         /// <param name="arr">2D array that was read from an IFD file.</param>
         /// <returns>MathNet matrix.</returns>
-        [Obsolete]
         internal static Matrix<double> Arr2DToMatrix(double[][] arr)
         {
             return Matrix<double>.Build.DenseOfRowArrays(arr);
@@ -69,7 +67,7 @@ namespace IsotopeFit
             #region Properties
 
             public int RawLength { get; private set; }
-            public int CroppedLength { get; set; }
+            //public int CroppedLength { get; set; }
             //TODO: crop start and crop end?
 
             /// <summary>
@@ -108,20 +106,24 @@ namespace IsotopeFit
             /// </summary>
             public double[] SignalAxis { get; internal set; }
 
-            /// <summary>
-            /// Crop start index. Not implemented at the moment.
-            /// </summary>
-            public int CropStartIndex { get; set; }
+            ///// <summary>
+            ///// Crop start index. Not implemented at the moment.
+            ///// </summary>
+            //public int CropStartIndex { get; set; }
 
-            /// <summary>
-            /// Crop end index. Not implemented at the moment.
-            /// </summary>
-            public int CropEndIndex { get; set; }
+            ///// <summary>
+            ///// Crop end index. Not implemented at the moment.
+            ///// </summary>
+            //public int CropEndIndex { get; set; }
 
             ///// <summary>
             ///// Contains the last calculated baseline that was subtracted from <see cref="Spectrum.RawSignalAxis"/> to obtain <see cref="Spectrum.SignalAxis"/>.
             ///// </summary>
             //public double[] Baseline { get; internal set; }
+
+            //internal double[] MassAxisCrop { get; set; }
+            //internal double[] SignalAxisCrop { get; set; }
+            //internal bool Cropped { get; set; }
 
             #endregion
 
@@ -180,12 +182,12 @@ namespace IsotopeFit
             public IsotopeData PeakData { get; set; }
 
             /// <summary>
-            /// Name of the cluster. NOT the ID!
+            /// Human readable name of the cluster. NOT the ID!
             /// </summary>
             public string Name { get; set; }
 
-            public double MinMass { get; set; }
-            public double MaxMass { get; set; }
+            //public double MinMass { get; set; }
+            //public double MaxMass { get; set; }
 
             /// <summary>
             /// Centre of mass of the cluster, used for mass offset correction.
@@ -195,11 +197,11 @@ namespace IsotopeFit
             /// </remarks> 
             public double CentreOfMass { get; set; }
 
-            public int MinIndex { get; set; }
-            public int MaxIndex { get; set; }
+            //public int MinIndex { get; set; }
+            //public int MaxIndex { get; set; }
 
-            public double Area { get; set; }
-            public double AreaError { get; set; }
+            //public double Area { get; set; }
+            //public double AreaError { get; set; }
 
             /// <summary>
             /// Mass offset of the cluster, used for mass offset correction.
@@ -217,8 +219,8 @@ namespace IsotopeFit
             /// </remarks>
             public double Resolution { get; set; }
 
-            [Obsolete]
-            public int RootIndex { get; set; }
+            //[Obsolete]
+            //public int RootIndex { get; set; }
 
             /// <summary>
             /// Creates an empty cluster object.
@@ -254,17 +256,32 @@ namespace IsotopeFit
 
         public class Calibration
         {
-            public double[] COMList { get; set; }
-            public double[] MassOffsetList { get; set; }
-            public double[] ResolutionList { get; set; }
-            public string MassOffsetMethod { get; set; }
-            public string ResolutionMethod { get; set; }
-            public int MassOffsetParam { get; set; }
-            public int ResolutionParam { get; set; }
+            internal double[] COMList { get; set; }
+            internal double[] MassOffsetList { get; set; }
+            internal double[] ResolutionList { get; set; }
+            internal string MassOffsetMethod { get; set; }
+            internal string ResolutionMethod { get; set; }
+            internal int MassOffsetParam { get; set; }
+            internal int ResolutionParam { get; set; }
+
+            /// <summary>
+            /// List of IDs of clusters picked as calibration points for mass offset and resolution.
+            /// </summary>
             public List<string> NameList { get; set; }
+
+            /// <summary>
+            /// Object containing the information about the line shape.
+            /// </summary>
             public LineShape Shape { get; set; }
 
+            /// <summary>
+            /// Object containing the results of mass offset interpolation.
+            /// </summary>
             public Interpolation MassOffsetInterp { get; internal set; }
+
+            /// <summary>
+            /// Object containing the results of resolution fit.
+            /// </summary>
             public Interpolation ResolutionInterp { get; internal set; }
 
             internal Calibration()
@@ -273,32 +290,53 @@ namespace IsotopeFit
                 Shape = new LineShape();
             }
 
+            /// <summary>
+            /// Class containing the information about line shape.
+            /// </summary>
             public class LineShape
             {
-                public string Form { get; set; }
+                //public string Form { get; set; }
+
+                /// <summary>
+                /// Breaks of the partial polynomial describing the line shape
+                /// </summary>
                 public double[] Breaks { get; set; }
-                public Matrix<double> Coefs { get; set; }
-                public int Pieces { get; set; }
-                public int Order { get; set; }
-                public int Dim { get; set; }
+
+                /// <summary>
+                /// Coefficients of the partial polynomial describing the line shape
+                /// </summary>
+                public Matrix<double> Coeffs { get; set; }
+                //public int Pieces { get; set; }
+                //public int Order { get; set; }
+                //public int Dim { get; set; }
             }
         }
 
+        /// <summary>
+        /// Class containing data for the baseline correction.
+        /// </summary>
         public class BaselineCorr
         {
-            public double StartMass { get; set; }
-            public double EndMass { get; set; }
-            public int NDiv { get; set; }
-            public double Percent { get; set; }
+            //public double StartMass { get; set; }
+            //public double EndMass { get; set; }
+            //public int NDiv { get; set; }
+            //public double Percent { get; set; }
+
+            /// <summary>
+            /// X-values of the baseline correction points.
             public double[] XAxis { get; set; }
+
+            /// <summary>
+            /// Y-values of the baseline correction points.
+            /// </summary>
             public double[] YAxis { get; set; }
 
+            /// <summary>
+            /// Object containing results of the baseline interpolation.
+            /// </summary>
             public Interpolation BaselineInterpolation { get; internal set; }
 
-            internal BaselineCorr()
-            {
-
-            }
+            internal BaselineCorr() { }
         }
     }
 }

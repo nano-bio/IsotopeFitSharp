@@ -68,14 +68,13 @@ namespace IsotopeFit
         /// </summary>
         public OrderedDictionary Abundances { get; private set; }
         //public double[] Abundances { get; private set; }
-
-        public double FwhmRange { get; set; }
-        public double SearchRange { get; set; }
-
-        //public Interpolation ResolutionInterpolation { get; private set; }
+        
+        /// <summary>
+        /// Object containing the calculated design matrix for current cluster system.
+        /// </summary>
         public DesignMtrx DesignMatrix { get; private set; }
 
-        public WorkspaceStatus Status { get; private set; }
+        //public WorkspaceStatus Status { get; private set; }
 
         internal bool IFDLoaded { get; private set; }
 
@@ -94,31 +93,13 @@ namespace IsotopeFit
             var rootElement = IFDFile.Open(path);
 
             SpectralData = IFDFile.ReadRawData(rootElement);
-            SpectralData.CropStartIndex = IFDFile.ReadStartIndex(rootElement);
-            SpectralData.CropEndIndex = IFDFile.ReadEndIndex(rootElement);
+            //SpectralData.CropStartIndex = IFDFile.ReadStartIndex(rootElement);
+            //SpectralData.CropEndIndex = IFDFile.ReadEndIndex(rootElement);
             Clusters = IFDFile.ReadMolecules(rootElement);
             Calibration = IFDFile.ReadCalibration(rootElement);
             BaselineCorrData = IFDFile.ReadBackgroundCorr(rootElement);
 
             IFDLoaded = true;
-        }
-
-        /// <summary>
-        /// Convenience function to set the mass axis cropping indices.
-        /// </summary>
-        /// <remarks>
-        /// <para>The spectral data outside the specified interval will not be discarded, merely ignored in later calculations.</para>
-        /// </remarks>
-        /// <param name="startIndex">Start index of the interval to select.</param>
-        /// <param name="endIndex">End index of the interval to select.</param>
-        public void CropMassAxis(int startIndex, int endIndex)
-        {
-            if (startIndex >= endIndex) throw new WorkspaceException("Crop start index must be less than the end index.");
-            if (startIndex < 0 || startIndex <= SpectralData.RawLength) throw new WorkspaceException("Crop start index must be non-negative and less than raw mass axis length.");
-            if (endIndex < 0 || endIndex <= SpectralData.RawLength) throw new WorkspaceException("Crop start index must be non-negative and less than raw mass axis length.");
-
-            SpectralData.CropStartIndex = startIndex;
-            SpectralData.CropEndIndex = endIndex;
         }
 
         /// <summary>
@@ -164,6 +145,33 @@ namespace IsotopeFit
             }
         }
 
+        ///// <summary>
+        ///// Function to set the mass axis cropping.
+        ///// </summary>
+        ///// <remarks>
+        ///// <para>The spectral data outside the specified interval will not be discarded, merely ignored in later calculations.</para>
+        ///// </remarks>
+        ///// <param name="startIndex">Start index of the interval to select.</param>
+        ///// <param name="endIndex">End index of the interval to select.</param>
+        //public void CropMassAxis(int startIndex, int endIndex)
+        //{
+        //    //TODO: when is the best time to crop? do we know even before the baseline correction what interval do we want?
+
+        //    if (startIndex >= endIndex) throw new WorkspaceException("Crop start index must be less than the end index.");
+        //    if (startIndex < 0 || startIndex <= SpectralData.RawLength) throw new WorkspaceException("Crop start index must be non-negative and less than raw mass axis length.");
+        //    if (endIndex < 0 || endIndex <= SpectralData.RawLength) throw new WorkspaceException("Crop start index must be non-negative and less than raw mass axis length.");
+
+        //    SpectralData.CropStartIndex = startIndex;
+        //    SpectralData.CropEndIndex = endIndex;
+
+        //    SpectralData.MassAxisCrop = new double[endIndex - startIndex + 1];
+        //    SpectralData.SignalAxisCrop = new double[endIndex - startIndex + 1];
+
+        //    SpectralData.Cropped = true;
+        //    Array.Copy(SpectralData.RawMassAxis, startIndex, SpectralData.MassAxisCrop, 0, endIndex - startIndex + 1);
+        //    Array.Copy(SpectralData.RawSignalAxis, startIndex, SpectralData.SignalAxisCrop, 0, endIndex - startIndex + 1);
+        //}
+
         /// <summary>
         /// Calculates mass axis corrected for mass offset from previously supplied calibration data and stores the result in the <see cref="Workspace.SpectralData"/>.MassAxis property.
         /// </summary>
@@ -180,6 +188,7 @@ namespace IsotopeFit
         public void CorrectMassOffset(Interpolation.Type interpType, int order = -1, double[] comList = null, double[] massOffsetList = null)
         {
             //TODO: this can be cleaned/optimized, it is an ugly mess right now
+            //TODO: add autocrop after the last calibrated peak and maybe before the first one as well
 
             // if a polynomial fir is requested, check that the order was supplied as well
             if (interpType == Interpolation.Type.Polynomial && order < 0) throw new WorkspaceException("The polynomial order must be specified for the polynomial interpolation type.");
@@ -343,10 +352,18 @@ namespace IsotopeFit
         /// <summary>
         /// Builds the design matrix from currently supplied data and stores the result in the <see cref="Workspace.DesignMatrix"/> property.
         /// </summary>
-        public void BuildDesignMatrix()
+        /// <remarks>The parameters <paramref name="searchRange"/> and <paramref name="fwhmRange"/> are being multiplied, so they must be both nonzero.</remarks>
+        /// <param name="searchRange">Optional parameter, that sets the range around the centre of mass of a cluster, in which the design matrix values for that cluster will be generated.</param>
+        /// <param name="fwhmRange">Optional parameter, that sets the range as a function of FWHM around the centre of mass of a cluster, in which the design matrix values for that cluster will be generated.</param>
+        public void BuildDesignMatrix(double searchRange = 1, double fwhmRange = 0.5)
         {
             // TODO: merge this with the fit abundances maybe? If we do the design matrix updating, we will still need this function.
-            DesignMatrix = new DesignMtrx(SpectralData, Clusters, Calibration);
+            DesignMatrix = new DesignMtrx(SpectralData, Clusters, Calibration)
+            {
+                SearchRange = searchRange,
+                FwhmRange = fwhmRange
+            };
+
             DesignMatrix.Build();
         }
 

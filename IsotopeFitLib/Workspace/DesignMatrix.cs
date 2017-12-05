@@ -314,7 +314,7 @@ namespace IsotopeFit
             /// <returns>Mathnet matrix of recalculated piecewise polynomial coefficients.</returns>
             private Matrix<double> TransformLineShapeCoefs(IFData.Calibration.LineShape sh, double fwhm, double abundance)
             {
-                Matrix<double> coefs = Matrix<double>.Build.Dense(sh.Coefs.RowCount, sh.Coefs.ColumnCount, 0);
+                Matrix<double> coefs = Matrix<double>.Build.Dense(sh.Coeffs.RowCount, sh.Coeffs.ColumnCount, 0);
 
                 abundance = 1;  //TODO: remove
 
@@ -326,16 +326,16 @@ namespace IsotopeFit
                         switch (col % 4)
                         {
                             case 0:
-                                coefs.At(row, col, (sh.Coefs.At(row, col) * abundance / fwhm));  //fwhmDec
+                                coefs.At(row, col, (sh.Coeffs.At(row, col) * abundance / fwhm));  //fwhmDec
                                 break;
                             case 1:
-                                coefs.At(row, col, (sh.Coefs.At(row, col) * abundance / (fwhm * fwhm)));   //Math.Pow(fwhm, 2)
+                                coefs.At(row, col, (sh.Coeffs.At(row, col) * abundance / (fwhm * fwhm)));   //Math.Pow(fwhm, 2)
                                 break;
                             case 2:
-                                coefs.At(row, col, (sh.Coefs.At(row, col) * abundance / (fwhm * fwhm * fwhm)));   //Math.Pow(fwhm, 3)
+                                coefs.At(row, col, (sh.Coeffs.At(row, col) * abundance / (fwhm * fwhm * fwhm)));   //Math.Pow(fwhm, 3)
                                 break;
                             case 3:
-                                coefs.At(row, col, (sh.Coefs.At(row, col) * abundance / (fwhm * fwhm * fwhm * fwhm)));   //Math.Pow(fwhm, 4)
+                                coefs.At(row, col, (sh.Coeffs.At(row, col) * abundance / (fwhm * fwhm * fwhm * fwhm)));   //Math.Pow(fwhm, 4)
                                 break;
                         }
                     }
