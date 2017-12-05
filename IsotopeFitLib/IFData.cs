@@ -67,8 +67,6 @@ namespace IsotopeFit
             #region Properties
 
             public int RawLength { get; private set; }
-            //public int CroppedLength { get; set; }
-            //TODO: crop start and crop end?
 
             /// <summary>
             /// Raw experimental mass axis.
@@ -106,24 +104,30 @@ namespace IsotopeFit
             /// </summary>
             public double[] SignalAxis { get; internal set; }
 
-            ///// <summary>
-            ///// Crop start index. Not implemented at the moment.
-            ///// </summary>
-            //public int CropStartIndex { get; set; }
+            /// <summary>
+            /// Crop start index.
+            /// </summary>
+            public int CropStartIndex { get; set; }
 
-            ///// <summary>
-            ///// Crop end index. Not implemented at the moment.
-            ///// </summary>
-            //public int CropEndIndex { get; set; }
+            /// <summary>
+            /// Crop end index.
+            /// </summary>
+            public int CropEndIndex { get; set; }
 
-            ///// <summary>
-            ///// Contains the last calculated baseline that was subtracted from <see cref="Spectrum.RawSignalAxis"/> to obtain <see cref="Spectrum.SignalAxis"/>.
-            ///// </summary>
-            //public double[] Baseline { get; internal set; }
+            /// <summary>
+            /// Crop start mass.
+            /// </summary>
+            public double CropStartMass { get; set; }
 
-            //internal double[] MassAxisCrop { get; set; }
-            //internal double[] SignalAxisCrop { get; set; }
-            //internal bool Cropped { get; set; }
+            /// <summary>
+            /// Crop end mass.
+            /// </summary>
+            public double CropEndMass { get; set; }
+
+            internal double[] RawMassAxisCrop { get; set; }
+            internal double[] RawSignalAxisCrop { get; set; }
+            public int CroppedLength { get; internal set; }
+            internal bool Cropped { get; set; }
 
             #endregion
 

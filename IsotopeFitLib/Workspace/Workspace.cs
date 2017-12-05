@@ -145,32 +145,39 @@ namespace IsotopeFit
             }
         }
 
-        ///// <summary>
-        ///// Function to set the mass axis cropping.
-        ///// </summary>
-        ///// <remarks>
-        ///// <para>The spectral data outside the specified interval will not be discarded, merely ignored in later calculations.</para>
-        ///// </remarks>
-        ///// <param name="startIndex">Start index of the interval to select.</param>
-        ///// <param name="endIndex">End index of the interval to select.</param>
-        //public void CropMassAxis(int startIndex, int endIndex)
-        //{
-        //    //TODO: when is the best time to crop? do we know even before the baseline correction what interval do we want?
+        /// <summary>
+        /// Function to set the mass axis cropping.
+        /// </summary>
+        /// <remarks>
+        /// <para>The spectral data outside the specified interval will not be discarded, merely ignored in later calculations.</para>
+        /// </remarks>
+        /// <param name="startMass">Start index of the interval to select.</param>
+        /// <param name="endMass">End index of the interval to select.</param>
+        public void CropMassAxis(double startMass, double endMass)
+        {
+            //TODO: when is the best time to crop? do we know even before the baseline correction what interval do we want?
 
-        //    if (startIndex >= endIndex) throw new WorkspaceException("Crop start index must be less than the end index.");
-        //    if (startIndex < 0 || startIndex <= SpectralData.RawLength) throw new WorkspaceException("Crop start index must be non-negative and less than raw mass axis length.");
-        //    if (endIndex < 0 || endIndex <= SpectralData.RawLength) throw new WorkspaceException("Crop start index must be non-negative and less than raw mass axis length.");
+            if (startMass >= endMass) throw new WorkspaceException("Crop start mass must be less than the end index.");
+            if (startMass < 0 || startMass >= SpectralData.RawMassAxis.Last()) throw new WorkspaceException("Crop start mass must be non-negative and less than maximum element of raw mass axis.");
+            if (endMass < 0 || endMass > SpectralData.RawMassAxis.Last()) throw new WorkspaceException("Crop start mass must be non-negative and less or equal to the maximum element of raw mass axis.");
 
-        //    SpectralData.CropStartIndex = startIndex;
-        //    SpectralData.CropEndIndex = endIndex;
+            SpectralData.CropStartIndex = Array.BinarySearch(SpectralData.RawMassAxis, startMass);
+            if (SpectralData.CropStartIndex < 0) SpectralData.CropStartIndex = ~SpectralData.CropStartIndex;
 
-        //    SpectralData.MassAxisCrop = new double[endIndex - startIndex + 1];
-        //    SpectralData.SignalAxisCrop = new double[endIndex - startIndex + 1];
+            SpectralData.CropEndIndex = Array.BinarySearch(SpectralData.RawMassAxis, endMass);
+            if (SpectralData.CropEndIndex < 0) SpectralData.CropEndIndex = ~SpectralData.CropEndIndex;
 
-        //    SpectralData.Cropped = true;
-        //    Array.Copy(SpectralData.RawMassAxis, startIndex, SpectralData.MassAxisCrop, 0, endIndex - startIndex + 1);
-        //    Array.Copy(SpectralData.RawSignalAxis, startIndex, SpectralData.SignalAxisCrop, 0, endIndex - startIndex + 1);
-        //}
+            SpectralData.CroppedLength = SpectralData.CropEndIndex - SpectralData.CropStartIndex + 1;
+            SpectralData.CropStartMass = SpectralData.RawMassAxis[SpectralData.CropStartIndex];
+            SpectralData.CropEndMass = SpectralData.RawMassAxis[SpectralData.CropEndIndex];
+
+            SpectralData.RawMassAxisCrop = new double[SpectralData.CroppedLength];
+            SpectralData.RawSignalAxisCrop = new double[SpectralData.CroppedLength];
+
+            SpectralData.Cropped = true;
+            Array.Copy(SpectralData.RawMassAxis, SpectralData.CropStartIndex, SpectralData.RawMassAxisCrop, 0, SpectralData.CroppedLength);
+            Array.Copy(SpectralData.RawSignalAxis, SpectralData.CropStartIndex, SpectralData.RawSignalAxisCrop, 0, SpectralData.CroppedLength);
+        }
 
         /// <summary>
         /// Calculates mass axis corrected for mass offset from previously supplied calibration data and stores the result in the <see cref="Workspace.SpectralData"/>.MassAxis property.
@@ -182,15 +189,16 @@ namespace IsotopeFit
         /// </remarks>
         /// <param name="interpType">Type of the interpolation to be used.</param>
         /// <param name="order">Order of the polynomial interpolation. Is marked as optional, but is required if polynomial interpolation is selected.</param>
+        /// <param name="autoCrop">Optional flag that specifies, if the automatic cropping of the mass axis should be performed.</param>
         /// <param name="comList">Optional array of centre-of-mass points to be used for the correction.</param>
         /// <param name="massOffsetList">Optional array of mass offset points to be used for the correction.</param>
         /// <exception cref="WorkspaceException">Thrown when some of the required data have not been loaded in the <see cref="Workspace"/> or their lengths are different.</exception>
-        public void CorrectMassOffset(Interpolation.Type interpType, int order = -1, double[] comList = null, double[] massOffsetList = null)
+        public void CorrectMassOffset(Interpolation.Type interpType, int order = -1, bool autoCrop = false, double[] comList = null, double[] massOffsetList = null)
         {
             //TODO: this can be cleaned/optimized, it is an ugly mess right now
             //TODO: add autocrop after the last calibrated peak and maybe before the first one as well
 
-            // if a polynomial fir is requested, check that the order was supplied as well
+            // if a polynomial fit is requested, check that the order was supplied as well
             if (interpType == Interpolation.Type.Polynomial && order < 0) throw new WorkspaceException("The polynomial order must be specified for the polynomial interpolation type.");
 
             // required data
@@ -224,6 +232,21 @@ namespace IsotopeFit
 
             //int massAxisLength = SpectralData.RawLength;    //TODO: might want to use the cropped length as well
             //int fitDataLength = Calibration.COMList.Length;
+
+            // crop the mass axis, if necessary
+            if (!SpectralData.Cropped)  // was cropped manually
+            {
+                if (autoCrop)   // not cropped, set to be done automatically
+                {
+                    // interval can be specified as 5% below the lowest and 5% above the highest calibration point
+                    CropMassAxis(0.95 * Calibration.COMList[0], 1.05 * Calibration.COMList.Last());
+                }
+                else // not cropped, wont crop
+                {
+                    SpectralData.RawMassAxisCrop = SpectralData.RawMassAxis;
+                    SpectralData.RawSignalAxisCrop = SpectralData.RawSignalAxis;
+                }
+            }
 
             // generate the x-axis for the fit
             double xAxisMin = SpectralData.RawMassAxis.Min();
