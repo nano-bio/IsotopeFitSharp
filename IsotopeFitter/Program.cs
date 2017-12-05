@@ -5,132 +5,123 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Diagnostics;
+using System.Globalization;
 
 using MathNet.Numerics.LinearAlgebra;
 
 using IsotopeFit;
-using IsotopeFit.Numerics;
+//using IsotopeFit.Numerics;
 
 namespace IsotopeFitter
 {
     class Program
     {
-        //TODO: vymysliet, napisat, otestovat sposob rucneho zapisovania do datovych struktur
+        NumberFormatInfo dot = new NumberFormatInfo { NumberDecimalSeparator = "." };
 
         static void Main(string[] args)
         {
-            var bodka = new System.Globalization.NumberFormatInfo { NumberDecimalSeparator = "." };
-            MathNet.Numerics.Control.UseNativeMKL();
-
-            Stopwatch time = new Stopwatch();            
-
-            Workspace W = new Workspace("testfiles\\finaltestfile.ifd");
-            time.Start();
-
-            W.CorrectBaseline();
-
-            //TODO: the first fit needs to be spline (matlab spline(x,y,xx)) for that particular test file, not PCHIP. the second one is hardcoded pchip in matlab as well
-            W.CorrectMassOffset(Interpolation.Type.SplineNotAKnot, 0);
-
-            //TODO: resolutionfit
-
-            Debug.Assert(W.SpectralData.MassAxis.Length == W.SpectralData.SignalAxis.Length);
-
-            //using (FileStream f = File.Open("pureMassSig.txt", FileMode.Create))
-            //{
-            //    using (StreamWriter sw = new StreamWriter(f))
-            //    {
-            //        for (int i = 0; i < W.SpectralData.MassOffsetCorrAxis.Count; i++)
-            //        {
-            //            sw.WriteLine(W.SpectralData.MassOffsetCorrAxis[i].ToString(bodka) + " " + W.SpectralData.PureSignalAxis[i].ToString(bodka));
-            //        }
-            //    }
-            //}
-
-            W.BuildDesignMatrix();
-
-            //using (FileStream f = File.Open("designMatrix.txt", FileMode.Create))
-            //{
-            //    using (StreamWriter sw = new StreamWriter(f))
-            //    {
-            //        int j = 0;
-
-            //        for (int i = 0; i < W.designMatrix.Storage.Values.Length; i++)
-            //        {
-            //            if (i == W.designMatrix.Storage.ColumnPointers[j]) j++;
-            //            sw.WriteLine(W.designMatrix.Storage.RowIndices[i].ToString(bodka) + " " + j.ToString(bodka) + " " + W.designMatrix.Storage.Values[i].ToString());
-            //        }
-            //    }
-            //}
-
-            W.FitAbundances();
-
-            time.Stop();
-
-            using (FileStream f = File.Open("abd.txt", FileMode.Create))
+            if (args.Length == 0)   //TODO: this might fail on linux
             {
-                using (StreamWriter sw = new StreamWriter(f))
-                {
-                    for (int i = 0; i < W.Cluster.Count; i++)
-                    {
-                        sw.WriteLine(W.Cluster[i].CentreOfMass.ToString(bodka) + " " + W.Abundances[i].ToString(bodka));
-                    }                    
-                } 
+                throw new Exception("No file or directory to process was specified.");
             }
 
+            Stopwatch baselineTime = new Stopwatch();
+            Stopwatch mofTime = new Stopwatch();
+            Stopwatch resTime = new Stopwatch();
+            Stopwatch dmTime = new Stopwatch();
+            Stopwatch abdTime = new Stopwatch();
+
+            string command = args[0];
+
+            Workspace W = new Workspace();
+
+            if (command.Contains(".ifd"))
+            {
+                W.LoadIFDFile(command);
+            }
+            else if (command.Contains(".ifj"))
+            {
+                throw new NotImplementedException();
+            }
+            else
+            {
+                // command is a directory
+                throw new NotImplementedException();
+            }
+
+
+            
+            W.CorrectBaseline();
+            baselineTime.Stop();
+            Console.WriteLine("baseline done in {0} miliseconds", baselineTime.ElapsedMilliseconds);
+
+            mofTime.Start();
+            W.CorrectMassOffset(Interpolation.Type.SplineNotAKnot, 0);
+            mofTime.Stop();
+            Console.WriteLine("mass offset done in {0} miliseconds", mofTime.ElapsedMilliseconds);
+
+            resTime.Start();
+            W.ResolutionFit(Interpolation.Type.Polynomial, 2);
+            resTime.Stop();
+            Console.WriteLine("resolution done in {0} miliseconds", resTime.ElapsedMilliseconds);
+
+            dmTime.Start();
+            W.BuildDesignMatrix();
+            dmTime.Stop();
+            Console.WriteLine("design matrix done in {0} miliseconds", dmTime.ElapsedMilliseconds);
+
+            abdTime.Start();
+            W.FitAbundances();
+            abdTime.Stop();
+            Console.WriteLine("abundances done in {0} miliseconds", abdTime.ElapsedMilliseconds);
+
+            Console.WriteLine("total time {0} seconds", (baselineTime.ElapsedMilliseconds + mofTime.ElapsedMilliseconds + resTime.ElapsedMilliseconds + dmTime.ElapsedMilliseconds + abdTime.ElapsedMilliseconds) / 1000d);
+
+            //using (FileStream f = File.Open("abd.txt", FileMode.Create))
+            //{
+            //    using (StreamWriter sw = new StreamWriter(f))
+            //    {
+            //        for (int i = 0; i < W.Cluster.Count; i++)
+            //        {
+            //            sw.WriteLine(W.Cluster[i].CentreOfMass.ToString(bodka) + " " + W.Abundances[i].ToString(bodka));
+            //        }                    
+            //    } 
+            //}
+
             //Vector<double> calcSpectrum = Vector<double>.Build.Dense((int)W.EndIndex);
-            double[] calcSpectrum = new double[(int)W.EndIndex];
+            //double[] calcSpectrum = new double[(int)W.EndIndex];
             //Vector<double> abdVec = Vector<double>.Build.Dense(W.Abundances);
 
             //now we have to remove the last vector from the design matrix
 
-            double[] values = new double[W.DesignMatrix.Storage.ColumnPointers[W.DesignMatrix.Storage.ColumnPointers.Length - 2]];
-            int[] rowIndices = new int[W.DesignMatrix.Storage.ColumnPointers[W.DesignMatrix.Storage.ColumnPointers.Length - 2]];
-            int[] colPointers = new int[W.DesignMatrix.Storage.ColumnPointers.Length - 1];
+            //double[] values = new double[W.DesignMatrix.Storage.ColumnPointers[W.DesignMatrix.Storage.ColumnPointers.Length - 2]];
+            //int[] rowIndices = new int[W.DesignMatrix.Storage.ColumnPointers[W.DesignMatrix.Storage.ColumnPointers.Length - 2]];
+            //int[] colPointers = new int[W.DesignMatrix.Storage.ColumnPointers.Length - 1];
 
-            Array.Copy(W.DesignMatrix.Storage.Values, values, values.Length);
-            Array.Copy(W.DesignMatrix.Storage.RowIndices, rowIndices, rowIndices.Length);
-            Array.Copy(W.DesignMatrix.Storage.ColumnPointers, colPointers, colPointers.Length);
+            //Array.Copy(W.DesignMatrix.Storage.Values, values, values.Length);
+            //Array.Copy(W.DesignMatrix.Storage.RowIndices, rowIndices, rowIndices.Length);
+            //Array.Copy(W.DesignMatrix.Storage.ColumnPointers, colPointers, colPointers.Length);
 
-            CSparse.Double.SparseMatrix qwerty = new CSparse.Double.SparseMatrix(W.DesignMatrix.Storage.RowCount, W.DesignMatrix.Storage.ColumnCount - 1)
-            {
-                Values = values,
-                RowIndices = rowIndices,
-                ColumnPointers = colPointers
-            };
-
-            //Matrix<double> mehehe = W.designMatrix.Storage.SubMatrix(0, W.designMatrix.Storage.RowCount, 0, W.designMatrix.Storage.ColumnCount - 1);
-
-            //if (W.Abundances.Sum() == 0)
+            //CSparse.Double.SparseMatrix qwerty = new CSparse.Double.SparseMatrix(W.DesignMatrix.Storage.RowCount, W.DesignMatrix.Storage.ColumnCount - 1)
             //{
-            //    Console.WriteLine("abd vsetko nuly");
+            //    Values = values,
+            //    RowIndices = rowIndices,
+            //    ColumnPointers = colPointers
+            //};
+
+            //qwerty.Multiply(W.Abundances, calcSpectrum);            
+
+            //using (FileStream f = File.Open("calcSpectrum.txt", FileMode.Create))
+            //{
+            //    using (StreamWriter sw = new StreamWriter(f))
+            //    {
+            //        for (int i = 0; i < W.SpectralData.RawLength; i++)
+            //        {
+            //            sw.WriteLine(W.SpectralData.MassAxis[i].ToString(bodka) + " " + calcSpectrum[i].ToString(bodka) + " " + W.SpectralData.SignalAxis[i].ToString(bodka));
+            //        }
+            //    }
             //}
 
-            qwerty.Multiply(W.Abundances, calcSpectrum);
-
-            //Vector<double> calcSpectrumVect = Vector<double>.Build.SparseOfArray(calcSpectrum);
-
-            //if (calcSpectrum.Sum() == 0)
-            //{
-            //    Console.WriteLine("calc spec vsetko nuly");
-            //}
-
-            //calcSpectrum = qwerty.Multiply(abdVec);
-
-            
-
-            using (FileStream f = File.Open("calcSpectrum.txt", FileMode.Create))
-            {
-                using (StreamWriter sw = new StreamWriter(f))
-                {
-                    for (int i = 0; i < W.SpectralData.RawLength; i++)
-                    {
-                        sw.WriteLine(W.SpectralData.MassAxis[i].ToString(bodka) + " " + calcSpectrum[i].ToString(bodka) + " " + W.SpectralData.SignalAxis[i].ToString(bodka));
-                    }
-                }
-            }
-
-            Console.WriteLine("done " + time.Elapsed);
             Console.ReadKey();
         }
 
