@@ -56,7 +56,7 @@ namespace IsotopeFitter
             Console.WriteLine("baseline done in {0} miliseconds", baselineTime.ElapsedMilliseconds);
 
             mofTime.Start();
-            W.CorrectMassOffset(Interpolation.Type.SplineNotAKnot, 0);
+            W.CorrectMassOffset(Interpolation.Type.SplineNotAKnot);
             mofTime.Stop();
             Console.WriteLine("mass offset done in {0} miliseconds", mofTime.ElapsedMilliseconds);
 

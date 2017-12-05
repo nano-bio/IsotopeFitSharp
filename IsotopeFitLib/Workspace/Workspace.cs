@@ -172,11 +172,11 @@ namespace IsotopeFit
             SpectralData.CropEndMass = SpectralData.RawMassAxis[SpectralData.CropEndIndex];
 
             SpectralData.RawMassAxisCrop = new double[SpectralData.CroppedLength];
-            SpectralData.RawSignalAxisCrop = new double[SpectralData.CroppedLength];
+            SpectralData.SignalAxisCrop = new double[SpectralData.CroppedLength];
 
             SpectralData.Cropped = true;
             Array.Copy(SpectralData.RawMassAxis, SpectralData.CropStartIndex, SpectralData.RawMassAxisCrop, 0, SpectralData.CroppedLength);
-            Array.Copy(SpectralData.RawSignalAxis, SpectralData.CropStartIndex, SpectralData.RawSignalAxisCrop, 0, SpectralData.CroppedLength);
+            Array.Copy(SpectralData.SignalAxis, SpectralData.CropStartIndex, SpectralData.SignalAxisCrop, 0, SpectralData.CroppedLength);
         }
 
         /// <summary>
@@ -243,16 +243,23 @@ namespace IsotopeFit
                 }
                 else // not cropped, wont crop
                 {
+                    SpectralData.CropStartIndex = 0;
+                    SpectralData.CropEndIndex = SpectralData.RawLength - 1;
+                    SpectralData.CroppedLength = SpectralData.RawLength;
                     SpectralData.RawMassAxisCrop = SpectralData.RawMassAxis;
-                    SpectralData.RawSignalAxisCrop = SpectralData.RawSignalAxis;
+                    SpectralData.SignalAxisCrop = SpectralData.SignalAxis;
                 }
             }
 
             // generate the x-axis for the fit
-            double xAxisMin = SpectralData.RawMassAxis.Min();
-            double xAxisMax = SpectralData.RawMassAxis.Max();
+            //double xAxisMin = SpectralData.RawMassAxis.Min();
+            //double xAxisMax = SpectralData.RawMassAxis.Max();
+            double xAxisMin = SpectralData.RawMassAxisCrop.Min();
+            double xAxisMax = SpectralData.RawMassAxisCrop.Max();
 
-            int xAxisLength = (int)((xAxisMax - xAxisMin) / 0.01);   //TODO: allow to set granularity of the x axis?
+            //TODO: allow to set granularity of the x axis?
+            //TODO: this granularity problem probably sligthly changes the precision of the results
+            int xAxisLength = (int)((xAxisMax - xAxisMin) / 0.01);
             //MathNet.Numerics.LinearAlgebra.Vector<double> xAxis = MathNet.Numerics.LinearAlgebra.Vector<double>.Build.Dense(xAxisLength);
             double[] xAxis = new double[xAxisLength];
 
@@ -305,7 +312,7 @@ namespace IsotopeFit
 
             double[] correctedMassAxis = new double[yAxis.Length];
 
-            correctedMassAxis = correctMassInterp.Evaluate(SpectralData.RawMassAxis);
+            correctedMassAxis = correctMassInterp.Evaluate(SpectralData.RawMassAxisCrop);  //RawMassAxis
 
             // TODO: It might happen due to the monotonicity check, that during the second evaluation we hit a singularity. This cuts off the nonsense data.
 

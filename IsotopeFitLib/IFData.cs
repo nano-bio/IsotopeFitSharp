@@ -125,7 +125,7 @@ namespace IsotopeFit
             public double CropEndMass { get; set; }
 
             internal double[] RawMassAxisCrop { get; set; }
-            internal double[] RawSignalAxisCrop { get; set; }
+            internal double[] SignalAxisCrop { get; set; }
             public int CroppedLength { get; internal set; }
             internal bool Cropped { get; set; }
 

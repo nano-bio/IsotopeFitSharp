@@ -51,13 +51,13 @@ namespace IsotopeFit
 
             internal DesignMtrx(IFData.Spectrum spectrum, OrderedDictionary molecules, IFData.Calibration calibration)
             {
-                massAxis = spectrum.MassAxis.ToArray();
-                observationVector = (MathNet.Numerics.LinearAlgebra.Double.SparseVector)MathNet.Numerics.LinearAlgebra.Double.SparseVector.Build.SparseOfArray(spectrum.SignalAxis);
+                massAxis = spectrum.MassAxis;
+                observationVector = (MathNet.Numerics.LinearAlgebra.Double.SparseVector)MathNet.Numerics.LinearAlgebra.Double.SparseVector.Build.SparseOfArray(spectrum.SignalAxisCrop);
                 MoleculesDict = molecules;
                 Calibration = calibration;
                 //resolutionFit = calibration.ResolutionInterpolation;
 
-                Rows = spectrum.RawLength;
+                Rows = spectrum.CroppedLength;
                 Cols = molecules.Count;
             }
 
