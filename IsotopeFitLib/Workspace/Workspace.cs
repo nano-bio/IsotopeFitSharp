@@ -63,10 +63,10 @@ namespace IsotopeFit
         /// </summary> 
         public IFData.BaselineCorr BaselineCorrData { get; set; }
 
-        /// <summary>
-        /// Object containing the fitted cluster abundances.
-        /// </summary>
-        public OrderedDictionary Abundances { get; private set; }
+        ///// <summary>
+        ///// Object containing the fitted cluster abundances.
+        ///// </summary>
+        //public OrderedDictionary Abundances { get; private set; }
         //public double[] Abundances { get; private set; }
         
         /// <summary>
@@ -379,11 +379,13 @@ namespace IsotopeFit
 
             lss.Solve();
 
-            Abundances = new OrderedDictionary(Clusters.Count);
+            //Abundances = new OrderedDictionary(Clusters.Count);
 
             for (int i = 0; i < Clusters.Count; i++)
             {
-                Abundances.Add((Clusters[i] as IFData.Cluster).Name, lss.Solution[i]);
+                //Abundances.Add((Clusters[i] as IFData.Cluster).Name, lss.Solution[i]);
+                (Clusters[i] as IFData.Cluster).Abundance = lss.Solution[i];
+                //TODO: abundance error
             }
         }
 

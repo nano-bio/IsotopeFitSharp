@@ -217,11 +217,11 @@ namespace IsotopeFitter.Tests
                 }
             }
 
-            Assert.AreEqual(abd.Count, w.Abundances.Count);
+            Assert.AreEqual(abd.Count, w.Clusters.Count);
 
             for (int i = 0; i < abd.Count; i++)
             {
-                Assert.AreEqual(abd[i], (double)w.Abundances[i], 1e-6, "abundances check failed at index {0}", i);
+                Assert.AreEqual(abd[i], (double)(w.Clusters[i] as IFData.Cluster).Abundance, 1e-6, "abundances check failed at index {0}", i);
             }
         }
     }

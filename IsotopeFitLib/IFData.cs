@@ -200,8 +200,16 @@ namespace IsotopeFit
             //public int MinIndex { get; set; }
             //public int MaxIndex { get; set; }
 
-            //public double Area { get; set; }
-            //public double AreaError { get; set; }
+
+            /// <summary>
+            /// Fitted abundance of the cluster.
+            /// </summary>
+            public double Abundance { get; set; }
+
+            /// <summary>
+            /// Error of the fitted abundance value.
+            /// </summary>
+            public double AbundanceError { get; set; }
 
             /// <summary>
             /// Mass offset of the cluster, used for mass offset correction.
