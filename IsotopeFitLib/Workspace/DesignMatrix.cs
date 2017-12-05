@@ -76,8 +76,8 @@ namespace IsotopeFit
             internal int Cols { get; private set; }
             internal Matrix<double> R { get; private set; }
 
-            internal double SearchRange { get; set; }   //TODO: at the moment, those two values are not being set anywhere
-            internal double FwhmRange { get; set; }
+            public double SearchRange { get; set; }   //TODO: at the moment, those two values are not being set anywhere
+            public double FwhmRange { get; set; }
 
             #endregion
 
