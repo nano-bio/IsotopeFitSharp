@@ -109,8 +109,13 @@ namespace IsotopeFit
 
             LeastSquaresSystem factorizedLSS = new LeastSquaresSystem(Mr, vr)
             {
-                ColumnOrdering = QR.columnOrdering
+                ColumnOrdering = new int[QR.columnOrdering.Length]
             };
+
+            Array.Copy(QR.columnOrdering, factorizedLSS.ColumnOrdering, QR.columnOrdering.Length);
+
+            //QR = null;
+
             return factorizedLSS;
         }
 
