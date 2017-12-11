@@ -124,8 +124,8 @@ namespace IsotopeFit
             /// </summary>
             public double CropEndMass { get; set; }
 
-            internal double[] RawMassAxisCrop { get; set; }
-            internal double[] SignalAxisCrop { get; set; }
+            public double[] RawMassAxisCrop { get; set; }
+            public double[] SignalAxisCrop { get; set; }
             public int CroppedLength { get; internal set; }
             internal bool Cropped { get; set; }
 
@@ -271,10 +271,10 @@ namespace IsotopeFit
             internal double[] COMList { get; set; }
             internal double[] MassOffsetList { get; set; }
             internal double[] ResolutionList { get; set; }
-            internal string MassOffsetMethod { get; set; }
-            internal string ResolutionMethod { get; set; }
-            internal int MassOffsetParam { get; set; }
-            internal int ResolutionParam { get; set; }
+            public string MassOffsetMethod { get; set; }
+            public string ResolutionMethod { get; set; }
+            public int MassOffsetParam { get; set; }
+            public int ResolutionParam { get; set; }
 
             /// <summary>
             /// List of IDs of clusters picked as calibration points for mass offset and resolution.

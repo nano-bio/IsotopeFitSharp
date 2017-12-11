@@ -128,7 +128,7 @@ namespace IsotopeFit
                 C.NameList.Add(((dataField as MLCell).Cells[i] as MLChar).GetString(0));
             }
 
-            C.Shape = ReadShape((Cal as MLStructure)["shape"]);
+            C.Shape = ReadShape((Cal as MLStructure)["shape"]); //TODO: shape is sometimes not specified - use gaussian?
 
             return C;
         }
