@@ -75,6 +75,7 @@
   <ItemGroup>
     <Compile Include="IFData.cs" />
     <Compile Include="Numerics\Interpolation.cs" />
+    <Compile Include="Numerics\Pardiso.cs" />
     <Compile Include="Numerics\PolyInterpolation.cs" />
     <Compile Include="Numerics\PPInterpolation.cs" />
     <Compile Include="Numerics\LeastSquaresSystem.cs" />
