@@ -24,6 +24,7 @@ namespace IsotopeFit
 
             private MathNet.Numerics.LinearAlgebra.Double.SparseVector[] designMatrixVectors;
             private MathNet.Numerics.LinearAlgebra.Double.SparseVector observationVector;
+            private MathNet.Numerics.LinearAlgebra.Double.DenseVector observationVector2;
             private double[] massAxis;
 
             bool[] fitMask;
@@ -53,6 +54,7 @@ namespace IsotopeFit
             {
                 massAxis = spectrum.MassAxis;
                 observationVector = (MathNet.Numerics.LinearAlgebra.Double.SparseVector)MathNet.Numerics.LinearAlgebra.Double.SparseVector.Build.SparseOfArray(spectrum.SignalAxisCrop);
+                observationVector2 = (MathNet.Numerics.LinearAlgebra.Double.DenseVector)MathNet.Numerics.LinearAlgebra.Double.DenseVector.Build.DenseOfArray(spectrum.SignalAxisCrop);
                 MoleculesDict = molecules;
                 Calibration = calibration;
                 //resolutionFit = calibration.ResolutionInterpolation;
@@ -112,8 +114,12 @@ namespace IsotopeFit
                 {
                     if (fitMask[i])
                     {
-                        values2[j] = (observationVector.Storage as SparseVectorStorage<double>).Values[i];
-                        indices2[j] = (observationVector.Storage as SparseVectorStorage<double>).Indices[i];
+                        //values2[j] = (observationVector.Storage as SparseVectorStorage<double>).Values[i];
+                        //indices2[j] = (observationVector.Storage as SparseVectorStorage<double>).Indices[i];
+
+                        values2[j] = observationVector2[i];
+                        indices2[j] = i;
+
                         j++;
                     }
                 }
@@ -131,7 +137,11 @@ namespace IsotopeFit
                 
                 // fitmask application
                 for (int i = 0; i < designMatrixVectors.Length - 1; i++)
-                {                    
+                {
+                    // if there were no non-zero elements that would make it through the fitmask, we can skip the iteration
+                    // this happens if the fwhm of that cluster was negative, which typically happens when extrapolating the resolution fit against common sense
+                    //if (designMatrixVectors[i].NonZerosCount == 0) continue;
+
                     SparseVectorStorage<double> st = designMatrixVectors[i].Storage as SparseVectorStorage<double>;
 
                     Array.Resize(ref st.Indices, st.ValueCount);    // TODO: there are useless trailing zeroes, we need to cut them out
@@ -219,7 +229,8 @@ namespace IsotopeFit
                     int fitmaskLowerLimitIndex, fitmaskUpperLimitIndex;
                     double mass, abundance, resolution, fwhm;
 
-                    Vector<double> breaks;
+                    //Vector<double> breaks;
+                    double[] breaks;
                     Matrix<double> coefs;
 
                     //mass = Molecules[moleculeIndex].PeakData.Mass[i];
@@ -228,11 +239,6 @@ namespace IsotopeFit
                     abundance = (MoleculesDict[moleculeIndex] as IFData.Cluster).PeakData.Abundance[i];  // area of the line and abundance are proportional
                     resolution = bs.resolutionFit.Evaluate(mass);
                     fwhm = mass / resolution;
-
-                    if (fwhm <= 0)
-                    {
-                        throw new ArithmeticException("fwhm was negative"); //TODO: reorder breaks and coefs? check matlab code
-                    }
 
                     // transform shape breaks and coefficients
                     breaks = TransformLineShapeBreaks(Calibration.Shape, fwhm, mass);
@@ -293,14 +299,17 @@ namespace IsotopeFit
             /// <param name="fwhm">Value of full width at half maximum for the particular line, shape of which is being calculated.</param>
             /// <param name="mass">Mass of the fragment, to which the line being calculated corresponds.</param>
             /// <returns>Mathnet vector of recalculated piecewise polynomial breaks.</returns>
-            private Vector<double> TransformLineShapeBreaks(IFData.Calibration.LineShape sh, double fwhm, double mass)
+            private double[] TransformLineShapeBreaks(IFData.Calibration.LineShape sh, double fwhm, double mass)
             {
-                Vector<double> breaks = Vector<double>.Build.Dense(sh.Breaks.Length, 0); 
+                //Vector<double> breaks = Vector<double>.Build.Dense(sh.Breaks.Length, 0);
+                double[] breaks = new double[sh.Breaks.Length];
 
-                for (int i = 0; i < breaks.Count; i++)
+                for (int i = 0; i < breaks.Length; i++)
                 {
                     breaks[i] = sh.Breaks[i] * fwhm + mass;
                 }
+
+                if (fwhm < 0) breaks = breaks.Reverse().ToArray();
 
                 return breaks;
             }
@@ -340,6 +349,8 @@ namespace IsotopeFit
                         }
                     }
                 }
+
+                if (fwhm < 0) coefs = Matrix<double>.Build.DenseOfRowArrays(coefs.ToRowArrays().Reverse());
 
                 return coefs;    
             }
