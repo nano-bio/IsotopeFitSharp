@@ -16,16 +16,16 @@ using IsotopeFit;
 namespace IsotopeFitter.Tests
 {
     [TestFixture]
-    public class Tests
+    public class Test2
     {
         System.Globalization.NumberFormatInfo dot = new System.Globalization.NumberFormatInfo { NumberDecimalSeparator = "." };
 
         [Test, Category("IsotopeFitter")]
-        public void WorkflowTest()
+        public void WorkflowTest2()
         {
             //MathNet.Numerics.Control.UseNativeMKL();
 
-            Workspace W = new Workspace(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\finaltestfile.ifd");
+            Workspace W = new Workspace(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\Test2\\testfile2.ifd");
 
             Stopwatch timeTotal = new Stopwatch();
             timeTotal.Start();
@@ -34,13 +34,12 @@ namespace IsotopeFitter.Tests
 
             MassOffsetSubtest(ref W);
 
-            //TODO: resolution fit subtest
             ResolutionFitSubtest(ref W);
 
-            DesignMatrixBuildSubtest(ref W);            
+            DesignMatrixBuildSubtest(ref W);
 
             ExtractAbundancesSubtest(ref W);
-            
+
             timeTotal.Stop();
             Assert.Pass("Workflow test passed. Elapsed time: {0}", timeTotal.Elapsed);
         }
@@ -50,7 +49,7 @@ namespace IsotopeFitter.Tests
             w.CorrectBaseline();
 
             // compare calculated pure signal with matlab results
-            string[] bgCorrFile = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\1outSubtractBg.txt");
+            string[] bgCorrFile = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\Test2\\1outBgCorr.txt");
 
             List<double> bgCorr = new List<double>();
 
@@ -66,7 +65,7 @@ namespace IsotopeFitter.Tests
 
             for (int i = 0; i < bgCorr.Count; i++)
             {
-                Assert.AreEqual(bgCorr[i],w.SpectralData.SignalAxis[i], 1e-9, "baseline check failed at index {0}", i);
+                Assert.AreEqual(bgCorr[i], w.SpectralData.SignalAxis[i], 1e-9, "baseline check failed at index {0}", i);
             }
         }
 
@@ -74,10 +73,10 @@ namespace IsotopeFitter.Tests
         private void MassOffsetSubtest(ref Workspace w)
         {
             //TODO: the first fit needs to be spline (matlab spline(x,y,xx)) for that particular test file, not PCHIP. the second one is hardcoded pchip in matlab as well
-            w.CorrectMassOffset(Interpolation.Type.SplineNotAKnot, 0);
+            w.CorrectMassOffset(Interpolation.Type.PCHIP, 0);
 
             // compare calculated mass axis with matlab results
-            string[] massOffFile = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\2outSubtractMassOffset.txt");
+            string[] massOffFile = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\Test2\\2outMassOffsetCorr.txt");
 
             List<double> mOff = new List<double>();
 
@@ -105,10 +104,10 @@ namespace IsotopeFitter.Tests
 
         private void ResolutionFitSubtest(ref Workspace w)
         {
-            w.ResolutionFit(Interpolation.Type.Polynomial, 2);
+            w.ResolutionFit(Interpolation.Type.Polynomial, 8);
 
             // compare calculated resolution coefficients with matlab results
-            string[] resCoefFile = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\3resolutionCoefs.txt");
+            string[] resCoefFile = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\Test2\\3resolutionCoefs.txt");
 
             List<double> resCoef = new List<double>();
 
@@ -126,16 +125,17 @@ namespace IsotopeFitter.Tests
 
             for (int i = 0; i < resCoef.Count; i++)
             {
-                Assert.AreEqual(resCoef[i], (w.Calibration.ResolutionInterp as PolyInterpolation).Coefs[i], 1e-9, "resolution check failed at index {0}", i);
+                Assert.AreEqual(resCoef[i], (w.Calibration.ResolutionInterp as PolyInterpolation).Coefs[i], 1e-6, "resolution check failed at index {0}", i);
             }
         }
 
         private void DesignMatrixBuildSubtest(ref Workspace w)
         {
+            //double d = w.SpectralData.SignalAxisCrop[4939];
             w.BuildDesignMatrix();
 
             // compare with matlab calculated abundances
-            string[] matrixFile = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\5designMatrixWithMask.txt");
+            string[] matrixFile = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\Test2\\5desMatWithMask.txt");
 
             double[] values = new double[matrixFile.Length];
             int[] rowIndices = new int[matrixFile.Length];
@@ -166,23 +166,23 @@ namespace IsotopeFitter.Tests
             int bue = w.DesignMatrix.Storage.RowIndices.Max();
 
             // comparisons of the matrix internal data fields
-            //Assert.AreEqual(values.Length, w.DesignMatrix.Storage.Values.Length - (w.DesignMatrix.Storage.ColumnPointers.Last() - w.DesignMatrix.Storage.ColumnPointers[w.DesignMatrix.Storage.ColumnPointers.Length - 2]), "different values array length in the design matrix"); //TODO: this will be a problem with non-zero observation vector
-            //Assert.AreEqual(rowIndices.Length, w.DesignMatrix.Storage.RowIndices.Length - (w.DesignMatrix.Storage.ColumnPointers.Last() - w.DesignMatrix.Storage.ColumnPointers[w.DesignMatrix.Storage.ColumnPointers.Length - 2]), "different row indices array length in the design matrix");
-            //Assert.AreEqual(colPointers.Length, w.DesignMatrix.Storage.ColumnPointers.Length - 1, "different column pointers array length in the design matrix");   // -1 because the calculated design matrix contains an extra column for the observation vector
+            Assert.AreEqual(values.Length, w.DesignMatrix.Storage.Values.Length - (w.DesignMatrix.Storage.ColumnPointers.Last() - w.DesignMatrix.Storage.ColumnPointers[w.DesignMatrix.Storage.ColumnPointers.Length - 2]), "different values array length in the design matrix"); //TODO: this will be a problem with non-zero observation vector
+            Assert.AreEqual(rowIndices.Length, w.DesignMatrix.Storage.RowIndices.Length - (w.DesignMatrix.Storage.ColumnPointers.Last() - w.DesignMatrix.Storage.ColumnPointers[w.DesignMatrix.Storage.ColumnPointers.Length - 2]), "different row indices array length in the design matrix");
+            Assert.AreEqual(colPointers.Length, w.DesignMatrix.Storage.ColumnPointers.Length - 1, "different column pointers array length in the design matrix");   // -1 because the calculated design matrix contains an extra column for the observation vector
 
-            //for (int i = 0; i < rowIndices.Length; i++)
-            //{
-            //    Assert.AreEqual(rowIndices[i], w.DesignMatrix.Storage.RowIndices[i], "design matrix row index comparison fail at {0}", i);
-            //    Assert.AreEqual(values[i], w.DesignMatrix.Storage.Values[i], 1e-9, "design matrix values comparison fail at {0}", i);
-            //}
+            for (int i = 0; i < rowIndices.Length; i++)
+            {
+                Assert.AreEqual(rowIndices[i], w.DesignMatrix.Storage.RowIndices[i], "design matrix row index comparison fail at {0}", i);
+                Assert.AreEqual(values[i], w.DesignMatrix.Storage.Values[i], 1e-6, "design matrix values comparison fail at {0}", i);
+            }
 
-            //for (int i = 0; i < colPointers.Length; i++)
-            //{
-            //    Assert.AreEqual(colPointers[i], w.DesignMatrix.Storage.ColumnPointers[i], "design matrix column pointers comparison fail at {0}", i);
-            //}
+            for (int i = 0; i < colPointers.Length; i++)
+            {
+                Assert.AreEqual(colPointers[i], w.DesignMatrix.Storage.ColumnPointers[i], "design matrix column pointers comparison fail at {0}", i);
+            }
 
             // check the observation vector
-            string[] obsVecFile = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\5signalWithMask.txt");
+            string[] obsVecFile = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\Test2\\5signalWithMask.txt");
 
             List<double> obsVecCorrect = new List<double>();
 
@@ -197,12 +197,12 @@ namespace IsotopeFitter.Tests
             int lastColumnCount = w.DesignMatrix.Storage.ColumnPointers.Last() - w.DesignMatrix.Storage.ColumnPointers[w.DesignMatrix.Storage.ColumnPointers.Length - 2];
             double[] obsVec = new double[lastColumnCount];
 
-            //Array.Copy(w.DesignMatrix.Storage.Values, w.DesignMatrix.Storage.Values.Length - lastColumnCount, obsVec, 0, lastColumnCount);
+            Array.Copy(w.DesignMatrix.Storage.Values, w.DesignMatrix.Storage.Values.Length - lastColumnCount, obsVec, 0, lastColumnCount);
 
-            //for (int i = 0; i < obsVecCorrect.Count; i++)
-            //{
-            //    Assert.AreEqual(obsVecCorrect[i], obsVec[i], 1e-6, "observation vector comparison fail at {0}", i);
-            //}
+            for (int i = 0; i < obsVecCorrect.Count; i++)
+            {
+                Assert.AreEqual(obsVecCorrect[i], obsVec[i], 1e-3, "observation vector comparison fail at {0}", i);
+            }
         }
 
         private void ExtractAbundancesSubtest(ref Workspace w)
@@ -210,7 +210,7 @@ namespace IsotopeFitter.Tests
             w.FitAbundances();
 
             // compare with matlab calculated abundances
-            string[] abdFile = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\6abundancesFromLsqnonneg.txt");
+            string[] abdFile = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\Test2\\6abundances.txt");
 
             List<double> abd = new List<double>();
 
