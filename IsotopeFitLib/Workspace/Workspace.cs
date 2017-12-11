@@ -407,7 +407,8 @@ namespace IsotopeFit
             //TODO: this is ugly, hide this inside the LeastSquaresSystem class
             lss = Algorithm.LeaSqrSparseQRHouseholder(lss);
 
-            lss.Solve();
+            lss.Solve2();
+            //lss.Solve();
 
             //Abundances = new OrderedDictionary(Clusters.Count);
 
