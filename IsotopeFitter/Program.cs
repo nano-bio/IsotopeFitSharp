@@ -10,7 +10,6 @@ using System.Globalization;
 using MathNet.Numerics.LinearAlgebra;
 
 using IsotopeFit;
-//using IsotopeFit.Numerics;
 
 namespace IsotopeFitter
 {
@@ -50,18 +49,55 @@ namespace IsotopeFitter
             }
 
 
-            
+            baselineTime.Start();
             W.CorrectBaseline();
             baselineTime.Stop();
             Console.WriteLine("baseline done in {0} miliseconds", baselineTime.ElapsedMilliseconds);
 
+            Interpolation.Type interpType;
+            int order = 0;
+
+            switch (W.Calibration.MassOffsetMethod)
+            {
+                case "Spline":
+                case "SplineNotAKnot":
+                    interpType = Interpolation.Type.SplineNotAKnot;
+                    break;
+                case "PChip":
+                    interpType = Interpolation.Type.PCHIP;
+                    break;
+                case "Polynomial":
+                    interpType = Interpolation.Type.Polynomial;
+                    order = W.Calibration.MassOffsetParam;
+                    break;
+                default:
+                    throw new Exception("Mass offset interpolation method not recognized.");
+            }
+
             mofTime.Start();
-            W.CorrectMassOffset(Interpolation.Type.SplineNotAKnot);
+            W.CorrectMassOffset(interpType, order);
             mofTime.Stop();
             Console.WriteLine("mass offset done in {0} miliseconds", mofTime.ElapsedMilliseconds);
 
+            switch (W.Calibration.ResolutionMethod)
+            {
+                case "Spline":
+                case "SplineNotAKnot":
+                    interpType = Interpolation.Type.SplineNotAKnot;
+                    break;
+                case "PChip":
+                    interpType = Interpolation.Type.PCHIP;
+                    break;
+                case "Polynomial":
+                    interpType = Interpolation.Type.Polynomial;
+                    order = W.Calibration.ResolutionParam;
+                    break;
+                default:
+                    throw new Exception("Mass offset interpolation method not recognized.");
+            }
+
             resTime.Start();
-            W.ResolutionFit(Interpolation.Type.Polynomial, 2);
+            W.ResolutionFit(interpType, order);
             resTime.Stop();
             Console.WriteLine("resolution done in {0} miliseconds", resTime.ElapsedMilliseconds);
 
