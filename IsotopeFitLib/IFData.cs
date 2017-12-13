@@ -307,6 +307,14 @@ namespace IsotopeFit
             /// </summary>
             public class LineShape
             {
+                public LineShape() { }
+
+                public LineShape(double[] breaks, double[][] coeffs)
+                {
+                    Breaks = breaks;
+                    Coeffs = Matrix<double>.Build.DenseOfRowArrays(coeffs);
+                }
+
                 //public string Form { get; set; }
 
                 /// <summary>
