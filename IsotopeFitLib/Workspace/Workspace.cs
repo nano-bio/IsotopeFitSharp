@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 
 namespace IsotopeFit
 {
-	/// <summary>
-	/// This class is the main interface for outside usage.
-	/// </summary>
+    /// <summary>
+    /// This class is the main interface for outside usage.
+    /// </summary>
     public partial class Workspace
     {
         #region Constructors
@@ -36,7 +36,7 @@ namespace IsotopeFit
         {
             MathNet.Numerics.Control.UseNativeMKL();
 
-            LoadIFDFile(path);            
+            LoadIFDFile(path);
         }
 
         #endregion
@@ -68,7 +68,7 @@ namespace IsotopeFit
         ///// </summary>
         //public OrderedDictionary Abundances { get; private set; }
         //public double[] Abundances { get; private set; }
-        
+
         /// <summary>
         /// Object containing the calculated design matrix for current cluster system.
         /// </summary>
@@ -100,6 +100,16 @@ namespace IsotopeFit
             BaselineCorrData = IFDFile.ReadBackgroundCorr(rootElement);
 
             IFDLoaded = true;
+        }
+
+        public void LoadIFJFile(string path)
+        {
+            Newtonsoft.Json.Linq.JObject rootElement = IFJFile.Open(path);
+
+            SpectralData = IFJFile.ReadRawData(rootElement);
+            Clusters = IFJFile.ReadMolecules(rootElement);
+            Calibration = IFJFile.ReadCalibration(rootElement);
+            BaselineCorrData = IFJFile.ReadBackgroundCorr(rootElement);
         }
 
         /// <summary>
