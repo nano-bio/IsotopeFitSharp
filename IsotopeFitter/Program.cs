@@ -15,7 +15,7 @@ namespace IsotopeFitter
 {
     class Program
     {
-        NumberFormatInfo dot = new NumberFormatInfo { NumberDecimalSeparator = "." };
+        static NumberFormatInfo dot = new NumberFormatInfo { NumberDecimalSeparator = "." };
 
         static void Main(string[] args)
         {
@@ -40,7 +40,7 @@ namespace IsotopeFitter
             }
             else if (command.Contains(".ifj"))
             {
-                throw new NotImplementedException();
+                W.LoadIFJFile(command);
             }
             else
             {
@@ -113,16 +113,40 @@ namespace IsotopeFitter
 
             Console.WriteLine("total time {0} seconds", (baselineTime.ElapsedMilliseconds + mofTime.ElapsedMilliseconds + resTime.ElapsedMilliseconds + dmTime.ElapsedMilliseconds + abdTime.ElapsedMilliseconds) / 1000d);
 
-            //using (FileStream f = File.Open("abd.txt", FileMode.Create))
+            double[] abd = new double[W.Clusters.Count];
+
+            for (int i = 0; i < W.Clusters.Count; i++)
+            {
+                abd[i] = (W.Clusters[i] as IFData.Cluster).Abundance;
+            }
+
+            using (FileStream f = File.Open("abd.txt", FileMode.Create))
+            {
+                using (StreamWriter sw = new StreamWriter(f))
+                {
+                    for (int i = 0; i < W.Clusters.Count; i++)
+                    {
+                        sw.WriteLine(abd[i].ToString(dot));
+                    }
+                }
+            }
+
+            //using (FileStream f = File.Open("abdMatlab.txt", FileMode.Open, FileAccess.Read))
             //{
-            //    using (StreamWriter sw = new StreamWriter(f))
+            //    using (StreamReader sr = new StreamReader(f))
             //    {
-            //        for (int i = 0; i < W.Cluster.Count; i++)
+            //        string[] lines = sr.ReadToEnd().Split(new char[] { '\n' });
+            //        double[] abdMatlab = new double[abd.Length];
+
+            //        for (int i = 0; i < abdMatlab.Length; i++)
             //        {
-            //            sw.WriteLine(W.Cluster[i].CentreOfMass.ToString(bodka) + " " + W.Abundances[i].ToString(bodka));
-            //        }                    
-            //    } 
+            //            abdMatlab[i] = Convert.ToDouble(lines[i], dot);
+            //            Debug.Assert(Math.Abs(abd[i] - abdMatlab[i]) < 1e-6);
+            //        }
+            //    }
             //}
+
+            
 
             //Vector<double> calcSpectrum = Vector<double>.Build.Dense((int)W.EndIndex);
             //double[] calcSpectrum = new double[(int)W.EndIndex];
