@@ -4,12 +4,24 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.27004.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsotopeFitter", "IsotopeFitter\IsotopeFitter.csproj", "{63137230-8076-4E73-BC43-7F238E5924BE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7E9731E1-5E6A-4071-9F14-69E24A3909C5} = {7E9731E1-5E6A-4071-9F14-69E24A3909C5}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsotopeFitLib", "IsotopeFitLib\IsotopeFitLib.csproj", "{22DB119B-6BAC-4F70-ACA6-4FA56215BFEB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7E9731E1-5E6A-4071-9F14-69E24A3909C5} = {7E9731E1-5E6A-4071-9F14-69E24A3909C5}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsotopeFitLib.Tests", "IsotopeFitLib.Tests\IsotopeFitLib.Tests.csproj", "{8EDF4429-251A-416D-BB68-93F227191BCF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7E9731E1-5E6A-4071-9F14-69E24A3909C5} = {7E9731E1-5E6A-4071-9F14-69E24A3909C5}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsotopeFitter.Tests", "IsotopeFitter.Tests\IsotopeFitter.Tests.csproj", "{20B95A5E-C4E6-4683-9D0A-19692E5F76FE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7E9731E1-5E6A-4071-9F14-69E24A3909C5} = {7E9731E1-5E6A-4071-9F14-69E24A3909C5}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSparse", "CSparse\CSparse.csproj", "{BD00D9BD-D669-4AEE-91B7-0105AFC994EC}"
 EndProject
