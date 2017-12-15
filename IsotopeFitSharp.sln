@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsotopeFitter.Tests", "Isot
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSparse", "CSparse\CSparse.csproj", "{BD00D9BD-D669-4AEE-91B7-0105AFC994EC}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SPQR", "SPQR\SPQR.vcxproj", "{7E9731E1-5E6A-4071-9F14-69E24A3909C5}"
+EndProject
 Global
 	GlobalSection(Performance) = preSolution
 		HasPerformanceSessions = true
@@ -79,12 +81,25 @@ Global
 		{BD00D9BD-D669-4AEE-91B7-0105AFC994EC}.Release|x64.Build.0 = Release|Any CPU
 		{BD00D9BD-D669-4AEE-91B7-0105AFC994EC}.Release|x86.ActiveCfg = Release|Any CPU
 		{BD00D9BD-D669-4AEE-91B7-0105AFC994EC}.Release|x86.Build.0 = Release|Any CPU
+		{7E9731E1-5E6A-4071-9F14-69E24A3909C5}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{7E9731E1-5E6A-4071-9F14-69E24A3909C5}.Debug|x64.ActiveCfg = Debug|x64
+		{7E9731E1-5E6A-4071-9F14-69E24A3909C5}.Debug|x64.Build.0 = Debug|x64
+		{7E9731E1-5E6A-4071-9F14-69E24A3909C5}.Debug|x86.ActiveCfg = Debug|Win32
+		{7E9731E1-5E6A-4071-9F14-69E24A3909C5}.Debug|x86.Build.0 = Debug|Win32
+		{7E9731E1-5E6A-4071-9F14-69E24A3909C5}.Release|Any CPU.ActiveCfg = Release|Win32
+		{7E9731E1-5E6A-4071-9F14-69E24A3909C5}.Release|x64.ActiveCfg = Release|x64
+		{7E9731E1-5E6A-4071-9F14-69E24A3909C5}.Release|x64.Build.0 = Release|x64
+		{7E9731E1-5E6A-4071-9F14-69E24A3909C5}.Release|x86.ActiveCfg = Release|Win32
+		{7E9731E1-5E6A-4071-9F14-69E24A3909C5}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {55420729-5553-4B39-B69B-9B0D1331D35C}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 	GlobalSection(Performance) = preSolution
 		HasPerformanceSessions = true
