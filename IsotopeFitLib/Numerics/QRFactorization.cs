@@ -27,15 +27,13 @@ namespace IsotopeFit
         public static LeastSquaresSystem LeaSqrSparseQRHouseholder(LeastSquaresSystem lss)
         {
             //TODO: cleanup 
-            //SparseMatrix M = (SparseMatrix)SparseMatrix.Build.SparseOfMatrix(lss.DesignMatrix);
             CSparse.Double.SparseMatrix M;
 
+            // if the observation vector is specified, it means it was not yet added to the matrix
             if (lss.ObservationVector != null)
             {
                 SparseVector v = (SparseVector)SparseVector.Build.SparseOfVector(lss.ObservationVector);    //TODO: this is also a little wasteful
                 SparseVectorStorage<double> svs = v.Storage as SparseVectorStorage<double>;
-
-                //TODO: and we have to put the vector as a last column of the matrix to be factorized
 
                 int nonZeroCount = lss.DesignMatrix.NonZerosCount + svs.ValueCount;
 
@@ -64,20 +62,10 @@ namespace IsotopeFit
                 M = lss.DesignMatrix;
             }
 
+            //var QR = CSparse.Double.Factorization.SparseQR.Create(M, CSparse.ColumnOrdering.MinimumDegreeAtA);
+            //var R = (CSparse.Double.SparseMatrix)QR.R;
 
-            // not necessary, because we already have the CSparse CCS format
-            //M = (SparseMatrix)M.Transpose();
-            //SparseCompressedRowMatrixStorage<double> spStor = (SparseCompressedRowMatrixStorage<double>)M.Storage;
-
-            //var C = new CSparse.Double.SparseMatrix(M.ColumnCount, M.RowCount)
-            //{
-            //    ColumnPointers = spStor.RowPointers,
-            //    RowIndices = spStor.ColumnIndices,
-            //    Values = spStor.Values
-            //};
-
-            var QR = CSparse.Double.Factorization.SparseQR.Create(M, CSparse.ColumnOrdering.MinimumDegreeAtA);
-            var R = (CSparse.Double.SparseMatrix)QR.R;
+            var R = SPQR.Calculate(M);
 
             R.DropZeros();  //TODO: this might need to be set to machine epsilon
 
@@ -94,27 +82,16 @@ namespace IsotopeFit
             Array.Copy(R.RowIndices, Mr.RowIndices, Mr.RowIndices.Length);
             Array.Copy(R.ColumnPointers, Mr.ColumnPointers, Mr.ColumnPointers.Length);
 
-            //for (int i = 0; i < Mr.RowCount; i++)
-            //{
-            //    for (int j = 0; j < Mr.ColumnCount; j++)
-            //    {
-            //        //Mr.At(i, j, R.At(i, j));
-            //        Mr.ke
-            //    }
-            //}
-
-            double[] kurva = new double[Mr.ColumnCount];
-            Array.Copy(R.Column(R.ColumnCount - 1), 0, kurva, 0, Mr.ColumnCount);
-            Vector<double> vr = Vector<double>.Build.DenseOfArray(kurva);
+            double[] lastColumn = new double[Mr.ColumnCount];
+            Array.Copy(R.Column(R.ColumnCount - 1), 0, lastColumn, 0, Mr.ColumnCount);
+            Vector<double> vr = Vector<double>.Build.DenseOfArray(lastColumn);
 
             LeastSquaresSystem factorizedLSS = new LeastSquaresSystem(Mr, vr)
             {
-                ColumnOrdering = new int[QR.columnOrdering.Length]
+                ColumnOrdering = new int[R.ColumnOrdering.Length]
             };
 
-            Array.Copy(QR.columnOrdering, factorizedLSS.ColumnOrdering, QR.columnOrdering.Length);
-
-            //QR = null;
+            Array.Copy(R.ColumnOrdering, factorizedLSS.ColumnOrdering, R.ColumnOrdering.Length);
 
             return factorizedLSS;
         }
