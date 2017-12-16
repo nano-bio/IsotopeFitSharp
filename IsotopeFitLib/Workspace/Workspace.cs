@@ -413,12 +413,20 @@ namespace IsotopeFit
         public void FitAbundances()
         {
             LeastSquaresSystem lss = new LeastSquaresSystem(DesignMatrix.Storage, null);    // we dont give the observation vector here, because it was already added to the matrix during the build
-            
-            //TODO: this is ugly, hide this inside the LeastSquaresSystem class
-            lss = Algorithm.LeaSqrSparseQRHouseholder(lss);
 
+            //TODO: this is ugly, hide this inside the LeastSquaresSystem class
+            System.Diagnostics.Stopwatch qr = new System.Diagnostics.Stopwatch();
+            qr.Start();
+            lss = Algorithm.LeaSqrSparseQRHouseholder(lss);
+            qr.Stop();
+            Console.WriteLine("QR factorization done in {0} miliseconds", qr.ElapsedMilliseconds);
+
+            System.Diagnostics.Stopwatch sol = new System.Diagnostics.Stopwatch();
+            sol.Start();
             lss.Solve2();
             //lss.Solve();
+            sol.Stop();
+            Console.WriteLine("NNLS done in {0} miliseconds", sol.ElapsedMilliseconds);
 
             //Abundances = new OrderedDictionary(Clusters.Count);
 

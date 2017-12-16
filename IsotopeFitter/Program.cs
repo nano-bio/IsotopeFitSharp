@@ -106,13 +106,13 @@ namespace IsotopeFitter
             dmTime.Stop();
             Console.WriteLine("design matrix done in {0} miliseconds", dmTime.ElapsedMilliseconds);
 
-            abdTime.Start();
+            //abdTime.Start();
             W.FitAbundances();
-            abdTime.Stop();
-            Console.WriteLine("abundances done in {0} miliseconds", abdTime.ElapsedMilliseconds);
+            //abdTime.Stop();
+            //Console.WriteLine("abundances done in {0} miliseconds", abdTime.ElapsedMilliseconds);
 
-            Console.WriteLine("total time {0} seconds", (baselineTime.ElapsedMilliseconds + mofTime.ElapsedMilliseconds + resTime.ElapsedMilliseconds + dmTime.ElapsedMilliseconds + abdTime.ElapsedMilliseconds) / 1000d);
-
+            //Console.WriteLine("total time {0} seconds", (baselineTime.ElapsedMilliseconds + mofTime.ElapsedMilliseconds + resTime.ElapsedMilliseconds + dmTime.ElapsedMilliseconds + abdTime.ElapsedMilliseconds) / 1000d);
+                        
             double[] abd = new double[W.Clusters.Count];
 
             for (int i = 0; i < W.Clusters.Count; i++)

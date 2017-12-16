@@ -65,7 +65,7 @@ namespace IsotopeFit
             //var QR = CSparse.Double.Factorization.SparseQR.Create(M, CSparse.ColumnOrdering.MinimumDegreeAtA);
             //var R = (CSparse.Double.SparseMatrix)QR.R;
 
-            var R = SPQR.Calculate(M);
+            CSparse.Double.SparseMatrix R = SPQR.QR(M);
 
             R.DropZeros();  //TODO: this might need to be set to machine epsilon
 
