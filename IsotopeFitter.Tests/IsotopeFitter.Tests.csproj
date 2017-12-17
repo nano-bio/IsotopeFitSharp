@@ -52,7 +52,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
-    <RunPostBuildEvent>Always</RunPostBuildEvent>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MathNet.Numerics, Version=3.20.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -119,7 +119,8 @@
   </Target>
   <Import Project="..\packages\MathNet.Numerics.MKL.Linux-x64.2.0.0\build\MathNet.Numerics.MKL.Linux-x64.targets" Condition="Exists('..\packages\MathNet.Numerics.MKL.Linux-x64.2.0.0\build\MathNet.Numerics.MKL.Linux-x64.targets')" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy $(SolutionDir)x64\$(ConfigurationName)\SPQR.dll $(ProjectDir)$(OutDir) /Y</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

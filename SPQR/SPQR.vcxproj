@@ -113,6 +113,12 @@
       <AdditionalDependencies>libspqrd.lib;libcholmodd.lib;suitesparseconfigd.lib;libblas.lib;liblapack.lib;metisd.lib;libamdd.lib;libcamdd.lib;libcolamdd.lib;libccolamdd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <Version>1.0</Version>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy $(OutputPath)$(TargetName)$(TargetExt) $(SolutionDir)IsotopeFitLib\bin\x64\Debug /Y
+xcopy $(OutputPath)$(TargetName)$(TargetExt) $(SolutionDir)IsotopeFitLib.Tests\bin\x64\Debug /Y
+xcopy $(OutputPath)$(TargetName)$(TargetExt) $(SolutionDir)IsotopeFitter\bin\x64\Debug /Y
+xcopy $(OutputPath)$(TargetName)$(TargetExt) $(SolutionDir)IsotopeFitter.Tests\bin\x64\Debug /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -148,6 +154,12 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>libspqr.lib;libcholmod.lib;suitesparseconfig.lib;libblas.lib;liblapack.lib;metis.lib;libamd.lib;libcamd.lib;libcolamd.lib;libccolamd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy $(OutputPath)$(TargetName)$(TargetExt) $(SolutionDir)IsotopeFitLib\bin\x64\Release /Y
+xcopy $(OutputPath)$(TargetName)$(TargetExt) $(SolutionDir)IsotopeFitLib.Tests\bin\x64\Release /Y
+xcopy $(OutputPath)$(TargetName)$(TargetExt) $(SolutionDir)IsotopeFitter\bin\x64\Release /Y
+xcopy $(OutputPath)$(TargetName)$(TargetExt) $(SolutionDir)IsotopeFitter.Tests\bin\x64\Release /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />

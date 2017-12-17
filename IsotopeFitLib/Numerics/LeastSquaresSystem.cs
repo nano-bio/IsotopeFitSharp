@@ -31,14 +31,16 @@ namespace IsotopeFit
         internal SparseMatrix DesignMatrix { get; private set; }
         internal Vector<double> ObservationVector { get; private set; }
         internal int[] ColumnOrdering { get; set; }
-        public Vector<double> Solution { get; private set; }
+        public double[] Solution { get; private set; }
 
+        /// <summary>
+        /// Method that solves the system.
+        /// </summary>
+        /// <remarks>
+        /// Partitions the problem by non-overlapping diagonal elements and non-overlapping blocks.
+        /// </remarks>
         public void Solve2()
         {
-            // partitioning 1: by non-overlaping diagonal elements
-            // partitioning 2: by non-overlapping blocks(there does not have to be an element from case 1 between them)
-            // partitioning 3: overlapping blocks cut duplicitly, some columns get fitted in both blocks (maybe three: left-center-right) - needs to be tested if correct
-
             double[] values = DesignMatrix.Values;
             int[] rowIndices = DesignMatrix.RowIndices;
             int[] columnPointers = DesignMatrix.ColumnPointers;
@@ -52,20 +54,22 @@ namespace IsotopeFit
             double[] colCounts = new double[columnPointers.Length - 1];
             double[] rowCounts = new double[rowPointersT.Length - 1];
 
+            List<int> cutCoordinates = new List<int>();
+
             for (int i = 0; i < colCounts.Length; i++)
             {
                 colCounts[i] = columnPointers[i + 1] - columnPointers[i];
                 rowCounts[i] = rowPointersT[i + 1] - rowPointersT[i];
             }
 
-            List<int> nonOverlap = new List<int>();
-            List<int> cutCoordinates = new List<int>(); 
-
+            // it is divided into two loops, because we nee the i+1st element of the array
             for (int i = 0; i < colCounts.Length; i++)
             {
+                colCounts[i] = columnPointers[i + 1] - columnPointers[i];
+                rowCounts[i] = rowPointersT[i + 1] - rowPointersT[i];
+
                 if (rowCounts[i] == 1 && colCounts[i] == 1)     // partitioning 1
                 {
-                    nonOverlap.Add(i);
                     cutCoordinates.Add(i);
                 }
                 else if (i < colCounts.Length - 1 && rowCounts[i] == 1 && colCounts[i + 1] == 1)    // partitioning 2, it must not be the last row of the matrix
@@ -78,7 +82,7 @@ namespace IsotopeFit
                 }
             }
 
-            // now we check the resulting block sizes and if some of them are too big, we will apply the type 3 partitioning - but that sacrifices precision
+            // calculate the block sizes
             int[] blSizes = new int[cutCoordinates.Count];
             blSizes[0] = cutCoordinates[0] + 1;
 
@@ -87,15 +91,8 @@ namespace IsotopeFit
                 blSizes[i] = cutCoordinates[i] - cutCoordinates[i - 1]; //TODO: currently it is block sizes and blocks ends - maybe block beginnins would be nicer?
             }
 
-            //int maxSize = blSizes.Max();
-
             // calculate the non-overlaping cluster abundances
             double[] abd = new double[DesignMatrix.ColumnCount];
-
-            //foreach (int i in nonOverlap)
-            //{
-            //    abd[i] = ObservationVector[i] / DesignMatrix.At(i, i);
-            //}
 
             for (int i = 0; i < cutCoordinates.Count; i++)
             {
@@ -142,21 +139,14 @@ namespace IsotopeFit
                     double[] obs = new double[cPt.Length - 1];
                     Array.Copy(ObservationVector.ToArray(), start, obs, 0, end - start);
 
-                    try
-                    {
-                        double[] sol = NNLS3(C, Vector<double>.Build.DenseOfArray(obs)).ToArray();
-                        Array.Copy(sol, 0, abd, start, sol.Length);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                    }                    
+                    double[] sol = NNLS3(C, obs);
+                    Array.Copy(sol, 0, abd, start, sol.Length);                 
                 }
             }
 
-            Solution = Vector<double>.Build.DenseOfArray(abd);
+            Solution = abd;
 
-            Solution = Vector<double>.Build.DenseOfArray(Enumerable.Zip(ColumnOrdering, Solution, (idx, val) => new { idx, val }).OrderBy(v => v.idx).Select(v => v.val).ToArray());
+            Solution = Enumerable.Zip(ColumnOrdering, Solution, (idx, val) => new { idx, val }).OrderBy(v => v.idx).Select(v => v.val).ToArray();
         }
 
         /// <summary>
@@ -169,10 +159,10 @@ namespace IsotopeFit
         public void Solve()
         {
             // at the moment we only need the NNLS method, so no need to add switches for more types
-            Solution = NNLS3(DesignMatrix, ObservationVector);
+            Solution = NNLS3(DesignMatrix, ObservationVector.ToArray());
 
             // reorder the solution according to the ColumnOrdering information from sparse QR factorization
-            Solution = Vector<double>.Build.DenseOfArray(Enumerable.Zip(ColumnOrdering, Solution, (idx, val) => new { idx, val }).OrderBy(v => v.idx).Select(v => v.val).ToArray());
+            Solution = Enumerable.Zip(ColumnOrdering, Solution, (idx, val) => new { idx, val }).OrderBy(v => v.idx).Select(v => v.val).ToArray();
         }
 
         /// <summary>
@@ -187,7 +177,7 @@ namespace IsotopeFit
         /// <param name="C">Matrix describing the model.</param>
         /// <param name="d">Vector with observation values.</param>
         /// <returns>MathNet vector with the solution.</returns>
-        private static Vector<double> NNLS3(SparseMatrix C, Vector<double> d)
+        private static double[] NNLS3(SparseMatrix C, double[] d)
         {
             //TODO: this function can be rewritten to work with sparse matrices and vectors - faster, less ram consumption, nicer
 
@@ -223,6 +213,7 @@ namespace IsotopeFit
             }
 
             // helper variables
+            Vector<double> dv = Vector<double>.Build.DenseOfArray(d);
             Vector<double> resid;
             int outerIter = 0;
             int innerIter = 0;
@@ -232,7 +223,7 @@ namespace IsotopeFit
 
             // calculation starts here
             C.Multiply(x, temp.AsArray());  //TODO: may return null
-            resid = d - temp;
+            resid = dv - temp;
             //w = CT * resid;
             CT.Multiply(resid.AsArray(), w.AsArray());  //TODO: may return null
 
@@ -341,12 +332,12 @@ namespace IsotopeFit
                 Array.Copy(z, x, z.Length);
 
                 C.Multiply(x, temp.AsArray());  //TODO: may return null
-                resid = d - temp;
+                resid = dv - temp;
                 //w = CT * resid;
                 CT.Multiply(resid.AsArray(), w.AsArray());  //TODO: may return null
             }
 
-            return Vector<double>.Build.DenseOfArray(x);
+            return x;
         }
 
         /// <summary>

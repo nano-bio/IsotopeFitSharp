@@ -142,7 +142,7 @@ namespace IsotopeFit.Tests
             Workspace wrk = new Workspace();
             LeastSquaresSystem lss = new LeastSquaresSystem(Cs, d);
             lss.Solve();
-            Vector<double> solution = lss.Solution;
+            Vector<double> solution = Vector<double>.Build.DenseOfArray(lss.Solution);
 
             // solution check
             string[] xfile = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\nnls_x_solution.txt");
