@@ -18,9 +18,6 @@ Storage class for mass spectrum data.
 \mbox{\Hypertarget{class_isotope_fit_1_1_i_f_data_1_1_spectrum_ae22a343962081fb1b7191f3df3634b00}\label{class_isotope_fit_1_1_i_f_data_1_1_spectrum_ae22a343962081fb1b7191f3df3634b00}} 
 int {\bfseries Raw\+Length}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
 \item 
-\mbox{\Hypertarget{class_isotope_fit_1_1_i_f_data_1_1_spectrum_aa980205036330683b80606ca9d51df68}\label{class_isotope_fit_1_1_i_f_data_1_1_spectrum_aa980205036330683b80606ca9d51df68}} 
-int {\bfseries Cropped\+Length}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
-\item 
 double \mbox{[}$\,$\mbox{]} \hyperlink{class_isotope_fit_1_1_i_f_data_1_1_spectrum_ac3297615e23a978626e4beaf9e040e2a}{Raw\+Mass\+Axis}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
 \begin{DoxyCompactList}\small\item\em Raw experimental mass axis. \end{DoxyCompactList}\item 
 double \mbox{[}$\,$\mbox{]} \hyperlink{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a948927d795db6a73eb1ddeac4f294cac}{Raw\+Signal\+Axis}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
@@ -29,8 +26,23 @@ double \mbox{[}$\,$\mbox{]} \hyperlink{class_isotope_fit_1_1_i_f_data_1_1_spectr
 \begin{DoxyCompactList}\small\item\em Mass axis corrected for mass offset. \end{DoxyCompactList}\item 
 double \mbox{[}$\,$\mbox{]} \hyperlink{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a561e2e683aee78aed97a967a68b474e9}{Signal\+Axis}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
 \begin{DoxyCompactList}\small\item\em Signal axis with baseline subtracted. \end{DoxyCompactList}\item 
-double \mbox{[}$\,$\mbox{]} \hyperlink{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a67e318d42b4eb69b14dd05238a670f79}{Baseline}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
-\begin{DoxyCompactList}\small\item\em Contains the last calculated baseline that was subtracted from \hyperlink{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a948927d795db6a73eb1ddeac4f294cac}{Spectrum.\+Raw\+Signal\+Axis} to obtain \hyperlink{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a561e2e683aee78aed97a967a68b474e9}{Spectrum.\+Signal\+Axis}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+int \hyperlink{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a97f98d7ab017cc965f004c02da75c791}{Crop\+Start\+Index}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Crop start index. \end{DoxyCompactList}\item 
+int \hyperlink{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a8b0c276faef24f22d7d535f74547bd7a}{Crop\+End\+Index}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Crop end index. \end{DoxyCompactList}\item 
+double \hyperlink{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a0851e46692ac9c2677806781c016d8fc}{Crop\+Start\+Mass}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Crop start mass. \end{DoxyCompactList}\item 
+double \hyperlink{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a44767ce131c0a10c053e0d2aef07b2c8}{Crop\+End\+Mass}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Crop end mass. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_isotope_fit_1_1_i_f_data_1_1_spectrum_acd1a717e27c2652cbe3fc8b65f980a28}\label{class_isotope_fit_1_1_i_f_data_1_1_spectrum_acd1a717e27c2652cbe3fc8b65f980a28}} 
+double \mbox{[}$\,$\mbox{]} {\bfseries Raw\+Mass\+Axis\+Crop}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a6f65e1079f76235ad36da5457381c22c}\label{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a6f65e1079f76235ad36da5457381c22c}} 
+double \mbox{[}$\,$\mbox{]} {\bfseries Signal\+Axis\+Crop}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\mbox{\Hypertarget{class_isotope_fit_1_1_i_f_data_1_1_spectrum_aa980205036330683b80606ca9d51df68}\label{class_isotope_fit_1_1_i_f_data_1_1_spectrum_aa980205036330683b80606ca9d51df68}} 
+int {\bfseries Cropped\+Length}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -55,7 +67,7 @@ Creates an empty \hyperlink{class_isotope_fit_1_1_i_f_data_1_1_spectrum}{Spectru
 
 
 
-Definition at line 121 of file I\+F\+Data.\+cs.
+Definition at line 139 of file I\+F\+Data.\+cs.
 
 \mbox{\Hypertarget{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a0422d7cbabadc258d3dc6f1fd51f2e36}\label{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a0422d7cbabadc258d3dc6f1fd51f2e36}} 
 \index{Isotope\+Fit\+::\+I\+F\+Data\+::\+Spectrum@{Isotope\+Fit\+::\+I\+F\+Data\+::\+Spectrum}!Spectrum@{Spectrum}}
@@ -76,24 +88,66 @@ Creates new storage for mass spectrum data from specified x and y axis.
 \end{DoxyParams}
 
 
-Definition at line 128 of file I\+F\+Data.\+cs.
+Definition at line 146 of file I\+F\+Data.\+cs.
 
 
 
 \subsection{Property Documentation}
-\mbox{\Hypertarget{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a67e318d42b4eb69b14dd05238a670f79}\label{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a67e318d42b4eb69b14dd05238a670f79}} 
-\index{Isotope\+Fit\+::\+I\+F\+Data\+::\+Spectrum@{Isotope\+Fit\+::\+I\+F\+Data\+::\+Spectrum}!Baseline@{Baseline}}
-\index{Baseline@{Baseline}!Isotope\+Fit\+::\+I\+F\+Data\+::\+Spectrum@{Isotope\+Fit\+::\+I\+F\+Data\+::\+Spectrum}}
-\subsubsection{\texorpdfstring{Baseline}{Baseline}}
-{\footnotesize\ttfamily double \mbox{[}$\,$\mbox{]} Isotope\+Fit.\+I\+F\+Data.\+Spectrum.\+Baseline\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+\mbox{\Hypertarget{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a8b0c276faef24f22d7d535f74547bd7a}\label{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a8b0c276faef24f22d7d535f74547bd7a}} 
+\index{Isotope\+Fit\+::\+I\+F\+Data\+::\+Spectrum@{Isotope\+Fit\+::\+I\+F\+Data\+::\+Spectrum}!Crop\+End\+Index@{Crop\+End\+Index}}
+\index{Crop\+End\+Index@{Crop\+End\+Index}!Isotope\+Fit\+::\+I\+F\+Data\+::\+Spectrum@{Isotope\+Fit\+::\+I\+F\+Data\+::\+Spectrum}}
+\subsubsection{\texorpdfstring{Crop\+End\+Index}{CropEndIndex}}
+{\footnotesize\ttfamily int Isotope\+Fit.\+I\+F\+Data.\+Spectrum.\+Crop\+End\+Index\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
 
 
 
-Contains the last calculated baseline that was subtracted from \hyperlink{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a948927d795db6a73eb1ddeac4f294cac}{Spectrum.\+Raw\+Signal\+Axis} to obtain \hyperlink{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a561e2e683aee78aed97a967a68b474e9}{Spectrum.\+Signal\+Axis}. 
+Crop end index. 
 
 
 
-Definition at line 112 of file I\+F\+Data.\+cs.
+Definition at line 115 of file I\+F\+Data.\+cs.
+
+\mbox{\Hypertarget{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a44767ce131c0a10c053e0d2aef07b2c8}\label{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a44767ce131c0a10c053e0d2aef07b2c8}} 
+\index{Isotope\+Fit\+::\+I\+F\+Data\+::\+Spectrum@{Isotope\+Fit\+::\+I\+F\+Data\+::\+Spectrum}!Crop\+End\+Mass@{Crop\+End\+Mass}}
+\index{Crop\+End\+Mass@{Crop\+End\+Mass}!Isotope\+Fit\+::\+I\+F\+Data\+::\+Spectrum@{Isotope\+Fit\+::\+I\+F\+Data\+::\+Spectrum}}
+\subsubsection{\texorpdfstring{Crop\+End\+Mass}{CropEndMass}}
+{\footnotesize\ttfamily double Isotope\+Fit.\+I\+F\+Data.\+Spectrum.\+Crop\+End\+Mass\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Crop end mass. 
+
+
+
+Definition at line 125 of file I\+F\+Data.\+cs.
+
+\mbox{\Hypertarget{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a97f98d7ab017cc965f004c02da75c791}\label{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a97f98d7ab017cc965f004c02da75c791}} 
+\index{Isotope\+Fit\+::\+I\+F\+Data\+::\+Spectrum@{Isotope\+Fit\+::\+I\+F\+Data\+::\+Spectrum}!Crop\+Start\+Index@{Crop\+Start\+Index}}
+\index{Crop\+Start\+Index@{Crop\+Start\+Index}!Isotope\+Fit\+::\+I\+F\+Data\+::\+Spectrum@{Isotope\+Fit\+::\+I\+F\+Data\+::\+Spectrum}}
+\subsubsection{\texorpdfstring{Crop\+Start\+Index}{CropStartIndex}}
+{\footnotesize\ttfamily int Isotope\+Fit.\+I\+F\+Data.\+Spectrum.\+Crop\+Start\+Index\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Crop start index. 
+
+
+
+Definition at line 110 of file I\+F\+Data.\+cs.
+
+\mbox{\Hypertarget{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a0851e46692ac9c2677806781c016d8fc}\label{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a0851e46692ac9c2677806781c016d8fc}} 
+\index{Isotope\+Fit\+::\+I\+F\+Data\+::\+Spectrum@{Isotope\+Fit\+::\+I\+F\+Data\+::\+Spectrum}!Crop\+Start\+Mass@{Crop\+Start\+Mass}}
+\index{Crop\+Start\+Mass@{Crop\+Start\+Mass}!Isotope\+Fit\+::\+I\+F\+Data\+::\+Spectrum@{Isotope\+Fit\+::\+I\+F\+Data\+::\+Spectrum}}
+\subsubsection{\texorpdfstring{Crop\+Start\+Mass}{CropStartMass}}
+{\footnotesize\ttfamily double Isotope\+Fit.\+I\+F\+Data.\+Spectrum.\+Crop\+Start\+Mass\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Crop start mass. 
+
+
+
+Definition at line 120 of file I\+F\+Data.\+cs.
 
 \mbox{\Hypertarget{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a4ed9378cb593bfffacaa3ac4411c039d}\label{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a4ed9378cb593bfffacaa3ac4411c039d}} 
 \index{Isotope\+Fit\+::\+I\+F\+Data\+::\+Spectrum@{Isotope\+Fit\+::\+I\+F\+Data\+::\+Spectrum}!Mass\+Axis@{Mass\+Axis}}
@@ -107,7 +161,7 @@ Mass axis corrected for mass offset.
 
 
 
-Definition at line 102 of file I\+F\+Data.\+cs.
+Definition at line 100 of file I\+F\+Data.\+cs.
 
 \mbox{\Hypertarget{class_isotope_fit_1_1_i_f_data_1_1_spectrum_ac3297615e23a978626e4beaf9e040e2a}\label{class_isotope_fit_1_1_i_f_data_1_1_spectrum_ac3297615e23a978626e4beaf9e040e2a}} 
 \index{Isotope\+Fit\+::\+I\+F\+Data\+::\+Spectrum@{Isotope\+Fit\+::\+I\+F\+Data\+::\+Spectrum}!Raw\+Mass\+Axis@{Raw\+Mass\+Axis}}
@@ -121,7 +175,7 @@ Raw experimental mass axis.
 
 
 
-Definition at line 77 of file I\+F\+Data.\+cs.
+Definition at line 75 of file I\+F\+Data.\+cs.
 
 \mbox{\Hypertarget{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a948927d795db6a73eb1ddeac4f294cac}\label{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a948927d795db6a73eb1ddeac4f294cac}} 
 \index{Isotope\+Fit\+::\+I\+F\+Data\+::\+Spectrum@{Isotope\+Fit\+::\+I\+F\+Data\+::\+Spectrum}!Raw\+Signal\+Axis@{Raw\+Signal\+Axis}}
@@ -135,7 +189,7 @@ Raw experimental signal axis.
 
 
 
-Definition at line 90 of file I\+F\+Data.\+cs.
+Definition at line 88 of file I\+F\+Data.\+cs.
 
 \mbox{\Hypertarget{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a561e2e683aee78aed97a967a68b474e9}\label{class_isotope_fit_1_1_i_f_data_1_1_spectrum_a561e2e683aee78aed97a967a68b474e9}} 
 \index{Isotope\+Fit\+::\+I\+F\+Data\+::\+Spectrum@{Isotope\+Fit\+::\+I\+F\+Data\+::\+Spectrum}!Signal\+Axis@{Signal\+Axis}}
@@ -149,7 +203,7 @@ Signal axis with baseline subtracted.
 
 
 
-Definition at line 107 of file I\+F\+Data.\+cs.
+Definition at line 105 of file I\+F\+Data.\+cs.
 
 
 

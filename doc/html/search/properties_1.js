@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['baseline',['Baseline',['../class_isotope_fit_1_1_i_f_data_1_1_spectrum.html#a67e318d42b4eb69b14dd05238a670f79',1,'IsotopeFit::IFData::Spectrum']]],
-  ['baselinecorrdata',['BaselineCorrData',['../class_isotope_fit_1_1_workspace.html#a700395fbb329b1a0fcb5932095db066f',1,'IsotopeFit::Workspace']]]
+  ['baselinecorrdata',['BaselineCorrData',['../class_isotope_fit_1_1_workspace.html#a700395fbb329b1a0fcb5932095db066f',1,'IsotopeFit::Workspace']]],
+  ['baselineinterpolation',['BaselineInterpolation',['../class_isotope_fit_1_1_i_f_data_1_1_baseline_corr.html#a914a7b2ac945482a7c73874fbff45951',1,'IsotopeFit::IFData::BaselineCorr']]],
+  ['breaks',['Breaks',['../class_isotope_fit_1_1_i_f_data_1_1_calibration_1_1_line_shape.html#a447511120da7a7c67677aeb723cffd77',1,'IsotopeFit::IFData::Calibration::LineShape']]]
 ];

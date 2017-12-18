@@ -107,9 +107,6 @@ Properties</h2></td></tr>
 <tr class="memitem:ae22a343962081fb1b7191f3df3634b00"><td class="memItemLeft" align="right" valign="top"><a id="ae22a343962081fb1b7191f3df3634b00"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>RawLength</b><code> [get]</code></td></tr>
 <tr class="separator:ae22a343962081fb1b7191f3df3634b00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa980205036330683b80606ca9d51df68"><td class="memItemLeft" align="right" valign="top"><a id="aa980205036330683b80606ca9d51df68"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>CroppedLength</b><code> [get, set]</code></td></tr>
-<tr class="separator:aa980205036330683b80606ca9d51df68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3297615e23a978626e4beaf9e040e2a"><td class="memItemLeft" align="right" valign="top">double []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_i_f_data_1_1_spectrum.html#ac3297615e23a978626e4beaf9e040e2a">RawMassAxis</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:ac3297615e23a978626e4beaf9e040e2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Raw experimental mass axis.  <a href="#ac3297615e23a978626e4beaf9e040e2a">More...</a><br /></td></tr>
 <tr class="separator:ac3297615e23a978626e4beaf9e040e2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -122,9 +119,27 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>CroppedLength</b><code
 <tr class="memitem:a561e2e683aee78aed97a967a68b474e9"><td class="memItemLeft" align="right" valign="top">double []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_i_f_data_1_1_spectrum.html#a561e2e683aee78aed97a967a68b474e9">SignalAxis</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a561e2e683aee78aed97a967a68b474e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Signal axis with baseline subtracted.  <a href="#a561e2e683aee78aed97a967a68b474e9">More...</a><br /></td></tr>
 <tr class="separator:a561e2e683aee78aed97a967a68b474e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a67e318d42b4eb69b14dd05238a670f79"><td class="memItemLeft" align="right" valign="top">double []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_i_f_data_1_1_spectrum.html#a67e318d42b4eb69b14dd05238a670f79">Baseline</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:a67e318d42b4eb69b14dd05238a670f79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains the last calculated baseline that was subtracted from <a class="el" href="class_isotope_fit_1_1_i_f_data_1_1_spectrum.html#a948927d795db6a73eb1ddeac4f294cac" title="Raw experimental signal axis. ">Spectrum.RawSignalAxis</a> to obtain <a class="el" href="class_isotope_fit_1_1_i_f_data_1_1_spectrum.html#a561e2e683aee78aed97a967a68b474e9" title="Signal axis with baseline subtracted. ">Spectrum.SignalAxis</a>.  <a href="#a67e318d42b4eb69b14dd05238a670f79">More...</a><br /></td></tr>
-<tr class="separator:a67e318d42b4eb69b14dd05238a670f79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97f98d7ab017cc965f004c02da75c791"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_i_f_data_1_1_spectrum.html#a97f98d7ab017cc965f004c02da75c791">CropStartIndex</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a97f98d7ab017cc965f004c02da75c791"><td class="mdescLeft">&#160;</td><td class="mdescRight">Crop start index.  <a href="#a97f98d7ab017cc965f004c02da75c791">More...</a><br /></td></tr>
+<tr class="separator:a97f98d7ab017cc965f004c02da75c791"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b0c276faef24f22d7d535f74547bd7a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_i_f_data_1_1_spectrum.html#a8b0c276faef24f22d7d535f74547bd7a">CropEndIndex</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a8b0c276faef24f22d7d535f74547bd7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Crop end index.  <a href="#a8b0c276faef24f22d7d535f74547bd7a">More...</a><br /></td></tr>
+<tr class="separator:a8b0c276faef24f22d7d535f74547bd7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0851e46692ac9c2677806781c016d8fc"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_i_f_data_1_1_spectrum.html#a0851e46692ac9c2677806781c016d8fc">CropStartMass</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a0851e46692ac9c2677806781c016d8fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Crop start mass.  <a href="#a0851e46692ac9c2677806781c016d8fc">More...</a><br /></td></tr>
+<tr class="separator:a0851e46692ac9c2677806781c016d8fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44767ce131c0a10c053e0d2aef07b2c8"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_i_f_data_1_1_spectrum.html#a44767ce131c0a10c053e0d2aef07b2c8">CropEndMass</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a44767ce131c0a10c053e0d2aef07b2c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Crop end mass.  <a href="#a44767ce131c0a10c053e0d2aef07b2c8">More...</a><br /></td></tr>
+<tr class="separator:a44767ce131c0a10c053e0d2aef07b2c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd1a717e27c2652cbe3fc8b65f980a28"><td class="memItemLeft" align="right" valign="top"><a id="acd1a717e27c2652cbe3fc8b65f980a28"></a>
+double []&#160;</td><td class="memItemRight" valign="bottom"><b>RawMassAxisCrop</b><code> [get, set]</code></td></tr>
+<tr class="separator:acd1a717e27c2652cbe3fc8b65f980a28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f65e1079f76235ad36da5457381c22c"><td class="memItemLeft" align="right" valign="top"><a id="a6f65e1079f76235ad36da5457381c22c"></a>
+double []&#160;</td><td class="memItemRight" valign="bottom"><b>SignalAxisCrop</b><code> [get, set]</code></td></tr>
+<tr class="separator:a6f65e1079f76235ad36da5457381c22c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa980205036330683b80606ca9d51df68"><td class="memItemLeft" align="right" valign="top"><a id="aa980205036330683b80606ca9d51df68"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>CroppedLength</b><code> [get, set]</code></td></tr>
+<tr class="separator:aa980205036330683b80606ca9d51df68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Storage class for mass spectrum data. </p>
@@ -148,7 +163,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>CroppedLength</b><code
 
 <p>Creates an empty <a class="el" href="class_isotope_fit_1_1_i_f_data_1_1_spectrum.html" title="Storage class for mass spectrum data. ">Spectrum</a> object, to be filled with data later. </p>
 
-<p class="definition">Definition at line <a class="el" href="_i_f_data_8cs_source.html#l00121">121</a> of file <a class="el" href="_i_f_data_8cs_source.html">IFData.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i_f_data_8cs_source.html#l00139">139</a> of file <a class="el" href="_i_f_data_8cs_source.html">IFData.cs</a>.</p>
 
 </div>
 </div>
@@ -187,13 +202,13 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>CroppedLength</b><code
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_i_f_data_8cs_source.html#l00128">128</a> of file <a class="el" href="_i_f_data_8cs_source.html">IFData.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i_f_data_8cs_source.html#l00146">146</a> of file <a class="el" href="_i_f_data_8cs_source.html">IFData.cs</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
-<a id="a67e318d42b4eb69b14dd05238a670f79"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a67e318d42b4eb69b14dd05238a670f79">&#9670;&nbsp;</a></span>Baseline</h2>
+<a id="a8b0c276faef24f22d7d535f74547bd7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b0c276faef24f22d7d535f74547bd7a">&#9670;&nbsp;</a></span>CropEndIndex</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -202,7 +217,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>CroppedLength</b><code
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double [] IsotopeFit.IFData.Spectrum.Baseline</td>
+          <td class="memname">int IsotopeFit.IFData.Spectrum.CropEndIndex</td>
         </tr>
       </table>
   </td>
@@ -212,9 +227,87 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>CroppedLength</b><code
 </table>
 </div><div class="memdoc">
 
-<p>Contains the last calculated baseline that was subtracted from <a class="el" href="class_isotope_fit_1_1_i_f_data_1_1_spectrum.html#a948927d795db6a73eb1ddeac4f294cac" title="Raw experimental signal axis. ">Spectrum.RawSignalAxis</a> to obtain <a class="el" href="class_isotope_fit_1_1_i_f_data_1_1_spectrum.html#a561e2e683aee78aed97a967a68b474e9" title="Signal axis with baseline subtracted. ">Spectrum.SignalAxis</a>. </p>
+<p>Crop end index. </p>
 
-<p class="definition">Definition at line <a class="el" href="_i_f_data_8cs_source.html#l00112">112</a> of file <a class="el" href="_i_f_data_8cs_source.html">IFData.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i_f_data_8cs_source.html#l00115">115</a> of file <a class="el" href="_i_f_data_8cs_source.html">IFData.cs</a>.</p>
+
+</div>
+</div>
+<a id="a44767ce131c0a10c053e0d2aef07b2c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44767ce131c0a10c053e0d2aef07b2c8">&#9670;&nbsp;</a></span>CropEndMass</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double IsotopeFit.IFData.Spectrum.CropEndMass</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Crop end mass. </p>
+
+<p class="definition">Definition at line <a class="el" href="_i_f_data_8cs_source.html#l00125">125</a> of file <a class="el" href="_i_f_data_8cs_source.html">IFData.cs</a>.</p>
+
+</div>
+</div>
+<a id="a97f98d7ab017cc965f004c02da75c791"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97f98d7ab017cc965f004c02da75c791">&#9670;&nbsp;</a></span>CropStartIndex</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int IsotopeFit.IFData.Spectrum.CropStartIndex</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Crop start index. </p>
+
+<p class="definition">Definition at line <a class="el" href="_i_f_data_8cs_source.html#l00110">110</a> of file <a class="el" href="_i_f_data_8cs_source.html">IFData.cs</a>.</p>
+
+</div>
+</div>
+<a id="a0851e46692ac9c2677806781c016d8fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0851e46692ac9c2677806781c016d8fc">&#9670;&nbsp;</a></span>CropStartMass</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double IsotopeFit.IFData.Spectrum.CropStartMass</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Crop start mass. </p>
+
+<p class="definition">Definition at line <a class="el" href="_i_f_data_8cs_source.html#l00120">120</a> of file <a class="el" href="_i_f_data_8cs_source.html">IFData.cs</a>.</p>
 
 </div>
 </div>
@@ -240,7 +333,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>CroppedLength</b><code
 
 <p>Mass axis corrected for mass offset. </p>
 
-<p class="definition">Definition at line <a class="el" href="_i_f_data_8cs_source.html#l00102">102</a> of file <a class="el" href="_i_f_data_8cs_source.html">IFData.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i_f_data_8cs_source.html#l00100">100</a> of file <a class="el" href="_i_f_data_8cs_source.html">IFData.cs</a>.</p>
 
 </div>
 </div>
@@ -266,7 +359,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>CroppedLength</b><code
 
 <p>Raw experimental mass axis. </p>
 
-<p class="definition">Definition at line <a class="el" href="_i_f_data_8cs_source.html#l00077">77</a> of file <a class="el" href="_i_f_data_8cs_source.html">IFData.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i_f_data_8cs_source.html#l00075">75</a> of file <a class="el" href="_i_f_data_8cs_source.html">IFData.cs</a>.</p>
 
 </div>
 </div>
@@ -292,7 +385,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>CroppedLength</b><code
 
 <p>Raw experimental signal axis. </p>
 
-<p class="definition">Definition at line <a class="el" href="_i_f_data_8cs_source.html#l00090">90</a> of file <a class="el" href="_i_f_data_8cs_source.html">IFData.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i_f_data_8cs_source.html#l00088">88</a> of file <a class="el" href="_i_f_data_8cs_source.html">IFData.cs</a>.</p>
 
 </div>
 </div>
@@ -318,7 +411,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>CroppedLength</b><code
 
 <p>Signal axis with baseline subtracted. </p>
 
-<p class="definition">Definition at line <a class="el" href="_i_f_data_8cs_source.html#l00107">107</a> of file <a class="el" href="_i_f_data_8cs_source.html">IFData.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i_f_data_8cs_source.html#l00105">105</a> of file <a class="el" href="_i_f_data_8cs_source.html">IFData.cs</a>.</p>
 
 </div>
 </div>

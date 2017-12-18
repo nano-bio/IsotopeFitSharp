@@ -10,13 +10,15 @@ Class for handling least squares systems.
 \item 
 \hyperlink{class_isotope_fit_1_1_least_squares_system_aec0b3973e7239d006b752a4e079f80d0}{Least\+Squares\+System} (Sparse\+Matrix des\+Mat, Vector$<$ double $>$ obs\+Vec)
 \begin{DoxyCompactList}\small\item\em Creates new least squares system and populates it with the supplied data. \end{DoxyCompactList}\item 
+void \hyperlink{class_isotope_fit_1_1_least_squares_system_a1066b54298eca0682a56fd0275ae8e46}{Solve2} ()
+\begin{DoxyCompactList}\small\item\em Method that solves the system. \end{DoxyCompactList}\item 
 void \hyperlink{class_isotope_fit_1_1_least_squares_system_ac72b8568e9ecb97077102658f56aba3f}{Solve} ()
 \begin{DoxyCompactList}\small\item\em Calls the least square solver method and stores the result in the Solution property. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Properties}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{class_isotope_fit_1_1_least_squares_system_a843dc1bf5e21d7a6a6ac9d5339386f92}\label{class_isotope_fit_1_1_least_squares_system_a843dc1bf5e21d7a6a6ac9d5339386f92}} 
-Vector$<$ double $>$ {\bfseries Solution}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\mbox{\Hypertarget{class_isotope_fit_1_1_least_squares_system_a617be79d453e62bdd056dea7d66c8a9e}\label{class_isotope_fit_1_1_least_squares_system_a617be79d453e62bdd056dea7d66c8a9e}} 
+double \mbox{[}$\,$\mbox{]} {\bfseries Solution}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
 \end{DoxyCompactItemize}
 
 
@@ -25,7 +27,7 @@ Class for handling least squares systems.
 
 
 
-Definition at line 17 of file Least\+Squares\+System.\+cs.
+Definition at line 18 of file Least\+Squares\+System.\+cs.
 
 
 
@@ -49,7 +51,7 @@ Creates new least squares system and populates it with the supplied data.
 \end{DoxyParams}
 
 
-Definition at line 24 of file Least\+Squares\+System.\+cs.
+Definition at line 25 of file Least\+Squares\+System.\+cs.
 
 
 
@@ -66,7 +68,21 @@ Calls the least square solver method and stores the result in the Solution prope
 
 At the moment, only non-\/negative least squares solver is implemented. 
 
-Definition at line 41 of file Least\+Squares\+System.\+cs.
+Definition at line 194 of file Least\+Squares\+System.\+cs.
+
+\mbox{\Hypertarget{class_isotope_fit_1_1_least_squares_system_a1066b54298eca0682a56fd0275ae8e46}\label{class_isotope_fit_1_1_least_squares_system_a1066b54298eca0682a56fd0275ae8e46}} 
+\index{Isotope\+Fit\+::\+Least\+Squares\+System@{Isotope\+Fit\+::\+Least\+Squares\+System}!Solve2@{Solve2}}
+\index{Solve2@{Solve2}!Isotope\+Fit\+::\+Least\+Squares\+System@{Isotope\+Fit\+::\+Least\+Squares\+System}}
+\subsubsection{\texorpdfstring{Solve2()}{Solve2()}}
+{\footnotesize\ttfamily void Isotope\+Fit.\+Least\+Squares\+System.\+Solve2 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Method that solves the system. 
+
+Partitions the problem by non-\/overlapping diagonal elements and non-\/overlapping blocks. 
+
+Definition at line 44 of file Least\+Squares\+System.\+cs.
 
 
 

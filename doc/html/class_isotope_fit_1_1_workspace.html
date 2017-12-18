@@ -91,7 +91,7 @@ $(document).ready(function(){initNavTree('class_isotope_fit_1_1_workspace.html',
 </div><!--header-->
 <div class="contents">
 
-<p>Hello  
+<p>This class is the main interface for outside usage.  
  <a href="class_isotope_fit_1_1_workspace.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
@@ -99,7 +99,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_workspace_1_1_design_mtrx.html">DesignMtrx</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_workspace_1_1_workspace_status.html">WorkspaceStatus</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for storing the <a class="el" href="class_isotope_fit_1_1_workspace.html" title="Hello ">Workspace</a> status flags and message log for the user.  <a href="class_isotope_fit_1_1_workspace_1_1_workspace_status.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for storing the <a class="el" href="class_isotope_fit_1_1_workspace.html" title="This class is the main interface for outside usage. ">Workspace</a> status flags and message log for the user.  <a href="class_isotope_fit_1_1_workspace_1_1_workspace_status.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -113,20 +113,26 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a55061c1f05d3e02d2d591fe6211d2f1f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_workspace.html#a55061c1f05d3e02d2d591fe6211d2f1f">LoadIFDFile</a> (string path)</td></tr>
 <tr class="memdesc:a55061c1f05d3e02d2d591fe6211d2f1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads the contents of an IFD file into the workspace.  <a href="#a55061c1f05d3e02d2d591fe6211d2f1f">More...</a><br /></td></tr>
 <tr class="separator:a55061c1f05d3e02d2d591fe6211d2f1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba9a547d376319e836898f4878ce7aab"><td class="memItemLeft" align="right" valign="top"><a id="aba9a547d376319e836898f4878ce7aab"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>LoadIFJFile</b> (string path)</td></tr>
+<tr class="separator:aba9a547d376319e836898f4878ce7aab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0b81213937d49ae3a6183563cfe0f60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_workspace.html#aa0b81213937d49ae3a6183563cfe0f60">CorrectBaseline</a> (double[] xAxis=null, double[] yAxis=null)</td></tr>
 <tr class="memdesc:aa0b81213937d49ae3a6183563cfe0f60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates baseline corrected signal from raw signal data and baseline correction points. Stores the result in the <a class="el" href="class_isotope_fit_1_1_workspace.html#a1d6cc2dd07cbfe920da9f1bffc9b32c2" title="Object containing spectral data, both raw and calibrated. ">Workspace.SpectralData</a>.SignalAxis property.  <a href="#aa0b81213937d49ae3a6183563cfe0f60">More...</a><br /></td></tr>
 <tr class="separator:aa0b81213937d49ae3a6183563cfe0f60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afcb232ba4ab41a8809afdb8c1c3844f3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_workspace.html#afcb232ba4ab41a8809afdb8c1c3844f3">CorrectMassOffset</a> (Interpolation.Type interpType, int order, double[] comList=null, double[] massOffsetList=null)</td></tr>
-<tr class="memdesc:afcb232ba4ab41a8809afdb8c1c3844f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates mass axis corrected for mass offset from previously supplied calibration data and stores the result in the <a class="el" href="class_isotope_fit_1_1_workspace.html#a1d6cc2dd07cbfe920da9f1bffc9b32c2" title="Object containing spectral data, both raw and calibrated. ">Workspace.SpectralData</a>.MassAxis property.  <a href="#afcb232ba4ab41a8809afdb8c1c3844f3">More...</a><br /></td></tr>
-<tr class="separator:afcb232ba4ab41a8809afdb8c1c3844f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c1e21aff90947ff3414ac9d90472452"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_workspace.html#a9c1e21aff90947ff3414ac9d90472452">CropMassAxis</a> (double startMass, double endMass)</td></tr>
+<tr class="memdesc:a9c1e21aff90947ff3414ac9d90472452"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to set the mass axis cropping.  <a href="#a9c1e21aff90947ff3414ac9d90472452">More...</a><br /></td></tr>
+<tr class="separator:a9c1e21aff90947ff3414ac9d90472452"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a188d75c84db3eb6b5c3812e44eb95695"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_workspace.html#a188d75c84db3eb6b5c3812e44eb95695">CorrectMassOffset</a> (Interpolation.Type interpType, int order=-1, bool autoCrop=false, double[] comList=null, double[] massOffsetList=null)</td></tr>
+<tr class="memdesc:a188d75c84db3eb6b5c3812e44eb95695"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates mass axis corrected for mass offset from previously supplied calibration data and stores the result in the <a class="el" href="class_isotope_fit_1_1_workspace.html#a1d6cc2dd07cbfe920da9f1bffc9b32c2" title="Object containing spectral data, both raw and calibrated. ">Workspace.SpectralData</a>.MassAxis property.  <a href="#a188d75c84db3eb6b5c3812e44eb95695">More...</a><br /></td></tr>
+<tr class="separator:a188d75c84db3eb6b5c3812e44eb95695"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00c1ae2e3b1d443808bef150a1e99410"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_workspace.html#a00c1ae2e3b1d443808bef150a1e99410">ResolutionFit</a> (Interpolation.Type t, int order, double[] comList=null, double[] resolutionList=null)</td></tr>
 <tr class="memdesc:a00c1ae2e3b1d443808bef150a1e99410"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fits the previously supplied resolution calibration data and stores the calibration results in the Workspace.ResolutionInterpolation property.  <a href="#a00c1ae2e3b1d443808bef150a1e99410">More...</a><br /></td></tr>
 <tr class="separator:a00c1ae2e3b1d443808bef150a1e99410"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd96d3a982e4645da6bb95f8408a3a2d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_workspace.html#acd96d3a982e4645da6bb95f8408a3a2d">BuildDesignMatrix</a> ()</td></tr>
-<tr class="memdesc:acd96d3a982e4645da6bb95f8408a3a2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds the design matrix from currently supplied data and stores the result in the Workspace.DesignMatrix property.  <a href="#acd96d3a982e4645da6bb95f8408a3a2d">More...</a><br /></td></tr>
-<tr class="separator:acd96d3a982e4645da6bb95f8408a3a2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a760f024c67d57242c40c558298bd1878"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_workspace.html#a760f024c67d57242c40c558298bd1878">BuildDesignMatrix</a> (double searchRange=1, double fwhmRange=0.5)</td></tr>
+<tr class="memdesc:a760f024c67d57242c40c558298bd1878"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds the design matrix from currently supplied data and stores the result in the <a class="el" href="class_isotope_fit_1_1_workspace.html#ae24a2ee8f965fb2ed7ad3a592163271d" title="Object containing the calculated design matrix for current cluster system. ">Workspace.DesignMatrix</a> property.  <a href="#a760f024c67d57242c40c558298bd1878">More...</a><br /></td></tr>
+<tr class="separator:a760f024c67d57242c40c558298bd1878"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40fa9b2c0b5d31feae1093d08b1aad52"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_workspace.html#a40fa9b2c0b5d31feae1093d08b1aad52">FitAbundances</a> ()</td></tr>
-<tr class="memdesc:a40fa9b2c0b5d31feae1093d08b1aad52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs the fit of the data and stores the result in the <a class="el" href="class_isotope_fit_1_1_workspace.html#a0ddbe91c8ebc52ce13212b3fe8a52408" title="Object containing the fitted cluster abundances. ">Workspace.Abundances</a> property.  <a href="#a40fa9b2c0b5d31feae1093d08b1aad52">More...</a><br /></td></tr>
+<tr class="memdesc:a40fa9b2c0b5d31feae1093d08b1aad52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs the fit of the data and stores the result in the Workspace.Abundances property.  <a href="#a40fa9b2c0b5d31feae1093d08b1aad52">More...</a><br /></td></tr>
 <tr class="separator:a40fa9b2c0b5d31feae1093d08b1aad52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
@@ -134,14 +140,8 @@ Properties</h2></td></tr>
 <tr class="memitem:a1d6cc2dd07cbfe920da9f1bffc9b32c2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_isotope_fit_1_1_i_f_data_1_1_spectrum.html">IFData.Spectrum</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_workspace.html#a1d6cc2dd07cbfe920da9f1bffc9b32c2">SpectralData</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a1d6cc2dd07cbfe920da9f1bffc9b32c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Object containing spectral data, both raw and calibrated.  <a href="#a1d6cc2dd07cbfe920da9f1bffc9b32c2">More...</a><br /></td></tr>
 <tr class="separator:a1d6cc2dd07cbfe920da9f1bffc9b32c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04248959f6df286a8f641effe0119ea0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_workspace.html#a04248959f6df286a8f641effe0119ea0">StartIndex</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:a04248959f6df286a8f641effe0119ea0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Crop start index. Not implemented at the moment.  <a href="#a04248959f6df286a8f641effe0119ea0">More...</a><br /></td></tr>
-<tr class="separator:a04248959f6df286a8f641effe0119ea0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af51c32e7bc1645aaf8a24e94c96bc013"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_workspace.html#af51c32e7bc1645aaf8a24e94c96bc013">EndIndex</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:af51c32e7bc1645aaf8a24e94c96bc013"><td class="mdescLeft">&#160;</td><td class="mdescRight">Crop end index. Not implemented at the moment.  <a href="#af51c32e7bc1645aaf8a24e94c96bc013">More...</a><br /></td></tr>
-<tr class="separator:af51c32e7bc1645aaf8a24e94c96bc013"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a13958fbe0adace21990cb1eabbd421e9"><td class="memItemLeft" align="right" valign="top">OrderedDictionary&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_workspace.html#a13958fbe0adace21990cb1eabbd421e9">Clusters</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:a13958fbe0adace21990cb1eabbd421e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Object containing the clusters to be fitted.  <a href="#a13958fbe0adace21990cb1eabbd421e9">More...</a><br /></td></tr>
+<tr class="memdesc:a13958fbe0adace21990cb1eabbd421e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Object containing the clusters, abundance of which is to be calculated. See also <a class="el" href="class_isotope_fit_1_1_i_f_data_1_1_cluster.html" title="Class for storing data about a single cluster/molecule/fragment. ">IFData.Cluster</a>.  <a href="#a13958fbe0adace21990cb1eabbd421e9">More...</a><br /></td></tr>
 <tr class="separator:a13958fbe0adace21990cb1eabbd421e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ed1cfd6701db24de84f4ba67eed0442"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_isotope_fit_1_1_i_f_data_1_1_calibration.html">IFData.Calibration</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_workspace.html#a0ed1cfd6701db24de84f4ba67eed0442">Calibration</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a0ed1cfd6701db24de84f4ba67eed0442"><td class="mdescLeft">&#160;</td><td class="mdescRight">Object containing the data necessary for mass offset correction, resolution fit and peak shape.  <a href="#a0ed1cfd6701db24de84f4ba67eed0442">More...</a><br /></td></tr>
@@ -149,27 +149,12 @@ Properties</h2></td></tr>
 <tr class="memitem:a700395fbb329b1a0fcb5932095db066f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_isotope_fit_1_1_i_f_data_1_1_baseline_corr.html">IFData.BaselineCorr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_workspace.html#a700395fbb329b1a0fcb5932095db066f">BaselineCorrData</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a700395fbb329b1a0fcb5932095db066f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Object containing the data necessary for baseline correction.  <a href="#a700395fbb329b1a0fcb5932095db066f">More...</a><br /></td></tr>
 <tr class="separator:a700395fbb329b1a0fcb5932095db066f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ddbe91c8ebc52ce13212b3fe8a52408"><td class="memItemLeft" align="right" valign="top">OrderedDictionary&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_workspace.html#a0ddbe91c8ebc52ce13212b3fe8a52408">Abundances</a><code> [get]</code></td></tr>
-<tr class="memdesc:a0ddbe91c8ebc52ce13212b3fe8a52408"><td class="mdescLeft">&#160;</td><td class="mdescRight">Object containing the fitted cluster abundances.  <a href="#a0ddbe91c8ebc52ce13212b3fe8a52408">More...</a><br /></td></tr>
-<tr class="separator:a0ddbe91c8ebc52ce13212b3fe8a52408"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9ea2482ae9119a46e4c556a81822b0b"><td class="memItemLeft" align="right" valign="top"><a id="ae9ea2482ae9119a46e4c556a81822b0b"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>FwhmRange</b><code> [get, set]</code></td></tr>
-<tr class="separator:ae9ea2482ae9119a46e4c556a81822b0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa36b8e6bf08258a63fde9193a99f473"><td class="memItemLeft" align="right" valign="top"><a id="afa36b8e6bf08258a63fde9193a99f473"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>SearchRange</b><code> [get, set]</code></td></tr>
-<tr class="separator:afa36b8e6bf08258a63fde9193a99f473"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace61bbc7eb1b0fd1c307864e34793ff2"><td class="memItemLeft" align="right" valign="top"><a id="ace61bbc7eb1b0fd1c307864e34793ff2"></a>
-<a class="el" href="class_isotope_fit_1_1_interpolation.html">Interpolation</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ResolutionInterpolation</b><code> [get]</code></td></tr>
-<tr class="separator:ace61bbc7eb1b0fd1c307864e34793ff2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae24a2ee8f965fb2ed7ad3a592163271d"><td class="memItemLeft" align="right" valign="top"><a id="ae24a2ee8f965fb2ed7ad3a592163271d"></a>
-<a class="el" href="class_isotope_fit_1_1_workspace_1_1_design_mtrx.html">DesignMtrx</a>&#160;</td><td class="memItemRight" valign="bottom"><b>DesignMatrix</b><code> [get]</code></td></tr>
+<tr class="memitem:ae24a2ee8f965fb2ed7ad3a592163271d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_isotope_fit_1_1_workspace_1_1_design_mtrx.html">DesignMtrx</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_workspace.html#ae24a2ee8f965fb2ed7ad3a592163271d">DesignMatrix</a><code> [get]</code></td></tr>
+<tr class="memdesc:ae24a2ee8f965fb2ed7ad3a592163271d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Object containing the calculated design matrix for current cluster system.  <a href="#ae24a2ee8f965fb2ed7ad3a592163271d">More...</a><br /></td></tr>
 <tr class="separator:ae24a2ee8f965fb2ed7ad3a592163271d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aef3ecfbff23e4dbd7eb37c94e2cd32c9"><td class="memItemLeft" align="right" valign="top"><a id="aef3ecfbff23e4dbd7eb37c94e2cd32c9"></a>
-<a class="el" href="class_isotope_fit_1_1_workspace_1_1_workspace_status.html">WorkspaceStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Status</b><code> [get]</code></td></tr>
-<tr class="separator:aef3ecfbff23e4dbd7eb37c94e2cd32c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Hello </p>
+<div class="textblock"><p>This class is the main interface for outside usage. </p>
 
 <p class="definition">Definition at line <a class="el" href="_design_matrix_8cs_source.html#l00019">19</a> of file <a class="el" href="_design_matrix_8cs_source.html">DesignMatrix.cs</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -190,7 +175,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>SearchRange</b><cod
 
 <p>Create an empty <a class="el" href="namespace_isotope_fit.html">IsotopeFit</a> workspace. </p>
 
-<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00029">29</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00023">23</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
 
 </div>
 </div>
@@ -218,13 +203,13 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>SearchRange</b><cod
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00043">43</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00037">37</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="acd96d3a982e4645da6bb95f8408a3a2d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acd96d3a982e4645da6bb95f8408a3a2d">&#9670;&nbsp;</a></span>BuildDesignMatrix()</h2>
+<a id="a760f024c67d57242c40c558298bd1878"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a760f024c67d57242c40c558298bd1878">&#9670;&nbsp;</a></span>BuildDesignMatrix()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -232,15 +217,34 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>SearchRange</b><cod
         <tr>
           <td class="memname">void IsotopeFit.Workspace.BuildDesignMatrix </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>searchRange</em> = <code>1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>fwhmRange</em> = <code>0.5</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Builds the design matrix from currently supplied data and stores the result in the Workspace.DesignMatrix property. </p>
+<p>Builds the design matrix from currently supplied data and stores the result in the <a class="el" href="class_isotope_fit_1_1_workspace.html#ae24a2ee8f965fb2ed7ad3a592163271d" title="Object containing the calculated design matrix for current cluster system. ">Workspace.DesignMatrix</a> property. </p>
+<p>The parameters <em>searchRange</em>  and <em>fwhmRange</em>  are being multiplied, so they must be both nonzero.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">searchRange</td><td>Optional parameter, that sets the range around the centre of mass of a cluster, in which the design matrix values for that cluster will be generated.</td></tr>
+    <tr><td class="paramname">fwhmRange</td><td>Optional parameter, that sets the range as a function of FWHM around the centre of mass of a cluster, in which the design matrix values for that cluster will be generated.</td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00343">343</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00400">400</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
 
 </div>
 </div>
@@ -271,7 +275,8 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>SearchRange</b><cod
 </div><div class="memdoc">
 
 <p>Calculates baseline corrected signal from raw signal data and baseline correction points. Stores the result in the <a class="el" href="class_isotope_fit_1_1_workspace.html#a1d6cc2dd07cbfe920da9f1bffc9b32c2" title="Object containing spectral data, both raw and calibrated. ">Workspace.SpectralData</a>.SignalAxis property. </p>
-<p>This method uses the PCHIP interpolation to obtain the baseline values, which are stored in the <a class="el" href="class_isotope_fit_1_1_workspace.html#a1d6cc2dd07cbfe920da9f1bffc9b32c2" title="Object containing spectral data, both raw and calibrated. ">Workspace.SpectralData</a>.Baseline property. Optional arguments are meant to be used by GUI to ease the process of loading data to the <a class="el" href="class_isotope_fit_1_1_workspace.html" title="Hello ">Workspace</a>. If not supplied, the funcion will use previously stored values. </p>
+<p>This method uses the PCHIP interpolation to obtain the baseline values, which are stored in the <a class="el" href="class_isotope_fit_1_1_workspace.html#a1d6cc2dd07cbfe920da9f1bffc9b32c2" title="Object containing spectral data, both raw and calibrated. ">Workspace.SpectralData</a>.Baseline property.</p>
+<p>Optional arguments <em>xAxis</em>  and <em>yAxis</em>  are meant to ease the process of loading data to the <a class="el" href="class_isotope_fit_1_1_workspace.html" title="This class is the main interface for outside usage. ">Workspace</a>. If not supplied, the funcion will use previously stored values.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">xAxis</td><td>Optional x-axis for the baseline correction.</td></tr>
@@ -281,17 +286,17 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>SearchRange</b><cod
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="class_isotope_fit_1_1_workspace_not_defined_exception.html">WorkspaceNotDefinedException</a></td><td>Thrown when some of the required data have not been loaded in the <a class="el" href="class_isotope_fit_1_1_workspace.html" title="Hello ">Workspace</a>.</td></tr>
+    <tr><td class="paramname"><a class="el" href="class_isotope_fit_1_1_workspace_exception.html">WorkspaceException</a></td><td>Thrown when some of the required data have not been loaded in the <a class="el" href="class_isotope_fit_1_1_workspace.html" title="This class is the main interface for outside usage. ">Workspace</a>.</td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00138">138</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00128">128</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
 
 </div>
 </div>
-<a id="afcb232ba4ab41a8809afdb8c1c3844f3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afcb232ba4ab41a8809afdb8c1c3844f3">&#9670;&nbsp;</a></span>CorrectMassOffset()</h2>
+<a id="a188d75c84db3eb6b5c3812e44eb95695"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a188d75c84db3eb6b5c3812e44eb95695">&#9670;&nbsp;</a></span>CorrectMassOffset()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -306,7 +311,13 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>SearchRange</b><cod
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>order</em>, </td>
+          <td class="paramname"><em>order</em> = <code>-1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>autoCrop</em> = <code>false</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -329,11 +340,13 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>SearchRange</b><cod
 </div><div class="memdoc">
 
 <p>Calculates mass axis corrected for mass offset from previously supplied calibration data and stores the result in the <a class="el" href="class_isotope_fit_1_1_workspace.html#a1d6cc2dd07cbfe920da9f1bffc9b32c2" title="Object containing spectral data, both raw and calibrated. ">Workspace.SpectralData</a>.MassAxis property. </p>
-<p>In case of polynomial inerpolation, the order is considered the highest exponent value of the desired interpolating polynomial, e.g. order = 2 will produce quadratic polynomial. Optional arguments are meant to be used by GUI to ease the process of loading data to the <a class="el" href="class_isotope_fit_1_1_workspace.html" title="Hello ">Workspace</a>. If not supplied, the method will use previously stored values. </p>
+<p>In case of polynomial inerpolation, the order is considered the highest exponent value of the desired interpolating polynomial, e.g. order = 2 will produce quadratic polynomial.</p>
+<p>Optional arguments <em>comList</em>  and <em>massOffsetList</em>  are meant to ease the process of loading data to the <a class="el" href="class_isotope_fit_1_1_workspace.html" title="This class is the main interface for outside usage. ">Workspace</a>. If not supplied, the method will use previously stored values.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">interpType</td><td>Type of the interpolation to be used.</td></tr>
-    <tr><td class="paramname">order</td><td>Order of the polynomial interpolation. Ignored if any other interpolation type is selected.</td></tr>
+    <tr><td class="paramname">order</td><td>Order of the polynomial interpolation. Is marked as optional, but is required if polynomial interpolation is selected.</td></tr>
+    <tr><td class="paramname">autoCrop</td><td>Optional flag that specifies, if the automatic cropping of the mass axis should be performed.</td></tr>
     <tr><td class="paramname">comList</td><td>Optional array of centre-of-mass points to be used for the correction.</td></tr>
     <tr><td class="paramname">massOffsetList</td><td>Optional array of mass offset points to be used for the correction.</td></tr>
   </table>
@@ -341,12 +354,52 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>SearchRange</b><cod
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="class_isotope_fit_1_1_workspace_not_defined_exception.html">WorkspaceNotDefinedException</a></td><td>Thrown when some of the required data have not been loaded in the <a class="el" href="class_isotope_fit_1_1_workspace.html" title="Hello ">Workspace</a> or their lengths are different.</td></tr>
+    <tr><td class="paramname"><a class="el" href="class_isotope_fit_1_1_workspace_exception.html">WorkspaceException</a></td><td>Thrown when some of the required data have not been loaded in the <a class="el" href="class_isotope_fit_1_1_workspace.html" title="This class is the main interface for outside usage. ">Workspace</a> or their lengths are different.</td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00180">180</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00208">208</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
+
+</div>
+</div>
+<a id="a9c1e21aff90947ff3414ac9d90472452"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c1e21aff90947ff3414ac9d90472452">&#9670;&nbsp;</a></span>CropMassAxis()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void IsotopeFit.Workspace.CropMassAxis </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>startMass</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>endMass</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Function to set the mass axis cropping. </p>
+<p>The spectral data outside the specified interval will not be discarded, merely ignored in later calculations.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">startMass</td><td>Start index of the interval to select.</td></tr>
+    <tr><td class="paramname">endMass</td><td>End index of the interval to select.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00168">168</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
 
 </div>
 </div>
@@ -365,9 +418,9 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>SearchRange</b><cod
       </table>
 </div><div class="memdoc">
 
-<p>Performs the fit of the data and stores the result in the <a class="el" href="class_isotope_fit_1_1_workspace.html#a0ddbe91c8ebc52ce13212b3fe8a52408" title="Object containing the fitted cluster abundances. ">Workspace.Abundances</a> property. </p>
+<p>Performs the fit of the data and stores the result in the Workspace.Abundances property. </p>
 
-<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00353">353</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00415">415</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
 
 </div>
 </div>
@@ -395,7 +448,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>SearchRange</b><cod
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00112">112</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00091">91</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
 
 </div>
 </div>
@@ -438,7 +491,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>SearchRange</b><cod
 </div><div class="memdoc">
 
 <p>Fits the previously supplied resolution calibration data and stores the calibration results in the Workspace.ResolutionInterpolation property. </p>
-<p>In case of polynomial inerpolation, the order is considered the highest exponent value of the desired interpolating polynomial, e.g. order = 2 will produce quadratic polynomial. Optional arguments are meant to be used by GUI to ease the process of loading data to the <a class="el" href="class_isotope_fit_1_1_workspace.html" title="Hello ">Workspace</a>. If not supplied, the method will use previously stored values. </p>
+<p>In case of polynomial inerpolation, the order is considered the highest exponent value of the desired interpolating polynomial, e.g. order = 2 will produce quadratic polynomial. Optional arguments are meant to be used by GUI to ease the process of loading data to the <a class="el" href="class_isotope_fit_1_1_workspace.html" title="This class is the main interface for outside usage. ">Workspace</a>. If not supplied, the method will use previously stored values. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">t</td><td>Type of the interpolation to use.</td></tr>
@@ -450,42 +503,16 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>SearchRange</b><cod
 </dl>
 <dl class="exception"><dt>Exceptions</dt><dd>
   <table class="exception">
-    <tr><td class="paramname"><a class="el" href="class_isotope_fit_1_1_workspace_not_defined_exception.html">WorkspaceNotDefinedException</a></td><td>Thrown when some of the required data have not been loaded in the <a class="el" href="class_isotope_fit_1_1_workspace.html" title="Hello ">Workspace</a> or their lengths are different.</td></tr>
+    <tr><td class="paramname"><a class="el" href="class_isotope_fit_1_1_workspace_exception.html">WorkspaceException</a></td><td>Thrown when some of the required data have not been loaded in the <a class="el" href="class_isotope_fit_1_1_workspace.html" title="This class is the main interface for outside usage. ">Workspace</a> or their lengths are different.</td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00293">293</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00347">347</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
-<a id="a0ddbe91c8ebc52ce13212b3fe8a52408"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0ddbe91c8ebc52ce13212b3fe8a52408">&#9670;&nbsp;</a></span>Abundances</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">OrderedDictionary IsotopeFit.Workspace.Abundances</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Object containing the fitted cluster abundances. </p>
-
-<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00091">91</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
-
-</div>
-</div>
 <a id="a700395fbb329b1a0fcb5932095db066f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a700395fbb329b1a0fcb5932095db066f">&#9670;&nbsp;</a></span>BaselineCorrData</h2>
 
@@ -508,7 +535,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>SearchRange</b><cod
 
 <p>Object containing the data necessary for baseline correction. </p>
 
-<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00086">86</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00066">66</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
 
 </div>
 </div>
@@ -534,7 +561,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>SearchRange</b><cod
 
 <p>Object containing the data necessary for mass offset correction, resolution fit and peak shape. </p>
 
-<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00081">81</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00061">61</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
 
 </div>
 </div>
@@ -558,14 +585,14 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>SearchRange</b><cod
 </table>
 </div><div class="memdoc">
 
-<p>Object containing the clusters to be fitted. </p>
+<p>Object containing the clusters, abundance of which is to be calculated. See also <a class="el" href="class_isotope_fit_1_1_i_f_data_1_1_cluster.html" title="Class for storing data about a single cluster/molecule/fragment. ">IFData.Cluster</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00076">76</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00056">56</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
 
 </div>
 </div>
-<a id="af51c32e7bc1645aaf8a24e94c96bc013"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af51c32e7bc1645aaf8a24e94c96bc013">&#9670;&nbsp;</a></span>EndIndex</h2>
+<a id="ae24a2ee8f965fb2ed7ad3a592163271d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae24a2ee8f965fb2ed7ad3a592163271d">&#9670;&nbsp;</a></span>DesignMatrix</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -574,19 +601,19 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>SearchRange</b><cod
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int IsotopeFit.Workspace.EndIndex</td>
+          <td class="memname"><a class="el" href="class_isotope_fit_1_1_workspace_1_1_design_mtrx.html">DesignMtrx</a> IsotopeFit.Workspace.DesignMatrix</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Crop end index. Not implemented at the moment. </p>
+<p>Object containing the calculated design matrix for current cluster system. </p>
 
-<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00071">71</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00077">77</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
 
 </div>
 </div>
@@ -612,33 +639,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>SearchRange</b><cod
 
 <p>Object containing spectral data, both raw and calibrated. </p>
 
-<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00061">61</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
-
-</div>
-</div>
-<a id="a04248959f6df286a8f641effe0119ea0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a04248959f6df286a8f641effe0119ea0">&#9670;&nbsp;</a></span>StartIndex</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int IsotopeFit.Workspace.StartIndex</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Crop start index. Not implemented at the moment. </p>
-
-<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00066">66</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00051">51</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
 
 </div>
 </div>

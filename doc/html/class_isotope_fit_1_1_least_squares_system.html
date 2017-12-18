@@ -98,20 +98,23 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aec0b3973e7239d006b752a4e079f80d0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_least_squares_system.html#aec0b3973e7239d006b752a4e079f80d0">LeastSquaresSystem</a> (SparseMatrix desMat, Vector&lt; double &gt; obsVec)</td></tr>
 <tr class="memdesc:aec0b3973e7239d006b752a4e079f80d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates new least squares system and populates it with the supplied data.  <a href="#aec0b3973e7239d006b752a4e079f80d0">More...</a><br /></td></tr>
 <tr class="separator:aec0b3973e7239d006b752a4e079f80d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1066b54298eca0682a56fd0275ae8e46"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_least_squares_system.html#a1066b54298eca0682a56fd0275ae8e46">Solve2</a> ()</td></tr>
+<tr class="memdesc:a1066b54298eca0682a56fd0275ae8e46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method that solves the system.  <a href="#a1066b54298eca0682a56fd0275ae8e46">More...</a><br /></td></tr>
+<tr class="separator:a1066b54298eca0682a56fd0275ae8e46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac72b8568e9ecb97077102658f56aba3f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_least_squares_system.html#ac72b8568e9ecb97077102658f56aba3f">Solve</a> ()</td></tr>
 <tr class="memdesc:ac72b8568e9ecb97077102658f56aba3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls the least square solver method and stores the result in the Solution property.  <a href="#ac72b8568e9ecb97077102658f56aba3f">More...</a><br /></td></tr>
 <tr class="separator:ac72b8568e9ecb97077102658f56aba3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:a843dc1bf5e21d7a6a6ac9d5339386f92"><td class="memItemLeft" align="right" valign="top"><a id="a843dc1bf5e21d7a6a6ac9d5339386f92"></a>
-Vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Solution</b><code> [get]</code></td></tr>
-<tr class="separator:a843dc1bf5e21d7a6a6ac9d5339386f92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a617be79d453e62bdd056dea7d66c8a9e"><td class="memItemLeft" align="right" valign="top"><a id="a617be79d453e62bdd056dea7d66c8a9e"></a>
+double []&#160;</td><td class="memItemRight" valign="bottom"><b>Solution</b><code> [get]</code></td></tr>
+<tr class="separator:a617be79d453e62bdd056dea7d66c8a9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class for handling least squares systems. </p>
 
-<p class="definition">Definition at line <a class="el" href="_least_squares_system_8cs_source.html#l00017">17</a> of file <a class="el" href="_least_squares_system_8cs_source.html">LeastSquaresSystem.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_least_squares_system_8cs_source.html#l00018">18</a> of file <a class="el" href="_least_squares_system_8cs_source.html">LeastSquaresSystem.cs</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aec0b3973e7239d006b752a4e079f80d0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aec0b3973e7239d006b752a4e079f80d0">&#9670;&nbsp;</a></span>LeastSquaresSystem()</h2>
@@ -148,7 +151,7 @@ Vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Sol
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_least_squares_system_8cs_source.html#l00024">24</a> of file <a class="el" href="_least_squares_system_8cs_source.html">LeastSquaresSystem.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_least_squares_system_8cs_source.html#l00025">25</a> of file <a class="el" href="_least_squares_system_8cs_source.html">LeastSquaresSystem.cs</a>.</p>
 
 </div>
 </div>
@@ -171,7 +174,29 @@ Vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Sol
 <p>Calls the least square solver method and stores the result in the Solution property. </p>
 <p>At the moment, only non-negative least squares solver is implemented. </p>
 
-<p class="definition">Definition at line <a class="el" href="_least_squares_system_8cs_source.html#l00041">41</a> of file <a class="el" href="_least_squares_system_8cs_source.html">LeastSquaresSystem.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_least_squares_system_8cs_source.html#l00194">194</a> of file <a class="el" href="_least_squares_system_8cs_source.html">LeastSquaresSystem.cs</a>.</p>
+
+</div>
+</div>
+<a id="a1066b54298eca0682a56fd0275ae8e46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1066b54298eca0682a56fd0275ae8e46">&#9670;&nbsp;</a></span>Solve2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void IsotopeFit.LeastSquaresSystem.Solve2 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Method that solves the system. </p>
+<p>Partitions the problem by non-overlapping diagonal elements and non-overlapping blocks. </p>
+
+<p class="definition">Definition at line <a class="el" href="_least_squares_system_8cs_source.html#l00044">44</a> of file <a class="el" href="_least_squares_system_8cs_source.html">LeastSquaresSystem.cs</a>.</p>
 
 </div>
 </div>

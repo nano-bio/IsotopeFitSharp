@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['rawmassaxis',['RawMassAxis',['../class_isotope_fit_1_1_i_f_data_1_1_spectrum.html#ac3297615e23a978626e4beaf9e040e2a',1,'IsotopeFit::IFData::Spectrum']]],
-  ['rawsignalaxis',['RawSignalAxis',['../class_isotope_fit_1_1_i_f_data_1_1_spectrum.html#a948927d795db6a73eb1ddeac4f294cac',1,'IsotopeFit::IFData::Spectrum']]]
+  ['name',['Name',['../class_isotope_fit_1_1_i_f_data_1_1_cluster.html#a8ae80358415b5637dbe46d2a211d03e7',1,'IsotopeFit::IFData::Cluster']]],
+  ['namelist',['NameList',['../class_isotope_fit_1_1_i_f_data_1_1_calibration.html#a2e347f087df878f22010302bda7db4be',1,'IsotopeFit::IFData::Calibration']]]
 ];

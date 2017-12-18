@@ -1,0 +1,72 @@
+\hypertarget{class_isotope_fit_1_1_s_p_q_r}{}\section{Isotope\+Fit.\+S\+P\+QR Class Reference}
+\label{class_isotope_fit_1_1_s_p_q_r}\index{Isotope\+Fit.\+S\+P\+QR@{Isotope\+Fit.\+S\+P\+QR}}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static Sparse\+Matrix \hyperlink{class_isotope_fit_1_1_s_p_q_r_ae9a721a91b7f38a201f8403e3692684d}{QR} (Sparse\+Matrix A)
+\begin{DoxyCompactList}\small\item\em Calculates the QR factorization of a sparse matrix. \end{DoxyCompactList}\item 
+static double \mbox{[}$\,$\mbox{]} \hyperlink{class_isotope_fit_1_1_s_p_q_r_a69087f39b9436dc5c8aff4649b18eb46}{Solve} (Sparse\+Matrix A, double\mbox{[}$\,$\mbox{]} b)
+\begin{DoxyCompactList}\small\item\em Solves the sparse linear equation system A $\ast$ x = b. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 12 of file S\+P\+Q\+R.\+cs.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_isotope_fit_1_1_s_p_q_r_ae9a721a91b7f38a201f8403e3692684d}\label{class_isotope_fit_1_1_s_p_q_r_ae9a721a91b7f38a201f8403e3692684d}} 
+\index{Isotope\+Fit\+::\+S\+P\+QR@{Isotope\+Fit\+::\+S\+P\+QR}!QR@{QR}}
+\index{QR@{QR}!Isotope\+Fit\+::\+S\+P\+QR@{Isotope\+Fit\+::\+S\+P\+QR}}
+\subsubsection{\texorpdfstring{Q\+R()}{QR()}}
+{\footnotesize\ttfamily static Sparse\+Matrix Isotope\+Fit.\+S\+P\+Q\+R.\+QR (\begin{DoxyParamCaption}\item[{Sparse\+Matrix}]{A }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Calculates the QR factorization of a sparse matrix. 
+
+Discards the calculated values of the Q matrix, in order to be faster and more memory efficient. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em A} & Sparse matrix to be factorized.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Upper triangular factor R, in compressed sparse column format.
+\end{DoxyReturn}
+
+
+Definition at line 44 of file S\+P\+Q\+R.\+cs.
+
+\mbox{\Hypertarget{class_isotope_fit_1_1_s_p_q_r_a69087f39b9436dc5c8aff4649b18eb46}\label{class_isotope_fit_1_1_s_p_q_r_a69087f39b9436dc5c8aff4649b18eb46}} 
+\index{Isotope\+Fit\+::\+S\+P\+QR@{Isotope\+Fit\+::\+S\+P\+QR}!Solve@{Solve}}
+\index{Solve@{Solve}!Isotope\+Fit\+::\+S\+P\+QR@{Isotope\+Fit\+::\+S\+P\+QR}}
+\subsubsection{\texorpdfstring{Solve()}{Solve()}}
+{\footnotesize\ttfamily static double \mbox{[}$\,$\mbox{]} Isotope\+Fit.\+S\+P\+Q\+R.\+Solve (\begin{DoxyParamCaption}\item[{Sparse\+Matrix}]{A,  }\item[{double \mbox{[}$\,$\mbox{]}}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Solves the sparse linear equation system A $\ast$ x = b. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em A} & Sparse matrix of coefficients.\\
+\hline
+{\em b} & Array of observation values.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Array containing the solution of the linear equation system.
+\end{DoxyReturn}
+
+
+Definition at line 91 of file S\+P\+Q\+R.\+cs.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Isotope\+Fit\+Lib/\+Numerics/S\+P\+Q\+R.\+cs\end{DoxyCompactItemize}
