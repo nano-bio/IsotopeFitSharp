@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 
+using MathNet.Numerics.LinearAlgebra;
+
 namespace IsotopeFit
 {
     /// <summary>
@@ -412,7 +414,7 @@ namespace IsotopeFit
         /// </summary>
         public void FitAbundances()
         {
-            LeastSquaresSystem lss = new LeastSquaresSystem(DesignMatrix.Storage, null);    // we dont give the observation vector here, because it was already added to the matrix during the build
+            LeastSquaresSystem lss = new LeastSquaresSystem(DesignMatrix.Storage, DesignMatrix.MaskedObsVector);
 
             //TODO: this is ugly, hide this inside the LeastSquaresSystem class
             System.Diagnostics.Stopwatch qr = new System.Diagnostics.Stopwatch();
@@ -424,15 +426,15 @@ namespace IsotopeFit
             System.Diagnostics.Stopwatch sol = new System.Diagnostics.Stopwatch();
             sol.Start();
             lss.Solve2();
-            //lss.Solve();
             sol.Stop();
             Console.WriteLine("NNLS done in {0} miliseconds", sol.ElapsedMilliseconds);
 
-            //Abundances = new OrderedDictionary(Clusters.Count);
+            
+
+            
 
             for (int i = 0; i < Clusters.Count; i++)
             {
-                //Abundances.Add((Clusters[i] as IFData.Cluster).Name, lss.Solution[i]);
                 (Clusters[i] as IFData.Cluster).Abundance = lss.Solution[i];
                 //TODO: abundance error
             }

@@ -76,7 +76,10 @@ namespace IsotopeFit
             public SparseMatrix Storage { get; private set; }   //TODO: maybe a field would suffice and change it directly to a sparse matrix
             internal int Rows { get; private set; }
             internal int Cols { get; private set; }
-            internal Matrix<double> R { get; private set; }
+            //internal Matrix<double> R { get; private set; }
+
+            internal MathNet.Numerics.LinearAlgebra.Double.SparseVector MaskedObsVector { get; private set; }
+            //internal bool[] Fitmask { get; private set; }
 
             public double SearchRange { get; set; }   //TODO: at the moment, those two values are not being set anywhere
             public double FwhmRange { get; set; }
@@ -88,7 +91,7 @@ namespace IsotopeFit
             internal void Build()
             {
                 //TODO: make them sparse
-                designMatrixVectors = new MathNet.Numerics.LinearAlgebra.Double.SparseVector[Cols + 1]; // plus 1, because that will be the observations vector. this makes later calculations faster.
+                designMatrixVectors = new MathNet.Numerics.LinearAlgebra.Double.SparseVector[Cols];
                 fitMask = new bool[Rows];
 
                 //TODO: this is temporary
@@ -98,14 +101,13 @@ namespace IsotopeFit
                 // loop through all molecules
                 Parallel.For(0, Cols, BuildInit, BuildWork, BuildFinal);
 
-
                 // add the observation vector to the last column
                 int fitMaskNonZero = 0;
                 for (int i = 0; i < fitMask.Length; i++)
                 {
                     if (fitMask[i]) fitMaskNonZero++;
                 }
-                
+
                 double[] values2 = new double[fitMaskNonZero];
                 int[] indices2 = new int[fitMaskNonZero];
 
@@ -114,9 +116,6 @@ namespace IsotopeFit
                 {
                     if (fitMask[i])
                     {
-                        //values2[j] = (observationVector.Storage as SparseVectorStorage<double>).Values[i];
-                        //indices2[j] = (observationVector.Storage as SparseVectorStorage<double>).Indices[i];
-
                         values2[j] = observationVector2[i];
                         indices2[j] = i;
 
@@ -128,15 +127,15 @@ namespace IsotopeFit
                 obsVecStor.Values = values2;
                 obsVecStor.Indices = indices2;
 
-                designMatrixVectors[Cols] = (MathNet.Numerics.LinearAlgebra.Double.SparseVector)MathNet.Numerics.LinearAlgebra.Double.SparseVector.Build.Sparse(obsVecStor);
-                //designMatrixVectors[Cols] = (MathNet.Numerics.LinearAlgebra.Double.SparseVector)MathNet.Numerics.LinearAlgebra.Double.SparseVector.Build.Sparse(10);
+                MaskedObsVector = (MathNet.Numerics.LinearAlgebra.Double.SparseVector)MathNet.Numerics.LinearAlgebra.Double.SparseVector.Build.Sparse(obsVecStor);
+                //designMatrixVectors[Cols] = (MathNet.Numerics.LinearAlgebra.Double.SparseVector)MathNet.Numerics.LinearAlgebra.Double.SparseVector.Build.Sparse(obsVecStor);
 
                 //build the sparse design matrix from the column vector array                
                 //TODO: since we are building the matrix from columns, it should be easy to build a compressed-column-storage right away. That is the storage type needed for the QR factorization.
                 //Storage = Matrix<double>.Build.SparseOfColumnVectors(designMatrixVectors);
-                
+
                 // fitmask application
-                for (int i = 0; i < designMatrixVectors.Length - 1; i++)
+                for (int i = 0; i < designMatrixVectors.Length; i++)    // - 1
                 {
                     // if there were no non-zero elements that would make it through the fitmask, we can skip the iteration
                     // this happens if the fwhm of that cluster was negative, which typically happens when extrapolating the resolution fit against common sense
@@ -187,7 +186,7 @@ namespace IsotopeFit
                     colPointers[i + 1] = colPointers[i] + designMatrixVectors[i].NonZerosCount;
                 }
 
-                Storage = new SparseMatrix(Rows, Cols + 1)
+                Storage = new SparseMatrix(Rows, Cols)  // + 1
                 {
                     Values = values,
                     RowIndices = rowIndices,

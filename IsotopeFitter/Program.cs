@@ -24,6 +24,7 @@ namespace IsotopeFitter
                 throw new Exception("No file or directory to process was specified.");
             }
 
+            Stopwatch totalTime = new Stopwatch();
             Stopwatch baselineTime = new Stopwatch();
             Stopwatch mofTime = new Stopwatch();
             Stopwatch resTime = new Stopwatch();
@@ -48,6 +49,7 @@ namespace IsotopeFitter
                 throw new NotImplementedException();
             }
 
+            totalTime.Start();
 
             baselineTime.Start();
             W.CorrectBaseline();
@@ -110,9 +112,9 @@ namespace IsotopeFitter
             W.FitAbundances();
             //abdTime.Stop();
             //Console.WriteLine("abundances done in {0} miliseconds", abdTime.ElapsedMilliseconds);
+            totalTime.Stop();
+            Console.WriteLine("total time {0} seconds", (totalTime.ElapsedMilliseconds) / 1000d);
 
-            //Console.WriteLine("total time {0} seconds", (baselineTime.ElapsedMilliseconds + mofTime.ElapsedMilliseconds + resTime.ElapsedMilliseconds + dmTime.ElapsedMilliseconds + abdTime.ElapsedMilliseconds) / 1000d);
-                        
             double[] abd = new double[W.Clusters.Count];
 
             for (int i = 0; i < W.Clusters.Count; i++)

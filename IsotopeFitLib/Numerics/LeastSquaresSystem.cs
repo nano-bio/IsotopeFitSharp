@@ -32,6 +32,8 @@ namespace IsotopeFit
         internal Vector<double> ObservationVector { get; private set; }
         internal int[] ColumnOrdering { get; set; }
         public double[] Solution { get; private set; }
+        //internal Vector<double> FittedSpectrum { get; private set; }
+        //public double[] SolutionError { get; private set; }
 
         /// <summary>
         /// Method that solves the system.
@@ -146,7 +148,40 @@ namespace IsotopeFit
 
             Solution = abd;
 
+            // find the fit errors
+
+            // R=qr(M)
+            // S=inv(R)  then inv(MT * M) = S*ST
+            // errout=1.96 * diag(sqrt(S*ST * sum(((M*AT) - spec_measured).2 ) / (length(spec_measured) - length(A))))
+
+
+            // calculate the fitted spectrum
+            //double[] fittedSpectrum = new double[ObservationVector.Count];
+
+            //DesignMatrix.Multiply(Solution, fittedSpectrum);
+
+            //Vector<double> fittedSpectrumVect = Vector<double>.Build.Dense(fittedSpectrum);
+
+            //// determine the fit error
+            ////Vector<double> diffSq = Vector<double>.Build.Dense(fittedSpectrum.Length);
+
+            //double diffSqSum = (fittedSpectrumVect - ObservationVector).PointwisePower(2).Sum();
+
+            //// we need to change the matrix format to mathnet numerics, because the csparse format cant do inverse
+
+            //Matrix<double> covarianceMatrix = Matrix<double>.Build.SparseOfColumnArrays()
+
+            //CSparse.Double.SparseMatrix covarianceMatrix = (CSparse.Double.SparseMatrix)lss.DesignMatrix.Transpose().Multiply(lss.DesignMatrix);
+            //Matrix<double> rrr = Matrix<double>.Build.Dense(3, 5);
+
+            //int[] diag = covarianceMatrix.FindDiagonalIndices();
+
+
+
+
             Solution = Enumerable.Zip(ColumnOrdering, Solution, (idx, val) => new { idx, val }).OrderBy(v => v.idx).Select(v => v.val).ToArray();
+
+
         }
 
         /// <summary>
