@@ -16,6 +16,7 @@ var class_isotope_fit_1_1_workspace =
     [ "Calibration", "class_isotope_fit_1_1_workspace.html#a0ed1cfd6701db24de84f4ba67eed0442", null ],
     [ "Clusters", "class_isotope_fit_1_1_workspace.html#a13958fbe0adace21990cb1eabbd421e9", null ],
     [ "DesignMatrix", "class_isotope_fit_1_1_workspace.html#ae24a2ee8f965fb2ed7ad3a592163271d", null ],
+    [ "FileInfo", "class_isotope_fit_1_1_workspace.html#a54c0025eccacbf519f619ef256414a92", null ],
     [ "IFDLoaded", "class_isotope_fit_1_1_workspace.html#a91a3143e81cea959a678e9ece4556cf9", null ],
     [ "SpectralData", "class_isotope_fit_1_1_workspace.html#a1d6cc2dd07cbfe920da9f1bffc9b32c2", null ]
 ];

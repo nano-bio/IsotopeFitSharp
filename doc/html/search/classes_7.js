@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['workspace',['Workspace',['../class_isotope_fit_1_1_workspace.html',1,'IsotopeFit']]],
-  ['workspaceexception',['WorkspaceException',['../class_isotope_fit_1_1_workspace_exception.html',1,'IsotopeFit']]],
-  ['workspacestatus',['WorkspaceStatus',['../class_isotope_fit_1_1_workspace_1_1_workspace_status.html',1,'IsotopeFit::Workspace']]]
+  ['spectrum',['Spectrum',['../class_isotope_fit_1_1_i_f_data_1_1_spectrum.html',1,'IsotopeFit::IFData']]],
+  ['spqr',['SPQR',['../class_isotope_fit_1_1_s_p_q_r.html',1,'IsotopeFit']]]
 ];

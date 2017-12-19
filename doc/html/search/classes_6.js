@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['spectrum',['Spectrum',['../class_isotope_fit_1_1_i_f_data_1_1_spectrum.html',1,'IsotopeFit::IFData']]],
-  ['spqr',['SPQR',['../class_isotope_fit_1_1_s_p_q_r.html',1,'IsotopeFit']]]
+  ['pardiso',['Pardiso',['../class_isotope_fit_1_1_pardiso.html',1,'IsotopeFit']]],
+  ['polyinterpolation',['PolyInterpolation',['../class_isotope_fit_1_1_poly_interpolation.html',1,'IsotopeFit']]],
+  ['ppinterpolation',['PPInterpolation',['../class_isotope_fit_1_1_p_p_interpolation.html',1,'IsotopeFit']]]
 ];

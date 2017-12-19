@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['leastsquaressystem',['LeastSquaresSystem',['../class_isotope_fit_1_1_least_squares_system.html',1,'IsotopeFit']]],
-  ['lineshape',['LineShape',['../class_isotope_fit_1_1_i_f_data_1_1_calibration_1_1_line_shape.html',1,'IsotopeFit::IFData::Calibration']]]
+  ['interpolation',['Interpolation',['../class_isotope_fit_1_1_interpolation.html',1,'IsotopeFit']]],
+  ['interpolationexception',['InterpolationException',['../class_isotope_fit_1_1_interpolation_1_1_interpolation_exception.html',1,'IsotopeFit::Interpolation']]],
+  ['isotopedata',['IsotopeData',['../class_isotope_fit_1_1_i_f_data_1_1_cluster_1_1_isotope_data.html',1,'IsotopeFit::IFData::Cluster']]]
 ];

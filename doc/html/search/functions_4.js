@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['leastsquaressystem',['LeastSquaresSystem',['../class_isotope_fit_1_1_least_squares_system.html#aec0b3973e7239d006b752a4e079f80d0',1,'IsotopeFit::LeastSquaresSystem']]],
-  ['loadifdfile',['LoadIFDFile',['../class_isotope_fit_1_1_workspace.html#a55061c1f05d3e02d2d591fe6211d2f1f',1,'IsotopeFit::Workspace']]]
+  ['fitabundances',['FitAbundances',['../class_isotope_fit_1_1_workspace.html#a40fa9b2c0b5d31feae1093d08b1aad52',1,'IsotopeFit::Workspace']]]
 ];

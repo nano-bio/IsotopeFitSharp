@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">IsotopeFitSharp
-   &#160;<span id="projectnumber">1.0</span>
+   &#160;<span id="projectnumber">0.2.0</span>
    </div>
    <div id="projectbrief">Numerical functions for cluster abundance extraction</div>
   </td>
@@ -95,12 +95,12 @@ $(document).ready(function(){initNavTree('class_isotope_fit_1_1_least_squares_sy
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aec0b3973e7239d006b752a4e079f80d0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_least_squares_system.html#aec0b3973e7239d006b752a4e079f80d0">LeastSquaresSystem</a> (SparseMatrix desMat, Vector&lt; double &gt; obsVec)</td></tr>
-<tr class="memdesc:aec0b3973e7239d006b752a4e079f80d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates new least squares system and populates it with the supplied data.  <a href="#aec0b3973e7239d006b752a4e079f80d0">More...</a><br /></td></tr>
-<tr class="separator:aec0b3973e7239d006b752a4e079f80d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1066b54298eca0682a56fd0275ae8e46"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_least_squares_system.html#a1066b54298eca0682a56fd0275ae8e46">Solve2</a> ()</td></tr>
-<tr class="memdesc:a1066b54298eca0682a56fd0275ae8e46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method that solves the system.  <a href="#a1066b54298eca0682a56fd0275ae8e46">More...</a><br /></td></tr>
-<tr class="separator:a1066b54298eca0682a56fd0275ae8e46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e014a3cc9f4ee7b700d89de2d1f2a4d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_least_squares_system.html#a5e014a3cc9f4ee7b700d89de2d1f2a4d">LeastSquaresSystem</a> (SparseMatrix desMat, MathNet.Numerics.LinearAlgebra.Double.SparseVector obsVec)</td></tr>
+<tr class="memdesc:a5e014a3cc9f4ee7b700d89de2d1f2a4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates new least squares system and populates it with the supplied data.  <a href="#a5e014a3cc9f4ee7b700d89de2d1f2a4d">More...</a><br /></td></tr>
+<tr class="separator:a5e014a3cc9f4ee7b700d89de2d1f2a4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad831a418d7e7601dc7a64f5f7143534f"><td class="memItemLeft" align="right" valign="top">async Task&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_least_squares_system.html#ad831a418d7e7601dc7a64f5f7143534f">Solve2Async</a> ()</td></tr>
+<tr class="memdesc:ad831a418d7e7601dc7a64f5f7143534f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method that solves the system.  <a href="#ad831a418d7e7601dc7a64f5f7143534f">More...</a><br /></td></tr>
+<tr class="separator:ad831a418d7e7601dc7a64f5f7143534f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac72b8568e9ecb97077102658f56aba3f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_least_squares_system.html#ac72b8568e9ecb97077102658f56aba3f">Solve</a> ()</td></tr>
 <tr class="memdesc:ac72b8568e9ecb97077102658f56aba3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls the least square solver method and stores the result in the Solution property.  <a href="#ac72b8568e9ecb97077102658f56aba3f">More...</a><br /></td></tr>
 <tr class="separator:ac72b8568e9ecb97077102658f56aba3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -110,14 +110,17 @@ Properties</h2></td></tr>
 <tr class="memitem:a617be79d453e62bdd056dea7d66c8a9e"><td class="memItemLeft" align="right" valign="top"><a id="a617be79d453e62bdd056dea7d66c8a9e"></a>
 double []&#160;</td><td class="memItemRight" valign="bottom"><b>Solution</b><code> [get]</code></td></tr>
 <tr class="separator:a617be79d453e62bdd056dea7d66c8a9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a408575af0561c165c18bc2c93a046d00"><td class="memItemLeft" align="right" valign="top"><a id="a408575af0561c165c18bc2c93a046d00"></a>
+double []&#160;</td><td class="memItemRight" valign="bottom"><b>SolutionError</b><code> [get]</code></td></tr>
+<tr class="separator:a408575af0561c165c18bc2c93a046d00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class for handling least squares systems. </p>
 
 <p class="definition">Definition at line <a class="el" href="_least_squares_system_8cs_source.html#l00018">18</a> of file <a class="el" href="_least_squares_system_8cs_source.html">LeastSquaresSystem.cs</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aec0b3973e7239d006b752a4e079f80d0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec0b3973e7239d006b752a4e079f80d0">&#9670;&nbsp;</a></span>LeastSquaresSystem()</h2>
+<a id="a5e014a3cc9f4ee7b700d89de2d1f2a4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e014a3cc9f4ee7b700d89de2d1f2a4d">&#9670;&nbsp;</a></span>LeastSquaresSystem()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -131,7 +134,7 @@ double []&#160;</td><td class="memItemRight" valign="bottom"><b>Solution</b><cod
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Vector&lt; double &gt;&#160;</td>
+          <td class="paramtype">MathNet.Numerics.LinearAlgebra.Double.SparseVector&#160;</td>
           <td class="paramname"><em>obsVec</em>&#160;</td>
         </tr>
         <tr>
@@ -174,18 +177,18 @@ double []&#160;</td><td class="memItemRight" valign="bottom"><b>Solution</b><cod
 <p>Calls the least square solver method and stores the result in the Solution property. </p>
 <p>At the moment, only non-negative least squares solver is implemented. </p>
 
-<p class="definition">Definition at line <a class="el" href="_least_squares_system_8cs_source.html#l00194">194</a> of file <a class="el" href="_least_squares_system_8cs_source.html">LeastSquaresSystem.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_least_squares_system_8cs_source.html#l00206">206</a> of file <a class="el" href="_least_squares_system_8cs_source.html">LeastSquaresSystem.cs</a>.</p>
 
 </div>
 </div>
-<a id="a1066b54298eca0682a56fd0275ae8e46"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1066b54298eca0682a56fd0275ae8e46">&#9670;&nbsp;</a></span>Solve2()</h2>
+<a id="ad831a418d7e7601dc7a64f5f7143534f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad831a418d7e7601dc7a64f5f7143534f">&#9670;&nbsp;</a></span>Solve2Async()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void IsotopeFit.LeastSquaresSystem.Solve2 </td>
+          <td class="memname">async Task IsotopeFit.LeastSquaresSystem.Solve2Async </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -196,7 +199,7 @@ double []&#160;</td><td class="memItemRight" valign="bottom"><b>Solution</b><cod
 <p>Method that solves the system. </p>
 <p>Partitions the problem by non-overlapping diagonal elements and non-overlapping blocks. </p>
 
-<p class="definition">Definition at line <a class="el" href="_least_squares_system_8cs_source.html#l00044">44</a> of file <a class="el" href="_least_squares_system_8cs_source.html">LeastSquaresSystem.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_least_squares_system_8cs_source.html#l00046">46</a> of file <a class="el" href="_least_squares_system_8cs_source.html">LeastSquaresSystem.cs</a>.</p>
 
 </div>
 </div>

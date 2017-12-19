@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['qr',['QR',['../class_isotope_fit_1_1_s_p_q_r.html#ae9a721a91b7f38a201f8403e3692684d',1,'IsotopeFit::SPQR']]]
+  ['originalfilename',['OriginalFilename',['../class_isotope_fit_1_1_i_f_data_1_1_file_info.html#a465af980a8c2f2a971d213e328b5932c',1,'IsotopeFit::IFData::FileInfo']]]
 ];
