@@ -18,7 +18,7 @@ namespace IsotopeFit
         #region Constructors
 
         /// <summary>
-        /// Create an empty IsotopeFit workspace.
+        /// Create an empty IsotopeFit workspace and initializes its properties for use.
         /// </summary>
         public Workspace()
         {
@@ -28,6 +28,7 @@ namespace IsotopeFit
             Clusters = new OrderedDictionary();
             Calibration = new IFData.Calibration();
             BaselineCorrData = new IFData.BaselineCorr();
+            FileInfo = new IFData.FileInfo();
         }
 
         /// <summary>
@@ -65,6 +66,11 @@ namespace IsotopeFit
         /// </summary> 
         public IFData.BaselineCorr BaselineCorrData { get; set; }
 
+        /// <summary>
+        /// Object containing the loaded file information.
+        /// </summary>
+        public IFData.FileInfo FileInfo { get; set; }
+
         ///// <summary>
         ///// Object containing the fitted cluster abundances.
         ///// </summary>
@@ -100,6 +106,7 @@ namespace IsotopeFit
             Clusters = IFDFile.ReadMolecules(rootElement);
             Calibration = IFDFile.ReadCalibration(rootElement);
             BaselineCorrData = IFDFile.ReadBackgroundCorr(rootElement);
+            FileInfo = IFDFile.ReadFileInfo(rootElement);
 
             IFDLoaded = true;
         }

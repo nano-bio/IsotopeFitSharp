@@ -170,7 +170,7 @@ namespace IsotopeFit
 
         internal static IFData.BaselineCorr ReadBackgroundCorr(MLStructure root)
         {
-            IFData.BaselineCorr BC = new IFData.BaselineCorr();
+            IFData.BaselineCorr bc = new IFData.BaselineCorr();
 
             MLArray BgCorr = root["bgcorrectiondata"] as MLArray;
 
@@ -189,12 +189,29 @@ namespace IsotopeFit
             //BC.Percent = (dataField as MLDouble).GetArray()[0][0];
 
             dataField = (BgCorr as MLStructure)["bgm"] as MLArray;
-            BC.XAxis = IFData.Arr2DTo1D((dataField as MLDouble).GetArray());
+            bc.XAxis = IFData.Arr2DTo1D((dataField as MLDouble).GetArray());
 
             dataField = (BgCorr as MLStructure)["bgy"] as MLArray;
-            BC.YAxis = IFData.Arr2DTo1D((dataField as MLDouble).GetArray());
+            bc.YAxis = IFData.Arr2DTo1D((dataField as MLDouble).GetArray());
 
-            return BC;
+            return bc;
+        }
+
+        internal static IFData.FileInfo ReadFileInfo(MLStructure root)
+        {
+            IFData.FileInfo fi = new IFData.FileInfo();
+
+            MLArray fileInfo = root["fileinfo"] as MLArray;
+
+            MLArray dataField;
+
+            dataField = (fileInfo as MLStructure)["originalfilename"] as MLArray;
+            fi.OriginalFilename = (dataField as MLChar).GetString(0);
+
+            dataField = (fileInfo as MLStructure)["h5completepath"] as MLArray;
+            fi.H5CompleteName = (dataField as MLChar).GetString(0);
+
+            return fi;
         }
     }
 }

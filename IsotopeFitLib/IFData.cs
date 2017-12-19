@@ -250,9 +250,9 @@ namespace IsotopeFit
                 public double[] Mass { get; set; }
                 public double[] Abundance { get; set; }
 
-                internal IsotopeData() { }
+                public IsotopeData() { }
 
-                internal IsotopeData(double[][] data)
+                public IsotopeData(double[][] data)
                 {
                     Mass = new double[data.Length];
                     Abundance = new double[data.Length];
@@ -263,14 +263,45 @@ namespace IsotopeFit
                         Abundance[i] = data[i][1];
                     }
                 }
+
+                /// <summary>
+                /// Method that adds a single isotopical entry to the <see cref="IsotopeData"/> object.
+                /// </summary>
+                /// <remarks>
+                /// The input array is to contain 2-element array, where the first element is the mass and the second is the abundance.
+                /// </remarks>
+                /// <param name="input">Array of inputs.</param>
+                public void Add(double[] input)
+                {
+                    // if the Mass and Abundance arrays create them and add the elements
+                    if (Mass == null && Abundance == null)
+                    {
+                        Mass = new double[1] { input[0] };
+                        Abundance = new double[1] { input[1] };
+                    }
+                    else    // if they exits, make a new longer arrays and append the new elements at their ends
+                    {
+                        double[] newMass = new double[Mass.Length + 1];
+                        double[] newAbundance = new double[Mass.Length + 1];
+
+                        Array.Copy(Mass, newMass, Mass.Length);
+                        Array.Copy(Abundance, newAbundance, Abundance.Length);
+
+                        newMass[Mass.Length] = input[0];
+                        newAbundance[Abundance.Length] = input[0];
+
+                        Mass = newMass;
+                        Abundance = newAbundance;
+                    }
+                }
             }
         }
 
         public class Calibration
         {
-            internal double[] COMList { get; set; }
-            internal double[] MassOffsetList { get; set; }
-            internal double[] ResolutionList { get; set; }
+            public double[] COMList { get; set; }
+            public double[] MassOffsetList { get; set; }
+            public double[] ResolutionList { get; set; }
             public string MassOffsetMethod { get; set; }
             public string ResolutionMethod { get; set; }
             public int MassOffsetParam { get; set; }
@@ -337,10 +368,12 @@ namespace IsotopeFit
         /// </summary>
         public class BaselineCorr
         {
+            internal BaselineCorr() { }
+
             //public double StartMass { get; set; }
             //public double EndMass { get; set; }
-            //public int NDiv { get; set; }
-            //public double Percent { get; set; }
+            public int NDiv { get; set; }
+            public double Percent { get; set; }
 
             /// <summary>
             /// X-values of the baseline correction points.
@@ -354,9 +387,25 @@ namespace IsotopeFit
             /// <summary>
             /// Object containing results of the baseline interpolation.
             /// </summary>
-            public Interpolation BaselineInterpolation { get; internal set; }
+            public Interpolation BaselineInterpolation { get; internal set; }            
+        }
 
-            internal BaselineCorr() { }
+        /// <summary>
+        /// Class containing additional information about the currently loaded file.
+        /// </summary>
+        public class FileInfo
+        {
+            internal FileInfo() { }
+
+            /// <summary>
+            /// Name of the H5 file that contains the measurement data.
+            /// </summary>
+            public string OriginalFilename { get; set; }
+
+            /// <summary>
+            /// Full path to the H5 file that contains the measurement data.
+            /// </summary>
+            public string H5CompleteName { get; set; }            
         }
     }
 }
