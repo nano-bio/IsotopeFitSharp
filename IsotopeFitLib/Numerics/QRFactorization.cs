@@ -69,6 +69,13 @@ namespace IsotopeFit
 
             R.DropZeros();  //TODO: this might need to be set to machine epsilon
 
+            // check that the observation vector is still the last column
+            // TODO: implement the QR factorization that does not need manual joining of the matrix and the observation vector, or just search for the vector in the ordering array
+            if (R.ColumnOrdering.Last() != R.ColumnCount - 1)
+            {
+                throw new Exception("The observation column was moved by the reordering function. Tell Michal to fix this.");
+            }
+
             // now we need to cut the solution
             // access by matrix indices does not work with the CSparse format, we have to copy the internal arrays
             CSparse.Double.SparseMatrix Mr = new CSparse.Double.SparseMatrix(R.ColumnCount - 1, R.ColumnCount - 1)
@@ -86,14 +93,19 @@ namespace IsotopeFit
             Array.Copy(R.Column(R.ColumnCount - 1), 0, lastColumn, 0, Mr.ColumnCount);
             Vector<double> vr = Vector<double>.Build.DenseOfArray(lastColumn);
 
-            LeastSquaresSystem factorizedLSS = new LeastSquaresSystem(Mr, vr)
-            {
-                ColumnOrdering = new int[R.ColumnOrdering.Length]
-            };
+            //LeastSquaresSystem factorizedLSS = new LeastSquaresSystem(Mr, vr)
+            //{
+            //    DesignMatrixR = Mr,
+            //    ColumnOrdering = new int[R.ColumnOrdering.Length]
+            //};
 
-            Array.Copy(R.ColumnOrdering, factorizedLSS.ColumnOrdering, R.ColumnOrdering.Length);
+            lss.DesignMatrixR = Mr;
+            lss.ObservationVectorR = vr;
+            lss.ColumnOrdering = R.ColumnOrdering;
 
-            return factorizedLSS;
+            //Array.Copy(R.ColumnOrdering, factorizedLSS.ColumnOrdering, R.ColumnOrdering.Length);
+
+            return lss;
         }
 
         ///// <summary>
