@@ -22,18 +22,20 @@ namespace IsotopeFit
         /// </summary>
         /// <param name="desMat">Design matrix of the least squares system.</param>
         /// <param name="obsVec">Vector of observations of the least squares system.</param>
-        public LeastSquaresSystem(SparseMatrix desMat, Vector<double> obsVec)
+        public LeastSquaresSystem(SparseMatrix desMat, MathNet.Numerics.LinearAlgebra.Double.SparseVector obsVec)
         {
             DesignMatrix = desMat;
             ObservationVector = obsVec;
         }
 
         internal SparseMatrix DesignMatrix { get; private set; }
-        internal Vector<double> ObservationVector { get; private set; }
+        internal SparseMatrix DesignMatrixR { get; set; }
+        internal MathNet.Numerics.LinearAlgebra.Double.SparseVector ObservationVector { get; private set; }
+        internal Vector<double> ObservationVectorR { get; set; }
         internal int[] ColumnOrdering { get; set; }
         public double[] Solution { get; private set; }
         //internal Vector<double> FittedSpectrum { get; private set; }
-        //public double[] SolutionError { get; private set; }
+        public double[] SolutionError { get; private set; }
 
         /// <summary>
         /// Method that solves the system.
@@ -41,13 +43,13 @@ namespace IsotopeFit
         /// <remarks>
         /// Partitions the problem by non-overlapping diagonal elements and non-overlapping blocks.
         /// </remarks>
-        public void Solve2()
+        public async Task Solve2Async()
         {
-            double[] values = DesignMatrix.Values;
-            int[] rowIndices = DesignMatrix.RowIndices;
-            int[] columnPointers = DesignMatrix.ColumnPointers;
+            double[] values = DesignMatrixR.Values;
+            int[] rowIndices = DesignMatrixR.RowIndices;
+            int[] columnPointers = DesignMatrixR.ColumnPointers;
 
-            SparseMatrix AT = (SparseMatrix)DesignMatrix.Transpose();
+            SparseMatrix AT = (SparseMatrix)DesignMatrixR.Transpose();
 
             double[] valuesT = AT.Values;
             int[] columnIndicesT = AT.RowIndices;
@@ -94,13 +96,21 @@ namespace IsotopeFit
             }
 
             // calculate the non-overlaping cluster abundances
-            double[] abd = new double[DesignMatrix.ColumnCount];
+            double[] abd = new double[DesignMatrixR.ColumnCount];
+            double[] abdErrors = new double[DesignMatrixR.ColumnCount];
+
+            List<Task> taskList = new List<Task>();
 
             for (int i = 0; i < cutCoordinates.Count; i++)
             {
                 if (blSizes[i] == 1)
                 {
-                    abd[cutCoordinates[i]] = ObservationVector[cutCoordinates[i]] / DesignMatrix.At(cutCoordinates[i], cutCoordinates[i]);
+                    abd[cutCoordinates[i]] = ObservationVectorR[cutCoordinates[i]] / DesignMatrixR.At(cutCoordinates[i], cutCoordinates[i]);
+
+                    // TODO: error estimation
+                    // TODO: take the cutCoordinates[i]-th column of the original design matrix and multiply by the abundance. then proceed according to the formula
+                    // TODO: Wrong! We need to take into account the column ordering as well!!!
+                    abdErrors[cutCoordinates[i]] = await CalculateError(DesignMatrix, cutCoordinates[i], abd[cutCoordinates[i]]);  
                 }
                 else    // create the diagonal block and use NNLS
                 {
@@ -139,49 +149,51 @@ namespace IsotopeFit
                     };
 
                     double[] obs = new double[cPt.Length - 1];
-                    Array.Copy(ObservationVector.ToArray(), start, obs, 0, end - start);
+                    Array.Copy(ObservationVectorR.ToArray(), start, obs, 0, end - start);
 
-                    double[] sol = NNLS3(C, obs);
-                    Array.Copy(sol, 0, abd, start, sol.Length);                 
+                    //Console.WriteLine("starting task {0}", i);
+                    taskList.Add(Task.Run(() =>
+                    {
+                        double[] sol = NNLS3(C, obs);
+                        Array.Copy(sol, 0, abd, start, sol.Length);
+                        //System.Threading.Thread.Sleep(100);                        
+                        //Console.WriteLine("finished task {0}", i);
+                    }));
+                    // error estimation
+
                 }
             }
 
-            Solution = abd;
+            Task.WaitAll(taskList.ToArray());
 
-            // find the fit errors
-
-            // R=qr(M)
-            // S=inv(R)  then inv(MT * M) = S*ST
-            // errout=1.96 * diag(sqrt(S*ST * sum(((M*AT) - spec_measured).2 ) / (length(spec_measured) - length(A))))
-
-
-            // calculate the fitted spectrum
-            //double[] fittedSpectrum = new double[ObservationVector.Count];
-
-            //DesignMatrix.Multiply(Solution, fittedSpectrum);
-
-            //Vector<double> fittedSpectrumVect = Vector<double>.Build.Dense(fittedSpectrum);
-
-            //// determine the fit error
-            ////Vector<double> diffSq = Vector<double>.Build.Dense(fittedSpectrum.Length);
-
-            //double diffSqSum = (fittedSpectrumVect - ObservationVector).PointwisePower(2).Sum();
-
-            //// we need to change the matrix format to mathnet numerics, because the csparse format cant do inverse
-
-            //Matrix<double> covarianceMatrix = Matrix<double>.Build.SparseOfColumnArrays()
-
-            //CSparse.Double.SparseMatrix covarianceMatrix = (CSparse.Double.SparseMatrix)lss.DesignMatrix.Transpose().Multiply(lss.DesignMatrix);
-            //Matrix<double> rrr = Matrix<double>.Build.Dense(3, 5);
-
-            //int[] diag = covarianceMatrix.FindDiagonalIndices();
-
-
-
+            Solution = abd;            
 
             Solution = Enumerable.Zip(ColumnOrdering, Solution, (idx, val) => new { idx, val }).OrderBy(v => v.idx).Select(v => v.val).ToArray();
+            //SolutionError = Enumerable.Zip(ColumnOrdering, SolutionError, (idx, val) => new { idx, val }).OrderBy(v => v.idx).Select(v => v.val).ToArray();
+        }
 
+        private Task<double> CalculateError(SparseMatrix designMatrix, int idx, double abundance)
+        {
+            return Task.Run(() =>
+            {
+                // remap according to column reorderings
+                int orderIdx = ColumnOrdering.ToList().FindIndex(a => a == idx);
 
+                double[] calcSignal = new double[designMatrix.ColumnPointers[orderIdx + 1] - designMatrix.ColumnPointers[orderIdx]];
+                int j = 0;
+                double diffSqSum = 0;
+
+                for (int i = designMatrix.ColumnPointers[orderIdx]; i < designMatrix.ColumnPointers[orderIdx + 1]; i++)
+                {
+                    calcSignal[j] = designMatrix.Values[i] * abundance;
+                    diffSqSum += Math.Pow(calcSignal[j] - ObservationVector.At(designMatrix.RowIndices[i]), 2);
+                    j++;
+                }
+
+                double sSqInv = 1d / Math.Pow(DesignMatrixR.Values[DesignMatrixR.ColumnPointers[idx]], 2);
+
+                return 1.96d * Math.Sqrt(sSqInv * diffSqSum / (calcSignal.Length - 1));
+            });
         }
 
         /// <summary>
