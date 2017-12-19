@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['xaxis',['XAxis',['../class_isotope_fit_1_1_i_f_data_1_1_baseline_corr.html#a90e35ea8c62d07f0279f4b5f7d440491',1,'IsotopeFit::IFData::BaselineCorr']]]
+  ['workspace',['Workspace',['../class_isotope_fit_1_1_workspace.html',1,'IsotopeFit.Workspace'],['../class_isotope_fit_1_1_workspace.html#affa8b6ac937cee367c225c606782da17',1,'IsotopeFit.Workspace.Workspace()'],['../class_isotope_fit_1_1_workspace.html#a5aa1f6546513d331f262d383fe6b0358',1,'IsotopeFit.Workspace.Workspace(string path)']]],
+  ['workspaceexception',['WorkspaceException',['../class_isotope_fit_1_1_workspace_exception.html',1,'IsotopeFit']]],
+  ['workspacestatus',['WorkspaceStatus',['../class_isotope_fit_1_1_workspace_1_1_workspace_status.html',1,'IsotopeFit::Workspace']]]
 ];

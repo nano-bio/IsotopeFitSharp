@@ -9,6 +9,7 @@ var class_isotope_fit_1_1_workspace =
     [ "CorrectMassOffset", "class_isotope_fit_1_1_workspace.html#a188d75c84db3eb6b5c3812e44eb95695", null ],
     [ "CropMassAxis", "class_isotope_fit_1_1_workspace.html#a9c1e21aff90947ff3414ac9d90472452", null ],
     [ "FitAbundances", "class_isotope_fit_1_1_workspace.html#a40fa9b2c0b5d31feae1093d08b1aad52", null ],
+    [ "GenerateBaseline", "class_isotope_fit_1_1_workspace.html#a80f09325539d16dd9eee6b470316db8b", null ],
     [ "LoadIFDFile", "class_isotope_fit_1_1_workspace.html#a55061c1f05d3e02d2d591fe6211d2f1f", null ],
     [ "LoadIFJFile", "class_isotope_fit_1_1_workspace.html#aba9a547d376319e836898f4878ce7aab", null ],
     [ "ResolutionFit", "class_isotope_fit_1_1_workspace.html#a00c1ae2e3b1d443808bef150a1e99410", null ],

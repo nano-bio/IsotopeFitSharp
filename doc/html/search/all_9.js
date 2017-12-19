@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['massaxis',['MassAxis',['../class_isotope_fit_1_1_i_f_data_1_1_spectrum.html#a4ed9378cb593bfffacaa3ac4411c039d',1,'IsotopeFit::IFData::Spectrum']]],
-  ['massoffset',['MassOffset',['../class_isotope_fit_1_1_i_f_data_1_1_cluster.html#afa64046ba8bdad51edc7ca5c1c39cd8c',1,'IsotopeFit::IFData::Cluster']]],
-  ['massoffsetinterp',['MassOffsetInterp',['../class_isotope_fit_1_1_i_f_data_1_1_calibration.html#af383c1c97a369e786e72ac5d79e8973e',1,'IsotopeFit::IFData::Calibration']]]
+  ['leastsquaressystem',['LeastSquaresSystem',['../class_isotope_fit_1_1_least_squares_system.html',1,'IsotopeFit.LeastSquaresSystem'],['../class_isotope_fit_1_1_least_squares_system.html#a5e014a3cc9f4ee7b700d89de2d1f2a4d',1,'IsotopeFit.LeastSquaresSystem.LeastSquaresSystem()']]],
+  ['lineshape',['LineShape',['../class_isotope_fit_1_1_i_f_data_1_1_calibration_1_1_line_shape.html',1,'IsotopeFit::IFData::Calibration']]],
+  ['loadifdfile',['LoadIFDFile',['../class_isotope_fit_1_1_workspace.html#a55061c1f05d3e02d2d591fe6211d2f1f',1,'IsotopeFit::Workspace']]]
 ];

@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">IsotopeFitSharp
-   &#160;<span id="projectnumber">0.2.0</span>
+   &#160;<span id="projectnumber">0.2.1</span>
    </div>
    <div id="projectbrief">Numerical functions for cluster abundance extraction</div>
   </td>
@@ -94,15 +94,20 @@ $(document).ready(function(){initNavTree('class_isotope_fit_1_1_i_f_data_1_1_bas
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:aff8b37286e9eeb3239af723553e27f7f"><td class="memItemLeft" align="right" valign="top"><a id="aff8b37286e9eeb3239af723553e27f7f"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>NDiv</b><code> [get, set]</code></td></tr>
-<tr class="separator:aff8b37286e9eeb3239af723553e27f7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a352473c9b2afa678f8595d0e1a9389fa"><td class="memItemLeft" align="right" valign="top"><a id="a352473c9b2afa678f8595d0e1a9389fa"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>Percent</b><code> [get, set]</code></td></tr>
-<tr class="separator:a352473c9b2afa678f8595d0e1a9389fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90e35ea8c62d07f0279f4b5f7d440491"><td class="memItemLeft" align="right" valign="top"><a id="a90e35ea8c62d07f0279f4b5f7d440491"></a>
-double []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_i_f_data_1_1_baseline_corr.html#a90e35ea8c62d07f0279f4b5f7d440491">XAxis</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:a90e35ea8c62d07f0279f4b5f7d440491"><td class="mdescLeft">&#160;</td><td class="mdescRight">X-values of the baseline correction points. <br /></td></tr>
+<tr class="memitem:a9c464d39ab74e62c887b450002256902"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_i_f_data_1_1_baseline_corr.html#a9c464d39ab74e62c887b450002256902">StartMass</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a9c464d39ab74e62c887b450002256902"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start of the interval on the mass axis, that will be corected for background.  <a href="#a9c464d39ab74e62c887b450002256902">More...</a><br /></td></tr>
+<tr class="separator:a9c464d39ab74e62c887b450002256902"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ddf6fd1df96bc69336b4b6822ad7e4f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_i_f_data_1_1_baseline_corr.html#a3ddf6fd1df96bc69336b4b6822ad7e4f">EndMass</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a3ddf6fd1df96bc69336b4b6822ad7e4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">End of the interval on the mass axis, that will be corected for background.  <a href="#a3ddf6fd1df96bc69336b4b6822ad7e4f">More...</a><br /></td></tr>
+<tr class="separator:a3ddf6fd1df96bc69336b4b6822ad7e4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61f4eeb14295a1d2ba1b80dd36163505"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_i_f_data_1_1_baseline_corr.html#a61f4eeb14295a1d2ba1b80dd36163505">NumOfSections</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a61f4eeb14295a1d2ba1b80dd36163505"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of sections, that the background correction interval will be divided into for the purpose of constructing the piecewise polynomial.  <a href="#a61f4eeb14295a1d2ba1b80dd36163505">More...</a><br /></td></tr>
+<tr class="separator:a61f4eeb14295a1d2ba1b80dd36163505"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74196174b782a5c1b7a7f4377b0ff451"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_i_f_data_1_1_baseline_corr.html#a74196174b782a5c1b7a7f4377b0ff451">CutoffLevel</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a74196174b782a5c1b7a7f4377b0ff451"><td class="mdescLeft">&#160;</td><td class="mdescRight">Percentage of lowest y-values within a section, that will be used to determine the background level within that section.  <a href="#a74196174b782a5c1b7a7f4377b0ff451">More...</a><br /></td></tr>
+<tr class="separator:a74196174b782a5c1b7a7f4377b0ff451"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90e35ea8c62d07f0279f4b5f7d440491"><td class="memItemLeft" align="right" valign="top">double []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_i_f_data_1_1_baseline_corr.html#a90e35ea8c62d07f0279f4b5f7d440491">XAxis</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a90e35ea8c62d07f0279f4b5f7d440491"><td class="mdescLeft">&#160;</td><td class="mdescRight">X-values of the baseline correction points.  <a href="#a90e35ea8c62d07f0279f4b5f7d440491">More...</a><br /></td></tr>
 <tr class="separator:a90e35ea8c62d07f0279f4b5f7d440491"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa71067f79827da27836daa705413133c"><td class="memItemLeft" align="right" valign="top">double []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_i_f_data_1_1_baseline_corr.html#aa71067f79827da27836daa705413133c">YAxis</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:aa71067f79827da27836daa705413133c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y-values of the baseline correction points.  <a href="#aa71067f79827da27836daa705413133c">More...</a><br /></td></tr>
@@ -138,7 +143,137 @@ double []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=
 
 <p>Object containing results of the baseline interpolation. </p>
 
-<p class="definition">Definition at line <a class="el" href="_i_f_data_8cs_source.html#l00390">390</a> of file <a class="el" href="_i_f_data_8cs_source.html">IFData.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i_f_data_8cs_source.html#l00406">406</a> of file <a class="el" href="_i_f_data_8cs_source.html">IFData.cs</a>.</p>
+
+</div>
+</div>
+<a id="a74196174b782a5c1b7a7f4377b0ff451"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74196174b782a5c1b7a7f4377b0ff451">&#9670;&nbsp;</a></span>CutoffLevel</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double IsotopeFit.IFData.BaselineCorr.CutoffLevel</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Percentage of lowest y-values within a section, that will be used to determine the background level within that section. </p>
+
+<p class="definition">Definition at line <a class="el" href="_i_f_data_8cs_source.html#l00391">391</a> of file <a class="el" href="_i_f_data_8cs_source.html">IFData.cs</a>.</p>
+
+</div>
+</div>
+<a id="a3ddf6fd1df96bc69336b4b6822ad7e4f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ddf6fd1df96bc69336b4b6822ad7e4f">&#9670;&nbsp;</a></span>EndMass</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double IsotopeFit.IFData.BaselineCorr.EndMass</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>End of the interval on the mass axis, that will be corected for background. </p>
+
+<p class="definition">Definition at line <a class="el" href="_i_f_data_8cs_source.html#l00381">381</a> of file <a class="el" href="_i_f_data_8cs_source.html">IFData.cs</a>.</p>
+
+</div>
+</div>
+<a id="a61f4eeb14295a1d2ba1b80dd36163505"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61f4eeb14295a1d2ba1b80dd36163505">&#9670;&nbsp;</a></span>NumOfSections</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int IsotopeFit.IFData.BaselineCorr.NumOfSections</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Number of sections, that the background correction interval will be divided into for the purpose of constructing the piecewise polynomial. </p>
+
+<p class="definition">Definition at line <a class="el" href="_i_f_data_8cs_source.html#l00386">386</a> of file <a class="el" href="_i_f_data_8cs_source.html">IFData.cs</a>.</p>
+
+</div>
+</div>
+<a id="a9c464d39ab74e62c887b450002256902"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c464d39ab74e62c887b450002256902">&#9670;&nbsp;</a></span>StartMass</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double IsotopeFit.IFData.BaselineCorr.StartMass</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Start of the interval on the mass axis, that will be corected for background. </p>
+
+<p class="definition">Definition at line <a class="el" href="_i_f_data_8cs_source.html#l00376">376</a> of file <a class="el" href="_i_f_data_8cs_source.html">IFData.cs</a>.</p>
+
+</div>
+</div>
+<a id="a90e35ea8c62d07f0279f4b5f7d440491"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90e35ea8c62d07f0279f4b5f7d440491">&#9670;&nbsp;</a></span>XAxis</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double [] IsotopeFit.IFData.BaselineCorr.XAxis</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>X-values of the baseline correction points. </p>
+
+<p class="definition">Definition at line <a class="el" href="_i_f_data_8cs_source.html#l00396">396</a> of file <a class="el" href="_i_f_data_8cs_source.html">IFData.cs</a>.</p>
 
 </div>
 </div>
@@ -164,7 +299,7 @@ double []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=
 
 <p>Y-values of the baseline correction points. </p>
 
-<p class="definition">Definition at line <a class="el" href="_i_f_data_8cs_source.html#l00385">385</a> of file <a class="el" href="_i_f_data_8cs_source.html">IFData.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_i_f_data_8cs_source.html#l00401">401</a> of file <a class="el" href="_i_f_data_8cs_source.html">IFData.cs</a>.</p>
 
 </div>
 </div>

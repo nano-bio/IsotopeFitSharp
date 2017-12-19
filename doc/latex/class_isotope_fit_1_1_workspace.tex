@@ -15,6 +15,10 @@ class \hyperlink{class_isotope_fit_1_1_workspace_1_1_workspace_status}{Workspace
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
+void \hyperlink{class_isotope_fit_1_1_workspace_a80f09325539d16dd9eee6b470316db8b}{Generate\+Baseline} (int num\+Of\+Sections=-\/1, double cutoff\+Level=-\/1)
+\begin{DoxyCompactList}\small\item\em Generates the x and y coordinates of the baseline break points. \end{DoxyCompactList}\item 
+void \hyperlink{class_isotope_fit_1_1_workspace_aa0b81213937d49ae3a6183563cfe0f60}{Correct\+Baseline} (double\mbox{[}$\,$\mbox{]} x\+Axis=null, double\mbox{[}$\,$\mbox{]} y\+Axis=null)
+\begin{DoxyCompactList}\small\item\em Calculates baseline corrected signal from raw signal data and baseline correction points. Stores the result in the \hyperlink{class_isotope_fit_1_1_workspace_a1d6cc2dd07cbfe920da9f1bffc9b32c2}{Workspace.\+Spectral\+Data}.Signal\+Axis property. \end{DoxyCompactList}\item 
 \hyperlink{class_isotope_fit_1_1_workspace_affa8b6ac937cee367c225c606782da17}{Workspace} ()
 \begin{DoxyCompactList}\small\item\em Create an empty \hyperlink{namespace_isotope_fit}{Isotope\+Fit} workspace and initializes its properties for use. \end{DoxyCompactList}\item 
 \hyperlink{class_isotope_fit_1_1_workspace_a5aa1f6546513d331f262d383fe6b0358}{Workspace} (string path)
@@ -24,8 +28,6 @@ void \hyperlink{class_isotope_fit_1_1_workspace_a55061c1f05d3e02d2d591fe6211d2f1
 \mbox{\Hypertarget{class_isotope_fit_1_1_workspace_aba9a547d376319e836898f4878ce7aab}\label{class_isotope_fit_1_1_workspace_aba9a547d376319e836898f4878ce7aab}} 
 void {\bfseries Load\+I\+F\+J\+File} (string path)
 \item 
-void \hyperlink{class_isotope_fit_1_1_workspace_aa0b81213937d49ae3a6183563cfe0f60}{Correct\+Baseline} (double\mbox{[}$\,$\mbox{]} x\+Axis=null, double\mbox{[}$\,$\mbox{]} y\+Axis=null)
-\begin{DoxyCompactList}\small\item\em Calculates baseline corrected signal from raw signal data and baseline correction points. Stores the result in the \hyperlink{class_isotope_fit_1_1_workspace_a1d6cc2dd07cbfe920da9f1bffc9b32c2}{Workspace.\+Spectral\+Data}.Signal\+Axis property. \end{DoxyCompactList}\item 
 void \hyperlink{class_isotope_fit_1_1_workspace_a9c1e21aff90947ff3414ac9d90472452}{Crop\+Mass\+Axis} (double start\+Mass, double end\+Mass)
 \begin{DoxyCompactList}\small\item\em Function to set the mass axis cropping. \end{DoxyCompactList}\item 
 void \hyperlink{class_isotope_fit_1_1_workspace_a188d75c84db3eb6b5c3812e44eb95695}{Correct\+Mass\+Offset} (Interpolation.\+Type interp\+Type, int order=-\/1, bool auto\+Crop=false, double\mbox{[}$\,$\mbox{]} com\+List=null, double\mbox{[}$\,$\mbox{]} mass\+Offset\+List=null)
@@ -120,7 +122,7 @@ The parameters {\itshape search\+Range}  and {\itshape fwhm\+Range}  are being m
 \end{DoxyParams}
 
 
-Definition at line 407 of file Workspace.\+cs.
+Definition at line 364 of file Workspace.\+cs.
 
 \mbox{\Hypertarget{class_isotope_fit_1_1_workspace_aa0b81213937d49ae3a6183563cfe0f60}\label{class_isotope_fit_1_1_workspace_aa0b81213937d49ae3a6183563cfe0f60}} 
 \index{Isotope\+Fit\+::\+Workspace@{Isotope\+Fit\+::\+Workspace}!Correct\+Baseline@{Correct\+Baseline}}
@@ -150,7 +152,7 @@ Optional arguments {\itshape x\+Axis}  and {\itshape y\+Axis}  are meant to ease
 \end{DoxyExceptions}
 
 
-Definition at line 135 of file Workspace.\+cs.
+Definition at line 77 of file Workspace.\+Baseline\+Correction.\+cs.
 
 \mbox{\Hypertarget{class_isotope_fit_1_1_workspace_a188d75c84db3eb6b5c3812e44eb95695}\label{class_isotope_fit_1_1_workspace_a188d75c84db3eb6b5c3812e44eb95695}} 
 \index{Isotope\+Fit\+::\+Workspace@{Isotope\+Fit\+::\+Workspace}!Correct\+Mass\+Offset@{Correct\+Mass\+Offset}}
@@ -186,7 +188,7 @@ Optional arguments {\itshape com\+List}  and {\itshape mass\+Offset\+List}  are 
 \end{DoxyExceptions}
 
 
-Definition at line 215 of file Workspace.\+cs.
+Definition at line 172 of file Workspace.\+cs.
 
 \mbox{\Hypertarget{class_isotope_fit_1_1_workspace_a9c1e21aff90947ff3414ac9d90472452}\label{class_isotope_fit_1_1_workspace_a9c1e21aff90947ff3414ac9d90472452}} 
 \index{Isotope\+Fit\+::\+Workspace@{Isotope\+Fit\+::\+Workspace}!Crop\+Mass\+Axis@{Crop\+Mass\+Axis}}
@@ -209,7 +211,7 @@ The spectral data outside the specified interval will not be discarded, merely i
 \end{DoxyParams}
 
 
-Definition at line 175 of file Workspace.\+cs.
+Definition at line 132 of file Workspace.\+cs.
 
 \mbox{\Hypertarget{class_isotope_fit_1_1_workspace_a40fa9b2c0b5d31feae1093d08b1aad52}\label{class_isotope_fit_1_1_workspace_a40fa9b2c0b5d31feae1093d08b1aad52}} 
 \index{Isotope\+Fit\+::\+Workspace@{Isotope\+Fit\+::\+Workspace}!Fit\+Abundances@{Fit\+Abundances}}
@@ -223,7 +225,28 @@ Performs the fit of the data and stores the result in the Workspace.\+Abundances
 
 
 
-Definition at line 422 of file Workspace.\+cs.
+Definition at line 379 of file Workspace.\+cs.
+
+\mbox{\Hypertarget{class_isotope_fit_1_1_workspace_a80f09325539d16dd9eee6b470316db8b}\label{class_isotope_fit_1_1_workspace_a80f09325539d16dd9eee6b470316db8b}} 
+\index{Isotope\+Fit\+::\+Workspace@{Isotope\+Fit\+::\+Workspace}!Generate\+Baseline@{Generate\+Baseline}}
+\index{Generate\+Baseline@{Generate\+Baseline}!Isotope\+Fit\+::\+Workspace@{Isotope\+Fit\+::\+Workspace}}
+\subsubsection{\texorpdfstring{Generate\+Baseline()}{GenerateBaseline()}}
+{\footnotesize\ttfamily void Isotope\+Fit.\+Workspace.\+Generate\+Baseline (\begin{DoxyParamCaption}\item[{int}]{num\+Of\+Sections = {\ttfamily -\/1},  }\item[{double}]{cutoff\+Level = {\ttfamily -\/1} }\end{DoxyParamCaption})}
+
+
+
+Generates the x and y coordinates of the baseline break points. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em num\+Of\+Sections} & Optional, number of baseline break points to be generated.\\
+\hline
+{\em cutoff\+Level} & Optional, baseline cutoff level specified as a double from 0 to 100. (Percentage of lowest y-\/values to be cut off.)\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 19 of file Workspace.\+Baseline\+Correction.\+cs.
 
 \mbox{\Hypertarget{class_isotope_fit_1_1_workspace_a55061c1f05d3e02d2d591fe6211d2f1f}\label{class_isotope_fit_1_1_workspace_a55061c1f05d3e02d2d591fe6211d2f1f}} 
 \index{Isotope\+Fit\+::\+Workspace@{Isotope\+Fit\+::\+Workspace}!Load\+I\+F\+D\+File@{Load\+I\+F\+D\+File}}
@@ -274,7 +297,7 @@ In case of polynomial inerpolation, the order is considered the highest exponent
 \end{DoxyExceptions}
 
 
-Definition at line 354 of file Workspace.\+cs.
+Definition at line 311 of file Workspace.\+cs.
 
 
 
@@ -368,4 +391,5 @@ Definition at line 52 of file Workspace.\+cs.
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
 Isotope\+Fit\+Lib/\+Workspace/Design\+Matrix.\+cs\item 
-Isotope\+Fit\+Lib/\+Workspace/Workspace.\+cs\end{DoxyCompactItemize}
+Isotope\+Fit\+Lib/\+Workspace/Workspace.\+cs\item 
+Isotope\+Fit\+Lib/\+Workspace/Workspace.\+Baseline\+Correction.\+cs\end{DoxyCompactItemize}

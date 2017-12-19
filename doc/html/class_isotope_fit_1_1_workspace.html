@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">IsotopeFitSharp
-   &#160;<span id="projectnumber">0.2.0</span>
+   &#160;<span id="projectnumber">0.2.1</span>
    </div>
    <div id="projectbrief">Numerical functions for cluster abundance extraction</div>
   </td>
@@ -104,6 +104,12 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a80f09325539d16dd9eee6b470316db8b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_workspace.html#a80f09325539d16dd9eee6b470316db8b">GenerateBaseline</a> (int numOfSections=-1, double cutoffLevel=-1)</td></tr>
+<tr class="memdesc:a80f09325539d16dd9eee6b470316db8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates the x and y coordinates of the baseline break points.  <a href="#a80f09325539d16dd9eee6b470316db8b">More...</a><br /></td></tr>
+<tr class="separator:a80f09325539d16dd9eee6b470316db8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0b81213937d49ae3a6183563cfe0f60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_workspace.html#aa0b81213937d49ae3a6183563cfe0f60">CorrectBaseline</a> (double[] xAxis=null, double[] yAxis=null)</td></tr>
+<tr class="memdesc:aa0b81213937d49ae3a6183563cfe0f60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates baseline corrected signal from raw signal data and baseline correction points. Stores the result in the <a class="el" href="class_isotope_fit_1_1_workspace.html#a1d6cc2dd07cbfe920da9f1bffc9b32c2" title="Object containing spectral data, both raw and calibrated. ">Workspace.SpectralData</a>.SignalAxis property.  <a href="#aa0b81213937d49ae3a6183563cfe0f60">More...</a><br /></td></tr>
+<tr class="separator:aa0b81213937d49ae3a6183563cfe0f60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:affa8b6ac937cee367c225c606782da17"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_workspace.html#affa8b6ac937cee367c225c606782da17">Workspace</a> ()</td></tr>
 <tr class="memdesc:affa8b6ac937cee367c225c606782da17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an empty <a class="el" href="namespace_isotope_fit.html">IsotopeFit</a> workspace and initializes its properties for use.  <a href="#affa8b6ac937cee367c225c606782da17">More...</a><br /></td></tr>
 <tr class="separator:affa8b6ac937cee367c225c606782da17"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -116,9 +122,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aba9a547d376319e836898f4878ce7aab"><td class="memItemLeft" align="right" valign="top"><a id="aba9a547d376319e836898f4878ce7aab"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>LoadIFJFile</b> (string path)</td></tr>
 <tr class="separator:aba9a547d376319e836898f4878ce7aab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0b81213937d49ae3a6183563cfe0f60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_workspace.html#aa0b81213937d49ae3a6183563cfe0f60">CorrectBaseline</a> (double[] xAxis=null, double[] yAxis=null)</td></tr>
-<tr class="memdesc:aa0b81213937d49ae3a6183563cfe0f60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates baseline corrected signal from raw signal data and baseline correction points. Stores the result in the <a class="el" href="class_isotope_fit_1_1_workspace.html#a1d6cc2dd07cbfe920da9f1bffc9b32c2" title="Object containing spectral data, both raw and calibrated. ">Workspace.SpectralData</a>.SignalAxis property.  <a href="#aa0b81213937d49ae3a6183563cfe0f60">More...</a><br /></td></tr>
-<tr class="separator:aa0b81213937d49ae3a6183563cfe0f60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c1e21aff90947ff3414ac9d90472452"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_isotope_fit_1_1_workspace.html#a9c1e21aff90947ff3414ac9d90472452">CropMassAxis</a> (double startMass, double endMass)</td></tr>
 <tr class="memdesc:a9c1e21aff90947ff3414ac9d90472452"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to set the mass axis cropping.  <a href="#a9c1e21aff90947ff3414ac9d90472452">More...</a><br /></td></tr>
 <tr class="separator:a9c1e21aff90947ff3414ac9d90472452"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -247,7 +250,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00407">407</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00364">364</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
 
 </div>
 </div>
@@ -294,7 +297,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00135">135</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_workspace_8_baseline_correction_8cs_source.html#l00077">77</a> of file <a class="el" href="_workspace_8_baseline_correction_8cs_source.html">Workspace.BaselineCorrection.cs</a>.</p>
 
 </div>
 </div>
@@ -362,7 +365,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00215">215</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00172">172</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
 
 </div>
 </div>
@@ -402,7 +405,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00175">175</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00132">132</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
 
 </div>
 </div>
@@ -423,7 +426,46 @@ Properties</h2></td></tr>
 
 <p>Performs the fit of the data and stores the result in the Workspace.Abundances property. </p>
 
-<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00422">422</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00379">379</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
+
+</div>
+</div>
+<a id="a80f09325539d16dd9eee6b470316db8b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a80f09325539d16dd9eee6b470316db8b">&#9670;&nbsp;</a></span>GenerateBaseline()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void IsotopeFit.Workspace.GenerateBaseline </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>numOfSections</em> = <code>-1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>cutoffLevel</em> = <code>-1</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Generates the x and y coordinates of the baseline break points. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">numOfSections</td><td>Optional, number of baseline break points to be generated.</td></tr>
+    <tr><td class="paramname">cutoffLevel</td><td>Optional, baseline cutoff level specified as a double from 0 to 100. (Percentage of lowest y-values to be cut off.)</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_workspace_8_baseline_correction_8cs_source.html#l00019">19</a> of file <a class="el" href="_workspace_8_baseline_correction_8cs_source.html">Workspace.BaselineCorrection.cs</a>.</p>
 
 </div>
 </div>
@@ -511,7 +553,7 @@ Properties</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00354">354</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_workspace_8cs_source.html#l00311">311</a> of file <a class="el" href="_workspace_8cs_source.html">Workspace.cs</a>.</p>
 
 </div>
 </div>
@@ -675,6 +717,7 @@ Properties</h2></td></tr>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>IsotopeFitLib/Workspace/<a class="el" href="_design_matrix_8cs_source.html">DesignMatrix.cs</a></li>
 <li>IsotopeFitLib/Workspace/<a class="el" href="_workspace_8cs_source.html">Workspace.cs</a></li>
+<li>IsotopeFitLib/Workspace/<a class="el" href="_workspace_8_baseline_correction_8cs_source.html">Workspace.BaselineCorrection.cs</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

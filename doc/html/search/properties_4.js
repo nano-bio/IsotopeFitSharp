@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['fileinfo',['FileInfo',['../class_isotope_fit_1_1_workspace.html#a54c0025eccacbf519f619ef256414a92',1,'IsotopeFit::Workspace']]]
+  ['endmass',['EndMass',['../class_isotope_fit_1_1_i_f_data_1_1_baseline_corr.html#a3ddf6fd1df96bc69336b4b6822ad7e4f',1,'IsotopeFit::IFData::BaselineCorr']]]
 ];

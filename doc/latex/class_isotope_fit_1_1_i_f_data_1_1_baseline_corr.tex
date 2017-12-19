@@ -8,13 +8,14 @@ Class containing data for the baseline correction.
 \subsection*{Properties}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{class_isotope_fit_1_1_i_f_data_1_1_baseline_corr_aff8b37286e9eeb3239af723553e27f7f}\label{class_isotope_fit_1_1_i_f_data_1_1_baseline_corr_aff8b37286e9eeb3239af723553e27f7f}} 
-int {\bfseries N\+Div}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
-\item 
-\mbox{\Hypertarget{class_isotope_fit_1_1_i_f_data_1_1_baseline_corr_a352473c9b2afa678f8595d0e1a9389fa}\label{class_isotope_fit_1_1_i_f_data_1_1_baseline_corr_a352473c9b2afa678f8595d0e1a9389fa}} 
-double {\bfseries Percent}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
-\item 
-\mbox{\Hypertarget{class_isotope_fit_1_1_i_f_data_1_1_baseline_corr_a90e35ea8c62d07f0279f4b5f7d440491}\label{class_isotope_fit_1_1_i_f_data_1_1_baseline_corr_a90e35ea8c62d07f0279f4b5f7d440491}} 
+double \hyperlink{class_isotope_fit_1_1_i_f_data_1_1_baseline_corr_a9c464d39ab74e62c887b450002256902}{Start\+Mass}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Start of the interval on the mass axis, that will be corected for background. \end{DoxyCompactList}\item 
+double \hyperlink{class_isotope_fit_1_1_i_f_data_1_1_baseline_corr_a3ddf6fd1df96bc69336b4b6822ad7e4f}{End\+Mass}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em End of the interval on the mass axis, that will be corected for background. \end{DoxyCompactList}\item 
+int \hyperlink{class_isotope_fit_1_1_i_f_data_1_1_baseline_corr_a61f4eeb14295a1d2ba1b80dd36163505}{Num\+Of\+Sections}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Number of sections, that the background correction interval will be divided into for the purpose of constructing the piecewise polynomial. \end{DoxyCompactList}\item 
+double \hyperlink{class_isotope_fit_1_1_i_f_data_1_1_baseline_corr_a74196174b782a5c1b7a7f4377b0ff451}{Cutoff\+Level}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Percentage of lowest y-\/values within a section, that will be used to determine the background level within that section. \end{DoxyCompactList}\item 
 double \mbox{[}$\,$\mbox{]} \hyperlink{class_isotope_fit_1_1_i_f_data_1_1_baseline_corr_a90e35ea8c62d07f0279f4b5f7d440491}{X\+Axis}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
 \begin{DoxyCompactList}\small\item\em X-\/values of the baseline correction points. \end{DoxyCompactList}\item 
 double \mbox{[}$\,$\mbox{]} \hyperlink{class_isotope_fit_1_1_i_f_data_1_1_baseline_corr_aa71067f79827da27836daa705413133c}{Y\+Axis}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
@@ -45,7 +46,77 @@ Object containing results of the baseline interpolation.
 
 
 
-Definition at line 390 of file I\+F\+Data.\+cs.
+Definition at line 406 of file I\+F\+Data.\+cs.
+
+\mbox{\Hypertarget{class_isotope_fit_1_1_i_f_data_1_1_baseline_corr_a74196174b782a5c1b7a7f4377b0ff451}\label{class_isotope_fit_1_1_i_f_data_1_1_baseline_corr_a74196174b782a5c1b7a7f4377b0ff451}} 
+\index{Isotope\+Fit\+::\+I\+F\+Data\+::\+Baseline\+Corr@{Isotope\+Fit\+::\+I\+F\+Data\+::\+Baseline\+Corr}!Cutoff\+Level@{Cutoff\+Level}}
+\index{Cutoff\+Level@{Cutoff\+Level}!Isotope\+Fit\+::\+I\+F\+Data\+::\+Baseline\+Corr@{Isotope\+Fit\+::\+I\+F\+Data\+::\+Baseline\+Corr}}
+\subsubsection{\texorpdfstring{Cutoff\+Level}{CutoffLevel}}
+{\footnotesize\ttfamily double Isotope\+Fit.\+I\+F\+Data.\+Baseline\+Corr.\+Cutoff\+Level\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Percentage of lowest y-\/values within a section, that will be used to determine the background level within that section. 
+
+
+
+Definition at line 391 of file I\+F\+Data.\+cs.
+
+\mbox{\Hypertarget{class_isotope_fit_1_1_i_f_data_1_1_baseline_corr_a3ddf6fd1df96bc69336b4b6822ad7e4f}\label{class_isotope_fit_1_1_i_f_data_1_1_baseline_corr_a3ddf6fd1df96bc69336b4b6822ad7e4f}} 
+\index{Isotope\+Fit\+::\+I\+F\+Data\+::\+Baseline\+Corr@{Isotope\+Fit\+::\+I\+F\+Data\+::\+Baseline\+Corr}!End\+Mass@{End\+Mass}}
+\index{End\+Mass@{End\+Mass}!Isotope\+Fit\+::\+I\+F\+Data\+::\+Baseline\+Corr@{Isotope\+Fit\+::\+I\+F\+Data\+::\+Baseline\+Corr}}
+\subsubsection{\texorpdfstring{End\+Mass}{EndMass}}
+{\footnotesize\ttfamily double Isotope\+Fit.\+I\+F\+Data.\+Baseline\+Corr.\+End\+Mass\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+End of the interval on the mass axis, that will be corected for background. 
+
+
+
+Definition at line 381 of file I\+F\+Data.\+cs.
+
+\mbox{\Hypertarget{class_isotope_fit_1_1_i_f_data_1_1_baseline_corr_a61f4eeb14295a1d2ba1b80dd36163505}\label{class_isotope_fit_1_1_i_f_data_1_1_baseline_corr_a61f4eeb14295a1d2ba1b80dd36163505}} 
+\index{Isotope\+Fit\+::\+I\+F\+Data\+::\+Baseline\+Corr@{Isotope\+Fit\+::\+I\+F\+Data\+::\+Baseline\+Corr}!Num\+Of\+Sections@{Num\+Of\+Sections}}
+\index{Num\+Of\+Sections@{Num\+Of\+Sections}!Isotope\+Fit\+::\+I\+F\+Data\+::\+Baseline\+Corr@{Isotope\+Fit\+::\+I\+F\+Data\+::\+Baseline\+Corr}}
+\subsubsection{\texorpdfstring{Num\+Of\+Sections}{NumOfSections}}
+{\footnotesize\ttfamily int Isotope\+Fit.\+I\+F\+Data.\+Baseline\+Corr.\+Num\+Of\+Sections\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Number of sections, that the background correction interval will be divided into for the purpose of constructing the piecewise polynomial. 
+
+
+
+Definition at line 386 of file I\+F\+Data.\+cs.
+
+\mbox{\Hypertarget{class_isotope_fit_1_1_i_f_data_1_1_baseline_corr_a9c464d39ab74e62c887b450002256902}\label{class_isotope_fit_1_1_i_f_data_1_1_baseline_corr_a9c464d39ab74e62c887b450002256902}} 
+\index{Isotope\+Fit\+::\+I\+F\+Data\+::\+Baseline\+Corr@{Isotope\+Fit\+::\+I\+F\+Data\+::\+Baseline\+Corr}!Start\+Mass@{Start\+Mass}}
+\index{Start\+Mass@{Start\+Mass}!Isotope\+Fit\+::\+I\+F\+Data\+::\+Baseline\+Corr@{Isotope\+Fit\+::\+I\+F\+Data\+::\+Baseline\+Corr}}
+\subsubsection{\texorpdfstring{Start\+Mass}{StartMass}}
+{\footnotesize\ttfamily double Isotope\+Fit.\+I\+F\+Data.\+Baseline\+Corr.\+Start\+Mass\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+Start of the interval on the mass axis, that will be corected for background. 
+
+
+
+Definition at line 376 of file I\+F\+Data.\+cs.
+
+\mbox{\Hypertarget{class_isotope_fit_1_1_i_f_data_1_1_baseline_corr_a90e35ea8c62d07f0279f4b5f7d440491}\label{class_isotope_fit_1_1_i_f_data_1_1_baseline_corr_a90e35ea8c62d07f0279f4b5f7d440491}} 
+\index{Isotope\+Fit\+::\+I\+F\+Data\+::\+Baseline\+Corr@{Isotope\+Fit\+::\+I\+F\+Data\+::\+Baseline\+Corr}!X\+Axis@{X\+Axis}}
+\index{X\+Axis@{X\+Axis}!Isotope\+Fit\+::\+I\+F\+Data\+::\+Baseline\+Corr@{Isotope\+Fit\+::\+I\+F\+Data\+::\+Baseline\+Corr}}
+\subsubsection{\texorpdfstring{X\+Axis}{XAxis}}
+{\footnotesize\ttfamily double \mbox{[}$\,$\mbox{]} Isotope\+Fit.\+I\+F\+Data.\+Baseline\+Corr.\+X\+Axis\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+X-\/values of the baseline correction points. 
+
+
+
+Definition at line 396 of file I\+F\+Data.\+cs.
 
 \mbox{\Hypertarget{class_isotope_fit_1_1_i_f_data_1_1_baseline_corr_aa71067f79827da27836daa705413133c}\label{class_isotope_fit_1_1_i_f_data_1_1_baseline_corr_aa71067f79827da27836daa705413133c}} 
 \index{Isotope\+Fit\+::\+I\+F\+Data\+::\+Baseline\+Corr@{Isotope\+Fit\+::\+I\+F\+Data\+::\+Baseline\+Corr}!Y\+Axis@{Y\+Axis}}
@@ -59,7 +130,7 @@ Y-\/values of the baseline correction points.
 
 
 
-Definition at line 385 of file I\+F\+Data.\+cs.
+Definition at line 401 of file I\+F\+Data.\+cs.
 
 
 

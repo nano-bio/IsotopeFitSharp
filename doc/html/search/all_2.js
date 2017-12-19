@@ -11,5 +11,6 @@ var searchData=
   ['cropendmass',['CropEndMass',['../class_isotope_fit_1_1_i_f_data_1_1_spectrum.html#a44767ce131c0a10c053e0d2aef07b2c8',1,'IsotopeFit::IFData::Spectrum']]],
   ['cropmassaxis',['CropMassAxis',['../class_isotope_fit_1_1_workspace.html#a9c1e21aff90947ff3414ac9d90472452',1,'IsotopeFit::Workspace']]],
   ['cropstartindex',['CropStartIndex',['../class_isotope_fit_1_1_i_f_data_1_1_spectrum.html#a97f98d7ab017cc965f004c02da75c791',1,'IsotopeFit::IFData::Spectrum']]],
-  ['cropstartmass',['CropStartMass',['../class_isotope_fit_1_1_i_f_data_1_1_spectrum.html#a0851e46692ac9c2677806781c016d8fc',1,'IsotopeFit::IFData::Spectrum']]]
+  ['cropstartmass',['CropStartMass',['../class_isotope_fit_1_1_i_f_data_1_1_spectrum.html#a0851e46692ac9c2677806781c016d8fc',1,'IsotopeFit::IFData::Spectrum']]],
+  ['cutofflevel',['CutoffLevel',['../class_isotope_fit_1_1_i_f_data_1_1_baseline_corr.html#a74196174b782a5c1b7a7f4377b0ff451',1,'IsotopeFit::IFData::BaselineCorr']]]
 ];
