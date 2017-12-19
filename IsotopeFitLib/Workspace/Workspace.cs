@@ -119,50 +119,7 @@ namespace IsotopeFit
             Clusters = IFJFile.ReadMolecules(rootElement);
             Calibration = IFJFile.ReadCalibration(rootElement);
             BaselineCorrData = IFJFile.ReadBackgroundCorr(rootElement);
-        }
-
-        /// <summary>
-        /// Calculates baseline corrected signal from raw signal data and baseline correction points. Stores the result in the <see cref="Workspace.SpectralData"/>.SignalAxis property.
-        /// </summary>
-        /// <remarks>
-        /// <para>This method uses the PCHIP interpolation to obtain the baseline values, which are stored in the <see cref="Workspace.SpectralData"/>.Baseline property.</para>
-        /// <para>Optional arguments <paramref name="xAxis"/> and <paramref name="yAxis"/> are meant to ease the process of loading data to the <see cref="Workspace"/>.
-        /// If not supplied, the funcion will use previously stored values.</para>
-        /// </remarks>
-        /// <param name="xAxis">Optional x-axis for the baseline correction.</param>
-        /// <param name="yAxis">Optional y-axis for the baseline correction.</param>
-        /// <exception cref="WorkspaceException">Thrown when some of the required data have not been loaded in the <see cref="Workspace"/>.</exception>
-        public void CorrectBaseline(double[] xAxis = null, double[] yAxis = null)
-        {
-            // raw spectral data are required
-            if (SpectralData.RawSignalAxis == null || SpectralData.RawMassAxis == null) throw new WorkspaceException("Raw spectral data not specified.");
-            if (SpectralData.RawSignalAxis.Length != SpectralData.RawMassAxis.Length) throw new WorkspaceException("Supplied spectral data axis have different lengths.");
-
-            // if there are optional background correction points specified, save them to the workspace and use those
-            if (xAxis != null) BaselineCorrData.XAxis = xAxis;
-            if (yAxis != null) BaselineCorrData.YAxis = yAxis;
-
-            // safety check, they can still be null in come use cases
-            if (BaselineCorrData.XAxis == null || BaselineCorrData.YAxis == null) throw new WorkspaceException("Baseline correction points not specified.");
-            if (BaselineCorrData.XAxis.Length != BaselineCorrData.YAxis.Length) throw new WorkspaceException("Supplied baseline correction point arrays have different lengths.");
-
-            int massAxisLength = SpectralData.RawLength;
-
-            //TODO: Evaluating the bg correction for the whole range might be useless. Specifiyng a mass range would make sense.
-            //TODO: crop the mass axis to the last specified point of the baseline? might break usefulness.
-            //PPInterpolation baselineFit = new PPInterpolation(BaselineCorrData.XAxis, BaselineCorrData.YAxis, PPInterpolation.PPType.PCHIP);    // in the matlab code it is also hard-coded pchip
-            BaselineCorrData.BaselineInterpolation = new PPInterpolation(BaselineCorrData.XAxis, BaselineCorrData.YAxis, PPInterpolation.PPType.PCHIP);    // in the matlab code it is also hard-coded pchip
-
-            //SpectralData.Baseline = new double[massAxisLength];
-            SpectralData.SignalAxis = new double[massAxisLength];
-
-            for (int i = 0; i < massAxisLength; i++)
-            {
-                //SpectralData.Baseline[i] = BaselineCorrData.BaselineInterpolation.Evaluate(SpectralData.RawMassAxis[i]);
-                //SpectralData.SignalAxis[i] = SpectralData.RawSignalAxis[i] - SpectralData.Baseline[i];
-                SpectralData.SignalAxis[i] = SpectralData.RawSignalAxis[i] - BaselineCorrData.BaselineInterpolation.Evaluate(SpectralData.RawMassAxis[i]);
-            }
-        }
+        }        
 
         /// <summary>
         /// Function to set the mass axis cropping.

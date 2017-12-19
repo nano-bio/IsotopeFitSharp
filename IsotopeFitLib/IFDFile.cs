@@ -176,17 +176,17 @@ namespace IsotopeFit
 
             MLArray dataField;
 
-            //dataField = (BgCorr as MLStructure)["startmass"] as MLArray;
-            //BC.StartMass = (dataField as MLDouble).GetArray()[0][0];
+            dataField = (BgCorr as MLStructure)["startmass"] as MLArray;
+            bc.StartMass = (dataField as MLDouble).GetArray()[0][0];
 
-            //dataField = (BgCorr as MLStructure)["endmass"] as MLArray;
-            //BC.EndMass = (dataField as MLDouble).GetArray()[0][0];
+            dataField = (BgCorr as MLStructure)["endmass"] as MLArray;
+            bc.EndMass = (dataField as MLDouble).GetArray()[0][0];
 
-            //dataField = (BgCorr as MLStructure)["ndiv"] as MLArray;
-            //BC.NDiv = (int)(dataField as MLDouble).GetArray()[0][0];
+            dataField = (BgCorr as MLStructure)["ndiv"] as MLArray;
+            bc.NumOfSections = (int)(dataField as MLDouble).GetArray()[0][0];
 
-            //dataField = (BgCorr as MLStructure)["percent"] as MLArray;
-            //BC.Percent = (dataField as MLDouble).GetArray()[0][0];
+            dataField = (BgCorr as MLStructure)["percent"] as MLArray;
+            bc.CutoffLevel = (dataField as MLDouble).GetArray()[0][0];
 
             dataField = (BgCorr as MLStructure)["bgm"] as MLArray;
             bc.XAxis = IFData.Arr2DTo1D((dataField as MLDouble).GetArray());

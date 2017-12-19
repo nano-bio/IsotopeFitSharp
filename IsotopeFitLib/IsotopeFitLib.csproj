@@ -91,6 +91,7 @@
     <Compile Include="Workspace\DesignMatrix.cs" />
     <Compile Include="IFDFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Workspace\Workspace.BaselineCorrection.cs" />
     <Compile Include="Workspace\Workspace.cs" />
     <Compile Include="Workspace\WorkspaceExceptions.cs" />
   </ItemGroup>

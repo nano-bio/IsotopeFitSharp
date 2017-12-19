@@ -370,13 +370,29 @@ namespace IsotopeFit
         {
             internal BaselineCorr() { }
 
-            //public double StartMass { get; set; }
-            //public double EndMass { get; set; }
-            public int NDiv { get; set; }
-            public double Percent { get; set; }
+            /// <summary>
+            /// Start of the interval on the mass axis, that will be corected for background.
+            /// </summary>
+            public double StartMass { get; set; }
+
+            /// <summary>
+            /// End of the interval on the mass axis, that will be corected for background.
+            /// </summary>
+            public double EndMass { get; set; }
+
+            /// <summary>
+            /// Number of sections, that the background correction interval will be divided into for the purpose of constructing the piecewise polynomial.
+            /// </summary>
+            public int NumOfSections { get; set; }
+
+            /// <summary>
+            /// Percentage of lowest y-values within a section, that will be used to determine the background level within that section.
+            /// </summary>
+            public double CutoffLevel { get; set; }
 
             /// <summary>
             /// X-values of the baseline correction points.
+            /// </summary>
             public double[] XAxis { get; set; }
 
             /// <summary>
