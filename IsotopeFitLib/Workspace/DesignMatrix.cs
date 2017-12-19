@@ -79,7 +79,7 @@ namespace IsotopeFit
             //internal Matrix<double> R { get; private set; }
 
             internal MathNet.Numerics.LinearAlgebra.Double.SparseVector MaskedObsVector { get; private set; }
-            //internal bool[] Fitmask { get; private set; }
+            internal bool[] Fitmask { get; private set; }
 
             public double SearchRange { get; set; }   //TODO: at the moment, those two values are not being set anywhere
             public double FwhmRange { get; set; }
@@ -192,6 +192,8 @@ namespace IsotopeFit
                     RowIndices = rowIndices,
                     ColumnPointers = colPointers
                 };
+
+                Fitmask = fitMask;
             }
 
 

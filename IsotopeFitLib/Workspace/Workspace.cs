@@ -425,13 +425,88 @@ namespace IsotopeFit
 
             System.Diagnostics.Stopwatch sol = new System.Diagnostics.Stopwatch();
             sol.Start();
-            lss.Solve2();
+            var t = lss.Solve2Async();
+            t.Wait();
             sol.Stop();
             Console.WriteLine("NNLS done in {0} miliseconds", sol.ElapsedMilliseconds);
 
-            
 
-            
+            // find the fit errors
+
+            // R=qr(M)
+            // S=inv(R)  then inv(MT * M) = S*ST
+            // errout=1.96 * diag(sqrt(S*ST * sum(((M*AT) - spec_measured).2 ) / (length(spec_measured) - length(A))))
+
+
+            // calculate the fitted spectrum
+            //double[] fittedSpectrum = new double[SpectralData.SignalAxisCrop.Length];
+            //double[] diffSqArr = new double[DesignMatrix.MaskedObsVector.Count];
+            //double[] diffSqSumArr = new double[DesignMatrix.Storage.ColumnCount];
+            //double[] abundanceError = new double[DesignMatrix.Storage.ColumnCount];
+
+            ////Array.Copy(DesignMatrix.Storage.Values, fittedSpectrum, fittedSpectrum.Length);
+
+            ////for (int i = 0; i < DesignMatrix.Storage.ColumnCount; i++)
+            ////{
+            ////    //double diffSqSum = 0;
+
+            ////    for (int j = DesignMatrix.Storage.ColumnPointers[i]; j < DesignMatrix.Storage.ColumnPointers[i + 1]; j++)
+            ////    {
+            ////        fittedSpectrum[j] *= lss.Solution[i];
+            ////    }
+            ////}
+
+            //DesignMatrix.Storage.Multiply(lss.Solution, fittedSpectrum);
+
+            //int j = 0;
+
+            //for (int i = 0; i < fittedSpectrum.Length; i++)
+            //{
+            //    if (DesignMatrix.Fitmask[i])
+            //    {
+            //        diffSqArr[j] = Math.Pow(fittedSpectrum[i] - DesignMatrix.MaskedObsVector[j], 2);
+            //        j++;
+            //    }
+            //}
+
+            //double sumDiv = diffSqArr.Sum() / (diffSqArr.Length - DesignMatrix.Storage.ColumnCount);
+
+            ////for (int i = 0; i < DesignMatrix.Storage.ColumnCount; i++)
+            ////{
+            ////    double diffSqSum = 0;
+
+            ////    for (int j = DesignMatrix.Storage.ColumnPointers[i]; j < DesignMatrix.Storage.ColumnPointers[i + 1]; j++)
+            ////    {
+            ////        //diffSqSum += 
+            ////    }
+            ////}
+
+            ////Vector<double> fittedSpectrumVect = Vector<double>.Build.Dense(fittedSpectrum);
+
+            ////// determine the fit error
+            ////double diffSqSum2 = (fittedSpectrumVect - DesignMatrix.MaskedObsVector).PointwisePower(2).Sum();
+
+            //// we need to change the matrix format to mathnet numerics, because the csparse format cant do inverse
+            //double[][] designMatrixColumns = new double[lss.DesignMatrixR.ColumnCount][];
+
+            //for (int i = 0; i < designMatrixColumns.Length; i++)
+            //{
+            //    designMatrixColumns[i] = lss.DesignMatrixR.Column(i);
+            //}
+
+            //// this is slightly ugly, we use only a single object called covarianceMatrix, but it stores different matrices throughout its existence. Done to consume less memory.
+            //Matrix<double> covarianceMatrix = Matrix<double>.Build.DenseOfColumnArrays(designMatrixColumns);
+
+            //covarianceMatrix = covarianceMatrix.Inverse();
+            //Matrix<double> SxST = covarianceMatrix.TransposeAndMultiply(covarianceMatrix);
+
+            //SxST.Multiply(sumDiv);
+
+            //SxST = SxST.PointwiseSqrt();
+            //SxST.Multiply(1.96d);
+
+            //double[] SolutionError = SxST.Diagonal().ToArray();
+
 
             for (int i = 0; i < Clusters.Count; i++)
             {
