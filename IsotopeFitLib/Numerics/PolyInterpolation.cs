@@ -27,7 +27,7 @@ namespace IsotopeFit
             xValues = x;
             yValues = y;
 
-            if (order>10)
+            if (order > 13)   //TODO: put this back to 10
             {
                 throw new InterpolationException("Maximal order of polynomial interpolation is 10.");
             }
