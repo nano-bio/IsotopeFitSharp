@@ -99,7 +99,8 @@ namespace IsotopeFit
             double[] abd = new double[DesignMatrixR.ColumnCount];
             double[] abdErrors = new double[DesignMatrixR.ColumnCount];
 
-            List<Task> taskList = new List<Task>();
+            List<Task> nnlsTaskList = new List<Task>();
+            List<Task> errorCalcTaskList = new List<Task>();
 
             for (int i = 0; i < cutCoordinates.Count; i++)
             {
@@ -152,24 +153,29 @@ namespace IsotopeFit
                     Array.Copy(ObservationVectorR.ToArray(), start, obs, 0, end - start);
 
                     //Console.WriteLine("starting task {0}", i);
-                    taskList.Add(Task.Run(() =>
+                    nnlsTaskList.Add(Task.Run(() =>
                     {
                         double[] sol = NNLS3(C, obs);
                         Array.Copy(sol, 0, abd, start, sol.Length);
-                        //System.Threading.Thread.Sleep(100);                        
-                        //Console.WriteLine("finished task {0}", i);
+
+                        //errorCalcTaskList.Add(Task.Run(() => CalculateError2(C, start, sol)));
                     }));
                     // error estimation
 
+                    // TODO: temporary, to ease debugging
+                    //nnlsTaskList.Last().Wait();
+                    //errorCalcTaskList.Last().Wait();
                 }
             }
 
-            Task.WaitAll(taskList.ToArray());
+            Task.WaitAll(nnlsTaskList.ToArray());
 
             Solution = abd;            
 
             Solution = Enumerable.Zip(ColumnOrdering, Solution, (idx, val) => new { idx, val }).OrderBy(v => v.idx).Select(v => v.val).ToArray();
             //SolutionError = Enumerable.Zip(ColumnOrdering, SolutionError, (idx, val) => new { idx, val }).OrderBy(v => v.idx).Select(v => v.val).ToArray();
+
+            //Task.WaitAll(errorCalcTaskList.ToArray());
         }
 
         private Task<double> CalculateError(SparseMatrix designMatrix, int idx, double abundance)
@@ -194,6 +200,159 @@ namespace IsotopeFit
 
                 return 1.96d * Math.Sqrt(sSqInv * diffSqSum / (calcSignal.Length - 1));
             });
+        }
+
+        private void CalculateError2(SparseMatrix currentDesignMatrixBlock, int startIndex, double[] abundances)
+        {
+            // R=qr(M)
+            // S=inv(R)  then inv(MT * M) = S*ST
+            // errout=1.96 * diag(sqrt(S*ST * sum(((M*AT) - spec_measured).2 ) / (length(spec_measured) - length(A))))
+
+
+            // calculate the fitted spectrum
+            //double[] fittedSpectrum = new double[SpectralData.SignalAxisCrop.Length];
+            //double[] diffSqArr = new double[DesignMatrix.MaskedObsVector.Count];
+            //double[] diffSqSumArr = new double[DesignMatrix.Storage.ColumnCount];
+            //double[] abundanceError = new double[DesignMatrix.Storage.ColumnCount];
+
+            ////Array.Copy(DesignMatrix.Storage.Values, fittedSpectrum, fittedSpectrum.Length);
+
+            ////for (int i = 0; i < DesignMatrix.Storage.ColumnCount; i++)
+            ////{
+            ////    //double diffSqSum = 0;
+
+            ////    for (int j = DesignMatrix.Storage.ColumnPointers[i]; j < DesignMatrix.Storage.ColumnPointers[i + 1]; j++)
+            ////    {
+            ////        fittedSpectrum[j] *= lss.Solution[i];
+            ////    }
+            ////}
+
+            //DesignMatrix.Storage.Multiply(lss.Solution, fittedSpectrum);
+
+            //int j = 0;
+
+            //for (int i = 0; i < fittedSpectrum.Length; i++)
+            //{
+            //    if (DesignMatrix.Fitmask[i])
+            //    {
+            //        diffSqArr[j] = Math.Pow(fittedSpectrum[i] - DesignMatrix.MaskedObsVector[j], 2);
+            //        j++;
+            //    }
+            //}
+
+            //double sumDiv = diffSqArr.Sum() / (diffSqArr.Length - DesignMatrix.Storage.ColumnCount);
+
+            ////for (int i = 0; i < DesignMatrix.Storage.ColumnCount; i++)
+            ////{
+            ////    double diffSqSum = 0;
+
+            ////    for (int j = DesignMatrix.Storage.ColumnPointers[i]; j < DesignMatrix.Storage.ColumnPointers[i + 1]; j++)
+            ////    {
+            ////        //diffSqSum += 
+            ////    }
+            ////}
+
+            ////Vector<double> fittedSpectrumVect = Vector<double>.Build.Dense(fittedSpectrum);
+
+            ////// determine the fit error
+            ////double diffSqSum2 = (fittedSpectrumVect - DesignMatrix.MaskedObsVector).PointwisePower(2).Sum();
+
+            //// we need to change the matrix format to mathnet numerics, because the csparse format cant do inverse
+            //double[][] designMatrixColumns = new double[lss.DesignMatrixR.ColumnCount][];
+
+            //for (int i = 0; i < designMatrixColumns.Length; i++)
+            //{
+            //    designMatrixColumns[i] = lss.DesignMatrixR.Column(i);
+            //}
+
+            //// this is slightly ugly, we use only a single object called covarianceMatrix, but it stores different matrices throughout its existence. Done to consume less memory.
+            //Matrix<double> covarianceMatrix = Matrix<double>.Build.DenseOfColumnArrays(designMatrixColumns);
+
+            //covarianceMatrix = covarianceMatrix.Inverse();
+            //Matrix<double> SxST = covarianceMatrix.TransposeAndMultiply(covarianceMatrix);
+
+            //SxST.Multiply(sumDiv);
+
+            //SxST = SxST.PointwiseSqrt();
+            //SxST.Multiply(1.96d);
+
+            //double[] SolutionError = SxST.Diagonal().ToArray();
+
+            //-----------------------------
+
+            //double[] calculatedSpectrum = new double[observationVector.Length];
+            double[] diffSqSum = new double[abundances.Length];     //the length of the abundances vector is the same as the number of cluster, for which errors are now being calculated
+            double[][] carr = new double[currentDesignMatrixBlock.ColumnCount][];
+            double[][] cRarr = new double[currentDesignMatrixBlock.ColumnCount][];
+
+            // find all the involved columns of the original design matrix, taking into account the column reordering
+            for (int i = 0; i < abundances.Length; i++)
+            {
+                // search for startIndex + i
+                int colIndex = ColumnOrdering.ToList().FindIndex(a => a == i + startIndex);
+
+                //double[] calcSignal = new double[DesignMatrix.ColumnPointers[colIndex + 1] - DesignMatrix.ColumnPointers[colIndex]];
+                int j = 0;
+                //double diffSqSum = 0;
+
+                // find the indices indicating this column
+                for (int k = DesignMatrix.ColumnPointers[colIndex]; k < DesignMatrix.ColumnPointers[colIndex + 1]; k++)
+                {
+                    //carr[]
+                    //calcSignal[j] += DesignMatrix.Values[k] * abundances[i];
+                    //diffSqSum[i] += Math.Pow(calcSignal[j] - ObservationVector.At(DesignMatrix.RowIndices[k]), 2);
+                    j++;
+                }
+
+                cRarr[i] = currentDesignMatrixBlock.Column(i);
+                carr[i] = DesignMatrix.Column(colIndex);
+
+            }
+
+            // qr factorize the current block       // TODO: check if it is not always so - then it also happens to be square
+
+            // invert the R factor of the current block     //TODO: at the moment we are using the ineffective conversion to dense matrix
+            
+
+            for (int i = 0; i < cRarr.Length; i++)
+            {
+                // we need to put them in the correct order
+                
+            }
+
+            Matrix<double> c = Matrix<double>.Build.DenseOfColumnArrays(carr);
+
+            Matrix<double> SxSt = c.Multiply(c.Inverse());
+
+            Vector<double> errors = SxSt.Multiply(diffSqSum.Sum() / (10 - abundances.Length)).PointwiseSqrt().Diagonal().Multiply(1.96d);
+
+            // sum of differences squared
+
+            // rest of the formula
+
+
+            //--------------
+            /*
+             *  New strategy:
+             *  1) We need to create a submatrix of the original design matrix, in order to calculate the fitted spectrum.
+             *  This does not have to be dense, because we need only a single multiplication
+             *  The order of columns should be the permuted one - to match with the solution vector ordering.
+             *  
+             *  Another option is to multiply the whole matrix with a specially crafted abundances vector - nonzero only for the few columns we want - watch out for ordering in this case
+             *  Then we would have to cut the solution correctly.
+             *  
+             *  2) Create the dense variant of the current R matrix block - needed because of operations in MathNet.
+             *  
+             *  3) Calculate fitted spectrum - careful with the sparsity of masked observation vector.
+             *  
+             *  4) sum of squared differences - single number
+             *  
+             *  5) calculate SxSt from R, multiply by the sum of squared differences and divide by the nonzero count of the masked obs vector section minus current count of abundances
+             *  
+             *  6) sqrt, diagonal an multiply by 1.96d
+             */
+
+
         }
 
         /// <summary>
