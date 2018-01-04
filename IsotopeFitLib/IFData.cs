@@ -250,7 +250,7 @@ namespace IsotopeFit
                 public double[] Mass { get; set; }
                 public double[] Abundance { get; set; }
 
-                public IsotopeData() { }
+                public IsotopeData() { }    //TODO: move the initialization here, so it does not have to be in the Add method
 
                 public IsotopeData(double[][] data)
                 {
@@ -288,7 +288,7 @@ namespace IsotopeFit
                         Array.Copy(Abundance, newAbundance, Abundance.Length);
 
                         newMass[Mass.Length] = input[0];
-                        newAbundance[Abundance.Length] = input[0];
+                        newAbundance[Abundance.Length] = input[1];
 
                         Mass = newMass;
                         Abundance = newAbundance;
