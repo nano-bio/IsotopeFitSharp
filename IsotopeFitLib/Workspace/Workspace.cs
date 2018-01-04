@@ -479,6 +479,15 @@ namespace IsotopeFit
             }
         }
 
+        /// <summary>
+        /// Gets the IDs of all currently present clusters in the <see cref="Workspace.Clusters"/> dictionary.
+        /// </summary>
+        /// <returns>Array of cluster ID strings.</returns>
+        public string[] GetClusterIDList()
+        {
+            return (Clusters.Keys as ICollection<string>).ToArray();
+        }
+
         #endregion
 
         /// <summary>
