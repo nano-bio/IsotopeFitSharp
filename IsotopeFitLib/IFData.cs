@@ -129,6 +129,11 @@ namespace IsotopeFit
             public int CroppedLength { get; internal set; }
             internal bool Cropped { get; set; }
 
+            /// <summary>
+            /// Spectrum calculated from the results of the fit.
+            /// </summary>
+            public double[] FittedSpectrum { get; internal set; }
+
             #endregion
 
             #region Constructors

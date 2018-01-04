@@ -303,13 +303,16 @@ namespace IsotopeFit
         /// In case of polynomial inerpolation, the order is considered the highest exponent value of the desired interpolating polynomial, e.g. order = 2 will produce quadratic polynomial.
         /// Optional arguments are meant to be used by GUI to ease the process of loading data to the <see cref="Workspace"/>. If not supplied, the method will use previously stored values.
         /// </remarks>
-        /// <param name="t">Type of the interpolation to use.</param>
+        /// <param name="interpType">Type of the interpolation to use.</param>
         /// <param name="order">Order of the polynomial interpolation. This is relevant only for the polynomial interpolation.</param>
         /// <param name="comList">Optional array of centre-of-mass points to be used for the calibration.</param>
         /// <param name="resolutionList">Optional array of resolution points to be used for the calibration.</param>
         /// <exception cref="WorkspaceException">Thrown when some of the required data have not been loaded in the <see cref="Workspace"/> or their lengths are different.</exception>
-        public void ResolutionFit(Interpolation.Type t, int order, double[] comList = null, double[] resolutionList = null)
+        public void ResolutionFit(Interpolation.Type interpType, int order = -1, double[] comList = null, double[] resolutionList = null)
         {
+            // if a polynomial fit is requested, check that the order was supplied as well
+            if (interpType == Interpolation.Type.Polynomial && order < 0) throw new WorkspaceException("The polynomial order must be specified for the polynomial interpolation type.");
+
             // there are three use cases
             if (!IFDLoaded && comList == null && resolutionList == null) // this covers the use cases for IFJFile and GUI, when the COMList and ResolutionList have to be built.
             {
@@ -336,7 +339,7 @@ namespace IsotopeFit
             if (Calibration.COMList == null || Calibration.ResolutionList == null) throw new WorkspaceException("Resolution calibration points not specified.");
             if (Calibration.COMList.Length != Calibration.ResolutionList.Length) throw new WorkspaceException("Supplied resolution calibration point arrays have different lengths.");
 
-            switch (t)
+            switch (interpType)
             {
                 case Interpolation.Type.Polynomial:
                     Calibration.ResolutionInterp = new PolyInterpolation(Calibration.COMList, Calibration.ResolutionList, order);
@@ -486,6 +489,16 @@ namespace IsotopeFit
         public string[] GetClusterIDList()
         {
             return (Clusters.Keys as ICollection<string>).ToArray();
+        }
+
+        /// <summary>
+        /// Calculates the fitted spectrum from current design matrix and last fitted cluster abundances. Stores the result in <see cref="Workspace.SpectralData.FittedSignal"/>.
+        /// </summary>
+        public void CalculateSpectrum()
+        {
+            double[] abundances = (Clusters.Values as ICollection<IFData.Cluster>).Select(c => c.Abundance).ToArray();
+
+            DesignMatrix.Storage.Multiply(abundances, SpectralData.FittedSpectrum);
         }
 
         #endregion
