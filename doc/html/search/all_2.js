@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['calculatespectrum',['CalculateSpectrum',['../class_isotope_fit_1_1_workspace.html#af0793a9feb68a36f8f9df8ac3e1a305b',1,'IsotopeFit::Workspace']]],
   ['calibration',['Calibration',['../class_isotope_fit_1_1_i_f_data_1_1_calibration.html',1,'IsotopeFit.IFData.Calibration'],['../class_isotope_fit_1_1_workspace.html#a0ed1cfd6701db24de84f4ba67eed0442',1,'IsotopeFit.Workspace.Calibration()']]],
   ['centreofmass',['CentreOfMass',['../class_isotope_fit_1_1_i_f_data_1_1_cluster.html#a43d9e77aebe1e02b617b16aff448c613',1,'IsotopeFit::IFData::Cluster']]],
   ['cluster',['Cluster',['../class_isotope_fit_1_1_i_f_data_1_1_cluster.html',1,'IsotopeFit.IFData.Cluster'],['../class_isotope_fit_1_1_i_f_data_1_1_cluster.html#ada019f0710b46fddad5f74a541deb4da',1,'IsotopeFit.IFData.Cluster.Cluster()']]],

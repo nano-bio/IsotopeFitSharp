@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['resolutionfit',['ResolutionFit',['../class_isotope_fit_1_1_workspace.html#a00c1ae2e3b1d443808bef150a1e99410',1,'IsotopeFit::Workspace']]]
+  ['resolutionfit',['ResolutionFit',['../class_isotope_fit_1_1_workspace.html#ab8d4da3f0d257537fde144fb34e4cc32',1,'IsotopeFit::Workspace']]]
 ];

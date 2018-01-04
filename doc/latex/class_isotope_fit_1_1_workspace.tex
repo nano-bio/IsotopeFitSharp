@@ -8,50 +8,56 @@ This class is the main interface for outside usage.
 \subsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-class \hyperlink{class_isotope_fit_1_1_workspace_1_1_design_mtrx}{Design\+Mtrx}
+class \mbox{\hyperlink{class_isotope_fit_1_1_workspace_1_1_design_mtrx}{Design\+Mtrx}}
 \item 
-class \hyperlink{class_isotope_fit_1_1_workspace_1_1_workspace_status}{Workspace\+Status}
-\begin{DoxyCompactList}\small\item\em Class for storing the \hyperlink{class_isotope_fit_1_1_workspace}{Workspace} status flags and message log for the user. \end{DoxyCompactList}\end{DoxyCompactItemize}
+class \mbox{\hyperlink{class_isotope_fit_1_1_workspace_1_1_workspace_status}{Workspace\+Status}}
+\begin{DoxyCompactList}\small\item\em Class for storing the \mbox{\hyperlink{class_isotope_fit_1_1_workspace}{Workspace}} status flags and message log for the user. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \hyperlink{class_isotope_fit_1_1_workspace_a80f09325539d16dd9eee6b470316db8b}{Generate\+Baseline} (int num\+Of\+Sections=-\/1, double cutoff\+Level=-\/1)
+void \mbox{\hyperlink{class_isotope_fit_1_1_workspace_a80f09325539d16dd9eee6b470316db8b}{Generate\+Baseline}} (int num\+Of\+Sections=-\/1, double cutoff\+Level=-\/1)
 \begin{DoxyCompactList}\small\item\em Generates the x and y coordinates of the baseline break points. \end{DoxyCompactList}\item 
-void \hyperlink{class_isotope_fit_1_1_workspace_aa0b81213937d49ae3a6183563cfe0f60}{Correct\+Baseline} (double\mbox{[}$\,$\mbox{]} x\+Axis=null, double\mbox{[}$\,$\mbox{]} y\+Axis=null)
-\begin{DoxyCompactList}\small\item\em Calculates baseline corrected signal from raw signal data and baseline correction points. Stores the result in the \hyperlink{class_isotope_fit_1_1_workspace_a1d6cc2dd07cbfe920da9f1bffc9b32c2}{Workspace.\+Spectral\+Data}.Signal\+Axis property. \end{DoxyCompactList}\item 
-\hyperlink{class_isotope_fit_1_1_workspace_affa8b6ac937cee367c225c606782da17}{Workspace} ()
-\begin{DoxyCompactList}\small\item\em Create an empty \hyperlink{namespace_isotope_fit}{Isotope\+Fit} workspace and initializes its properties for use. \end{DoxyCompactList}\item 
-\hyperlink{class_isotope_fit_1_1_workspace_a5aa1f6546513d331f262d383fe6b0358}{Workspace} (string path)
-\begin{DoxyCompactList}\small\item\em Create an \hyperlink{namespace_isotope_fit}{Isotope\+Fit} workspace and load an I\+F\+D/\+I\+FJ file into it. \end{DoxyCompactList}\item 
-void \hyperlink{class_isotope_fit_1_1_workspace_a55061c1f05d3e02d2d591fe6211d2f1f}{Load\+I\+F\+D\+File} (string path)
+void \mbox{\hyperlink{class_isotope_fit_1_1_workspace_aa0b81213937d49ae3a6183563cfe0f60}{Correct\+Baseline}} (double\mbox{[}$\,$\mbox{]} x\+Axis=null, double\mbox{[}$\,$\mbox{]} y\+Axis=null)
+\begin{DoxyCompactList}\small\item\em Calculates baseline corrected signal from raw signal data and baseline correction points. Stores the result in the \mbox{\hyperlink{class_isotope_fit_1_1_workspace_a1d6cc2dd07cbfe920da9f1bffc9b32c2}{Workspace.\+Spectral\+Data}}.Signal\+Axis property. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_isotope_fit_1_1_workspace_affa8b6ac937cee367c225c606782da17}{Workspace}} ()
+\begin{DoxyCompactList}\small\item\em Create an empty \mbox{\hyperlink{namespace_isotope_fit}{Isotope\+Fit}} workspace and initializes its properties for use. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_isotope_fit_1_1_workspace_a5aa1f6546513d331f262d383fe6b0358}{Workspace}} (string path)
+\begin{DoxyCompactList}\small\item\em Create an \mbox{\hyperlink{namespace_isotope_fit}{Isotope\+Fit}} workspace and load an I\+F\+D/\+I\+FJ file into it. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_isotope_fit_1_1_workspace_a55061c1f05d3e02d2d591fe6211d2f1f}{Load\+I\+F\+D\+File}} (string path)
 \begin{DoxyCompactList}\small\item\em Loads the contents of an I\+FD file into the workspace. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{class_isotope_fit_1_1_workspace_aba9a547d376319e836898f4878ce7aab}\label{class_isotope_fit_1_1_workspace_aba9a547d376319e836898f4878ce7aab}} 
 void {\bfseries Load\+I\+F\+J\+File} (string path)
 \item 
-void \hyperlink{class_isotope_fit_1_1_workspace_a9c1e21aff90947ff3414ac9d90472452}{Crop\+Mass\+Axis} (double start\+Mass, double end\+Mass)
+void \mbox{\hyperlink{class_isotope_fit_1_1_workspace_a9c1e21aff90947ff3414ac9d90472452}{Crop\+Mass\+Axis}} (double start\+Mass, double end\+Mass)
 \begin{DoxyCompactList}\small\item\em Function to set the mass axis cropping. \end{DoxyCompactList}\item 
-void \hyperlink{class_isotope_fit_1_1_workspace_a188d75c84db3eb6b5c3812e44eb95695}{Correct\+Mass\+Offset} (Interpolation.\+Type interp\+Type, int order=-\/1, bool auto\+Crop=false, double\mbox{[}$\,$\mbox{]} com\+List=null, double\mbox{[}$\,$\mbox{]} mass\+Offset\+List=null)
-\begin{DoxyCompactList}\small\item\em Calculates mass axis corrected for mass offset from previously supplied calibration data and stores the result in the \hyperlink{class_isotope_fit_1_1_workspace_a1d6cc2dd07cbfe920da9f1bffc9b32c2}{Workspace.\+Spectral\+Data}.Mass\+Axis property. \end{DoxyCompactList}\item 
-void \hyperlink{class_isotope_fit_1_1_workspace_a00c1ae2e3b1d443808bef150a1e99410}{Resolution\+Fit} (Interpolation.\+Type t, int order, double\mbox{[}$\,$\mbox{]} com\+List=null, double\mbox{[}$\,$\mbox{]} resolution\+List=null)
+void \mbox{\hyperlink{class_isotope_fit_1_1_workspace_a188d75c84db3eb6b5c3812e44eb95695}{Correct\+Mass\+Offset}} (Interpolation.\+Type interp\+Type, int order=-\/1, bool auto\+Crop=false, double\mbox{[}$\,$\mbox{]} com\+List=null, double\mbox{[}$\,$\mbox{]} mass\+Offset\+List=null)
+\begin{DoxyCompactList}\small\item\em Calculates mass axis corrected for mass offset from previously supplied calibration data and stores the result in the \mbox{\hyperlink{class_isotope_fit_1_1_workspace_a1d6cc2dd07cbfe920da9f1bffc9b32c2}{Workspace.\+Spectral\+Data}}.Mass\+Axis property. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_isotope_fit_1_1_workspace_ab8d4da3f0d257537fde144fb34e4cc32}{Resolution\+Fit}} (Interpolation.\+Type interp\+Type, int order=-\/1, double\mbox{[}$\,$\mbox{]} com\+List=null, double\mbox{[}$\,$\mbox{]} resolution\+List=null)
 \begin{DoxyCompactList}\small\item\em Fits the previously supplied resolution calibration data and stores the calibration results in the Workspace.\+Resolution\+Interpolation property. \end{DoxyCompactList}\item 
-void \hyperlink{class_isotope_fit_1_1_workspace_a760f024c67d57242c40c558298bd1878}{Build\+Design\+Matrix} (double search\+Range=1, double fwhm\+Range=0.\+5)
-\begin{DoxyCompactList}\small\item\em Builds the design matrix from currently supplied data and stores the result in the \hyperlink{class_isotope_fit_1_1_workspace_ae24a2ee8f965fb2ed7ad3a592163271d}{Workspace.\+Design\+Matrix} property. \end{DoxyCompactList}\item 
-void \hyperlink{class_isotope_fit_1_1_workspace_a40fa9b2c0b5d31feae1093d08b1aad52}{Fit\+Abundances} ()
-\begin{DoxyCompactList}\small\item\em Performs the fit of the data and stores the result in the Workspace.\+Abundances property. \end{DoxyCompactList}\end{DoxyCompactItemize}
+void \mbox{\hyperlink{class_isotope_fit_1_1_workspace_a760f024c67d57242c40c558298bd1878}{Build\+Design\+Matrix}} (double search\+Range=1, double fwhm\+Range=0.\+5)
+\begin{DoxyCompactList}\small\item\em Builds the design matrix from currently supplied data and stores the result in the \mbox{\hyperlink{class_isotope_fit_1_1_workspace_ae24a2ee8f965fb2ed7ad3a592163271d}{Workspace.\+Design\+Matrix}} property. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_isotope_fit_1_1_workspace_a40fa9b2c0b5d31feae1093d08b1aad52}{Fit\+Abundances}} ()
+\begin{DoxyCompactList}\small\item\em Performs the fit of the data and stores the result in the Workspace.\+Abundances property. \end{DoxyCompactList}\item 
+string \mbox{[}$\,$\mbox{]} \mbox{\hyperlink{class_isotope_fit_1_1_workspace_ab0a9cd936dbf16b3bad1e34a11c2ddb1}{Get\+Cluster\+I\+D\+List}} ()
+\begin{DoxyCompactList}\small\item\em Gets the I\+Ds of all currently present clusters in the \mbox{\hyperlink{class_isotope_fit_1_1_workspace_a13958fbe0adace21990cb1eabbd421e9}{Workspace.\+Clusters}} dictionary. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_isotope_fit_1_1_workspace_af0793a9feb68a36f8f9df8ac3e1a305b}{Calculate\+Spectrum}} ()
+\begin{DoxyCompactList}\small\item\em Calculates the fitted spectrum from current design matrix and last fitted cluster abundances. Stores the result in Workspace.\+Spectral\+Data.\+Fitted\+Signal. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_isotope_fit_1_1_workspace_a19d98d4a89b048223e47593d96631d04}{G\+U\+I\+Calib\+Estimate\+Spectrum\+Fit}} (Interpolation.\+Type mass\+Offset\+Interp\+Type, Interpolation.\+Type res\+Interp\+Type, int mass\+Offset\+Interp\+Order=-\/1, int res\+Interp\+Order=-\/1, bool mass\+Axis\+Auto\+Crop=false)
+\begin{DoxyCompactList}\small\item\em Convenience function for the G\+UI that calculates estimate of a spectrum fit from new mass offset and resolution data and old abundance values. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Properties}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{class_isotope_fit_1_1_i_f_data_1_1_spectrum}{I\+F\+Data.\+Spectrum} \hyperlink{class_isotope_fit_1_1_workspace_a1d6cc2dd07cbfe920da9f1bffc9b32c2}{Spectral\+Data}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\mbox{\hyperlink{class_isotope_fit_1_1_i_f_data_1_1_spectrum}{I\+F\+Data.\+Spectrum}} \mbox{\hyperlink{class_isotope_fit_1_1_workspace_a1d6cc2dd07cbfe920da9f1bffc9b32c2}{Spectral\+Data}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
 \begin{DoxyCompactList}\small\item\em Object containing spectral data, both raw and calibrated. \end{DoxyCompactList}\item 
-Ordered\+Dictionary \hyperlink{class_isotope_fit_1_1_workspace_a13958fbe0adace21990cb1eabbd421e9}{Clusters}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
-\begin{DoxyCompactList}\small\item\em Object containing the clusters, abundance of which is to be calculated. See also \hyperlink{class_isotope_fit_1_1_i_f_data_1_1_cluster}{I\+F\+Data.\+Cluster}. \end{DoxyCompactList}\item 
-\hyperlink{class_isotope_fit_1_1_i_f_data_1_1_calibration}{I\+F\+Data.\+Calibration} \hyperlink{class_isotope_fit_1_1_workspace_a0ed1cfd6701db24de84f4ba67eed0442}{Calibration}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+Ordered\+Dictionary \mbox{\hyperlink{class_isotope_fit_1_1_workspace_a13958fbe0adace21990cb1eabbd421e9}{Clusters}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Object containing the clusters, abundance of which is to be calculated. See also \mbox{\hyperlink{class_isotope_fit_1_1_i_f_data_1_1_cluster}{I\+F\+Data.\+Cluster}}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_isotope_fit_1_1_i_f_data_1_1_calibration}{I\+F\+Data.\+Calibration}} \mbox{\hyperlink{class_isotope_fit_1_1_workspace_a0ed1cfd6701db24de84f4ba67eed0442}{Calibration}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
 \begin{DoxyCompactList}\small\item\em Object containing the data necessary for mass offset correction, resolution fit and peak shape. \end{DoxyCompactList}\item 
-\hyperlink{class_isotope_fit_1_1_i_f_data_1_1_baseline_corr}{I\+F\+Data.\+Baseline\+Corr} \hyperlink{class_isotope_fit_1_1_workspace_a700395fbb329b1a0fcb5932095db066f}{Baseline\+Corr\+Data}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\mbox{\hyperlink{class_isotope_fit_1_1_i_f_data_1_1_baseline_corr}{I\+F\+Data.\+Baseline\+Corr}} \mbox{\hyperlink{class_isotope_fit_1_1_workspace_a700395fbb329b1a0fcb5932095db066f}{Baseline\+Corr\+Data}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
 \begin{DoxyCompactList}\small\item\em Object containing the data necessary for baseline correction. \end{DoxyCompactList}\item 
-\hyperlink{class_isotope_fit_1_1_i_f_data_1_1_file_info}{I\+F\+Data.\+File\+Info} \hyperlink{class_isotope_fit_1_1_workspace_a54c0025eccacbf519f619ef256414a92}{File\+Info}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\mbox{\hyperlink{class_isotope_fit_1_1_i_f_data_1_1_file_info}{I\+F\+Data.\+File\+Info}} \mbox{\hyperlink{class_isotope_fit_1_1_workspace_a54c0025eccacbf519f619ef256414a92}{File\+Info}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
 \begin{DoxyCompactList}\small\item\em Object containing the loaded file information. \end{DoxyCompactList}\item 
-\hyperlink{class_isotope_fit_1_1_workspace_1_1_design_mtrx}{Design\+Mtrx} \hyperlink{class_isotope_fit_1_1_workspace_ae24a2ee8f965fb2ed7ad3a592163271d}{Design\+Matrix}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\mbox{\hyperlink{class_isotope_fit_1_1_workspace_1_1_design_mtrx}{Design\+Mtrx}} \mbox{\hyperlink{class_isotope_fit_1_1_workspace_ae24a2ee8f965fb2ed7ad3a592163271d}{Design\+Matrix}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
 \begin{DoxyCompactList}\small\item\em Object containing the calculated design matrix for current cluster system. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
@@ -73,7 +79,7 @@ Definition at line 19 of file Design\+Matrix.\+cs.
 
 
 
-Create an empty \hyperlink{namespace_isotope_fit}{Isotope\+Fit} workspace and initializes its properties for use. 
+Create an empty \mbox{\hyperlink{namespace_isotope_fit}{Isotope\+Fit}} workspace and initializes its properties for use. 
 
 
 
@@ -87,7 +93,7 @@ Definition at line 23 of file Workspace.\+cs.
 
 
 
-Create an \hyperlink{namespace_isotope_fit}{Isotope\+Fit} workspace and load an I\+F\+D/\+I\+FJ file into it. 
+Create an \mbox{\hyperlink{namespace_isotope_fit}{Isotope\+Fit}} workspace and load an I\+F\+D/\+I\+FJ file into it. 
 
 
 \begin{DoxyParams}{Parameters}
@@ -109,7 +115,7 @@ Definition at line 38 of file Workspace.\+cs.
 
 
 
-Builds the design matrix from currently supplied data and stores the result in the \hyperlink{class_isotope_fit_1_1_workspace_ae24a2ee8f965fb2ed7ad3a592163271d}{Workspace.\+Design\+Matrix} property. 
+Builds the design matrix from currently supplied data and stores the result in the \mbox{\hyperlink{class_isotope_fit_1_1_workspace_ae24a2ee8f965fb2ed7ad3a592163271d}{Workspace.\+Design\+Matrix}} property. 
 
 The parameters {\itshape search\+Range}  and {\itshape fwhm\+Range}  are being multiplied, so they must be both nonzero.
 
@@ -122,7 +128,21 @@ The parameters {\itshape search\+Range}  and {\itshape fwhm\+Range}  are being m
 \end{DoxyParams}
 
 
-Definition at line 364 of file Workspace.\+cs.
+Definition at line 367 of file Workspace.\+cs.
+
+\mbox{\Hypertarget{class_isotope_fit_1_1_workspace_af0793a9feb68a36f8f9df8ac3e1a305b}\label{class_isotope_fit_1_1_workspace_af0793a9feb68a36f8f9df8ac3e1a305b}} 
+\index{Isotope\+Fit\+::\+Workspace@{Isotope\+Fit\+::\+Workspace}!Calculate\+Spectrum@{Calculate\+Spectrum}}
+\index{Calculate\+Spectrum@{Calculate\+Spectrum}!Isotope\+Fit\+::\+Workspace@{Isotope\+Fit\+::\+Workspace}}
+\subsubsection{\texorpdfstring{Calculate\+Spectrum()}{CalculateSpectrum()}}
+{\footnotesize\ttfamily void Isotope\+Fit.\+Workspace.\+Calculate\+Spectrum (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Calculates the fitted spectrum from current design matrix and last fitted cluster abundances. Stores the result in Workspace.\+Spectral\+Data.\+Fitted\+Signal. 
+
+
+
+Definition at line 497 of file Workspace.\+cs.
 
 \mbox{\Hypertarget{class_isotope_fit_1_1_workspace_aa0b81213937d49ae3a6183563cfe0f60}\label{class_isotope_fit_1_1_workspace_aa0b81213937d49ae3a6183563cfe0f60}} 
 \index{Isotope\+Fit\+::\+Workspace@{Isotope\+Fit\+::\+Workspace}!Correct\+Baseline@{Correct\+Baseline}}
@@ -132,11 +152,11 @@ Definition at line 364 of file Workspace.\+cs.
 
 
 
-Calculates baseline corrected signal from raw signal data and baseline correction points. Stores the result in the \hyperlink{class_isotope_fit_1_1_workspace_a1d6cc2dd07cbfe920da9f1bffc9b32c2}{Workspace.\+Spectral\+Data}.Signal\+Axis property. 
+Calculates baseline corrected signal from raw signal data and baseline correction points. Stores the result in the \mbox{\hyperlink{class_isotope_fit_1_1_workspace_a1d6cc2dd07cbfe920da9f1bffc9b32c2}{Workspace.\+Spectral\+Data}}.Signal\+Axis property. 
 
-This method uses the P\+C\+H\+IP interpolation to obtain the baseline values, which are stored in the \hyperlink{class_isotope_fit_1_1_workspace_a1d6cc2dd07cbfe920da9f1bffc9b32c2}{Workspace.\+Spectral\+Data}.Baseline property.
+This method uses the P\+C\+H\+IP interpolation to obtain the baseline values, which are stored in the \mbox{\hyperlink{class_isotope_fit_1_1_workspace_a1d6cc2dd07cbfe920da9f1bffc9b32c2}{Workspace.\+Spectral\+Data}}.Baseline property.
 
-Optional arguments {\itshape x\+Axis}  and {\itshape y\+Axis}  are meant to ease the process of loading data to the \hyperlink{class_isotope_fit_1_1_workspace}{Workspace}. If not supplied, the funcion will use previously stored values.
+Optional arguments {\itshape x\+Axis}  and {\itshape y\+Axis}  are meant to ease the process of loading data to the \mbox{\hyperlink{class_isotope_fit_1_1_workspace}{Workspace}}. If not supplied, the funcion will use previously stored values.
 
 
 \begin{DoxyParams}{Parameters}
@@ -147,7 +167,7 @@ Optional arguments {\itshape x\+Axis}  and {\itshape y\+Axis}  are meant to ease
 \end{DoxyParams}
 
 \begin{DoxyExceptions}{Exceptions}
-{\em \hyperlink{class_isotope_fit_1_1_workspace_exception}{Workspace\+Exception}} & Thrown when some of the required data have not been loaded in the \hyperlink{class_isotope_fit_1_1_workspace}{Workspace}.\\
+{\em \mbox{\hyperlink{class_isotope_fit_1_1_workspace_exception}{Workspace\+Exception}}} & Thrown when some of the required data have not been loaded in the \mbox{\hyperlink{class_isotope_fit_1_1_workspace}{Workspace}}.\\
 \hline
 \end{DoxyExceptions}
 
@@ -162,11 +182,11 @@ Definition at line 77 of file Workspace.\+Baseline\+Correction.\+cs.
 
 
 
-Calculates mass axis corrected for mass offset from previously supplied calibration data and stores the result in the \hyperlink{class_isotope_fit_1_1_workspace_a1d6cc2dd07cbfe920da9f1bffc9b32c2}{Workspace.\+Spectral\+Data}.Mass\+Axis property. 
+Calculates mass axis corrected for mass offset from previously supplied calibration data and stores the result in the \mbox{\hyperlink{class_isotope_fit_1_1_workspace_a1d6cc2dd07cbfe920da9f1bffc9b32c2}{Workspace.\+Spectral\+Data}}.Mass\+Axis property. 
 
 In case of polynomial inerpolation, the order is considered the highest exponent value of the desired interpolating polynomial, e.\+g. order = 2 will produce quadratic polynomial.
 
-Optional arguments {\itshape com\+List}  and {\itshape mass\+Offset\+List}  are meant to ease the process of loading data to the \hyperlink{class_isotope_fit_1_1_workspace}{Workspace}. If not supplied, the method will use previously stored values.
+Optional arguments {\itshape com\+List}  and {\itshape mass\+Offset\+List}  are meant to ease the process of loading data to the \mbox{\hyperlink{class_isotope_fit_1_1_workspace}{Workspace}}. If not supplied, the method will use previously stored values.
 
 
 \begin{DoxyParams}{Parameters}
@@ -183,7 +203,7 @@ Optional arguments {\itshape com\+List}  and {\itshape mass\+Offset\+List}  are 
 \end{DoxyParams}
 
 \begin{DoxyExceptions}{Exceptions}
-{\em \hyperlink{class_isotope_fit_1_1_workspace_exception}{Workspace\+Exception}} & Thrown when some of the required data have not been loaded in the \hyperlink{class_isotope_fit_1_1_workspace}{Workspace} or their lengths are different.\\
+{\em \mbox{\hyperlink{class_isotope_fit_1_1_workspace_exception}{Workspace\+Exception}}} & Thrown when some of the required data have not been loaded in the \mbox{\hyperlink{class_isotope_fit_1_1_workspace}{Workspace}} or their lengths are different.\\
 \hline
 \end{DoxyExceptions}
 
@@ -225,7 +245,7 @@ Performs the fit of the data and stores the result in the Workspace.\+Abundances
 
 
 
-Definition at line 379 of file Workspace.\+cs.
+Definition at line 382 of file Workspace.\+cs.
 
 \mbox{\Hypertarget{class_isotope_fit_1_1_workspace_a80f09325539d16dd9eee6b470316db8b}\label{class_isotope_fit_1_1_workspace_a80f09325539d16dd9eee6b470316db8b}} 
 \index{Isotope\+Fit\+::\+Workspace@{Isotope\+Fit\+::\+Workspace}!Generate\+Baseline@{Generate\+Baseline}}
@@ -248,6 +268,46 @@ Generates the x and y coordinates of the baseline break points.
 
 Definition at line 19 of file Workspace.\+Baseline\+Correction.\+cs.
 
+\mbox{\Hypertarget{class_isotope_fit_1_1_workspace_ab0a9cd936dbf16b3bad1e34a11c2ddb1}\label{class_isotope_fit_1_1_workspace_ab0a9cd936dbf16b3bad1e34a11c2ddb1}} 
+\index{Isotope\+Fit\+::\+Workspace@{Isotope\+Fit\+::\+Workspace}!Get\+Cluster\+I\+D\+List@{Get\+Cluster\+I\+D\+List}}
+\index{Get\+Cluster\+I\+D\+List@{Get\+Cluster\+I\+D\+List}!Isotope\+Fit\+::\+Workspace@{Isotope\+Fit\+::\+Workspace}}
+\subsubsection{\texorpdfstring{Get\+Cluster\+I\+D\+List()}{GetClusterIDList()}}
+{\footnotesize\ttfamily string \mbox{[}$\,$\mbox{]} Isotope\+Fit.\+Workspace.\+Get\+Cluster\+I\+D\+List (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Gets the I\+Ds of all currently present clusters in the \mbox{\hyperlink{class_isotope_fit_1_1_workspace_a13958fbe0adace21990cb1eabbd421e9}{Workspace.\+Clusters}} dictionary. 
+
+\begin{DoxyReturn}{Returns}
+Array of cluster ID strings.
+\end{DoxyReturn}
+
+
+Definition at line 489 of file Workspace.\+cs.
+
+\mbox{\Hypertarget{class_isotope_fit_1_1_workspace_a19d98d4a89b048223e47593d96631d04}\label{class_isotope_fit_1_1_workspace_a19d98d4a89b048223e47593d96631d04}} 
+\index{Isotope\+Fit\+::\+Workspace@{Isotope\+Fit\+::\+Workspace}!G\+U\+I\+Calib\+Estimate\+Spectrum\+Fit@{G\+U\+I\+Calib\+Estimate\+Spectrum\+Fit}}
+\index{G\+U\+I\+Calib\+Estimate\+Spectrum\+Fit@{G\+U\+I\+Calib\+Estimate\+Spectrum\+Fit}!Isotope\+Fit\+::\+Workspace@{Isotope\+Fit\+::\+Workspace}}
+\subsubsection{\texorpdfstring{G\+U\+I\+Calib\+Estimate\+Spectrum\+Fit()}{GUICalibEstimateSpectrumFit()}}
+{\footnotesize\ttfamily void Isotope\+Fit.\+Workspace.\+G\+U\+I\+Calib\+Estimate\+Spectrum\+Fit (\begin{DoxyParamCaption}\item[{Interpolation.\+Type}]{mass\+Offset\+Interp\+Type,  }\item[{Interpolation.\+Type}]{res\+Interp\+Type,  }\item[{int}]{mass\+Offset\+Interp\+Order = {\ttfamily -\/1},  }\item[{int}]{res\+Interp\+Order = {\ttfamily -\/1},  }\item[{bool}]{mass\+Axis\+Auto\+Crop = {\ttfamily false} }\end{DoxyParamCaption})}
+
+
+
+Convenience function for the G\+UI that calculates estimate of a spectrum fit from new mass offset and resolution data and old abundance values. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mass\+Offset\+Interp\+Type} & Type of the mass offset interpolation.\\
+\hline
+{\em res\+Interp\+Type} & Type of the resolution interpolation.\\
+\hline
+{\em res\+Interp\+Order} & Order of the resolution interpolation, if polynomial is used. Otherwise ignored.\\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 17 of file Workspace.\+G\+U\+I\+Convenience.\+cs.
+
 \mbox{\Hypertarget{class_isotope_fit_1_1_workspace_a55061c1f05d3e02d2d591fe6211d2f1f}\label{class_isotope_fit_1_1_workspace_a55061c1f05d3e02d2d591fe6211d2f1f}} 
 \index{Isotope\+Fit\+::\+Workspace@{Isotope\+Fit\+::\+Workspace}!Load\+I\+F\+D\+File@{Load\+I\+F\+D\+File}}
 \index{Load\+I\+F\+D\+File@{Load\+I\+F\+D\+File}!Isotope\+Fit\+::\+Workspace@{Isotope\+Fit\+::\+Workspace}}
@@ -267,21 +327,21 @@ Loads the contents of an I\+FD file into the workspace.
 
 Definition at line 97 of file Workspace.\+cs.
 
-\mbox{\Hypertarget{class_isotope_fit_1_1_workspace_a00c1ae2e3b1d443808bef150a1e99410}\label{class_isotope_fit_1_1_workspace_a00c1ae2e3b1d443808bef150a1e99410}} 
+\mbox{\Hypertarget{class_isotope_fit_1_1_workspace_ab8d4da3f0d257537fde144fb34e4cc32}\label{class_isotope_fit_1_1_workspace_ab8d4da3f0d257537fde144fb34e4cc32}} 
 \index{Isotope\+Fit\+::\+Workspace@{Isotope\+Fit\+::\+Workspace}!Resolution\+Fit@{Resolution\+Fit}}
 \index{Resolution\+Fit@{Resolution\+Fit}!Isotope\+Fit\+::\+Workspace@{Isotope\+Fit\+::\+Workspace}}
 \subsubsection{\texorpdfstring{Resolution\+Fit()}{ResolutionFit()}}
-{\footnotesize\ttfamily void Isotope\+Fit.\+Workspace.\+Resolution\+Fit (\begin{DoxyParamCaption}\item[{Interpolation.\+Type}]{t,  }\item[{int}]{order,  }\item[{double \mbox{[}$\,$\mbox{]}}]{com\+List = {\ttfamily null},  }\item[{double \mbox{[}$\,$\mbox{]}}]{resolution\+List = {\ttfamily null} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void Isotope\+Fit.\+Workspace.\+Resolution\+Fit (\begin{DoxyParamCaption}\item[{Interpolation.\+Type}]{interp\+Type,  }\item[{int}]{order = {\ttfamily -\/1},  }\item[{double \mbox{[}$\,$\mbox{]}}]{com\+List = {\ttfamily null},  }\item[{double \mbox{[}$\,$\mbox{]}}]{resolution\+List = {\ttfamily null} }\end{DoxyParamCaption})}
 
 
 
 Fits the previously supplied resolution calibration data and stores the calibration results in the Workspace.\+Resolution\+Interpolation property. 
 
-In case of polynomial inerpolation, the order is considered the highest exponent value of the desired interpolating polynomial, e.\+g. order = 2 will produce quadratic polynomial. Optional arguments are meant to be used by G\+UI to ease the process of loading data to the \hyperlink{class_isotope_fit_1_1_workspace}{Workspace}. If not supplied, the method will use previously stored values. 
+In case of polynomial inerpolation, the order is considered the highest exponent value of the desired interpolating polynomial, e.\+g. order = 2 will produce quadratic polynomial. Optional arguments are meant to be used by G\+UI to ease the process of loading data to the \mbox{\hyperlink{class_isotope_fit_1_1_workspace}{Workspace}}. If not supplied, the method will use previously stored values. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em t} & Type of the interpolation to use.\\
+{\em interp\+Type} & Type of the interpolation to use.\\
 \hline
 {\em order} & Order of the polynomial interpolation. This is relevant only for the polynomial interpolation.\\
 \hline
@@ -292,7 +352,7 @@ In case of polynomial inerpolation, the order is considered the highest exponent
 \end{DoxyParams}
 
 \begin{DoxyExceptions}{Exceptions}
-{\em \hyperlink{class_isotope_fit_1_1_workspace_exception}{Workspace\+Exception}} & Thrown when some of the required data have not been loaded in the \hyperlink{class_isotope_fit_1_1_workspace}{Workspace} or their lengths are different.\\
+{\em \mbox{\hyperlink{class_isotope_fit_1_1_workspace_exception}{Workspace\+Exception}}} & Thrown when some of the required data have not been loaded in the \mbox{\hyperlink{class_isotope_fit_1_1_workspace}{Workspace}} or their lengths are different.\\
 \hline
 \end{DoxyExceptions}
 
@@ -306,7 +366,7 @@ Definition at line 311 of file Workspace.\+cs.
 \index{Isotope\+Fit\+::\+Workspace@{Isotope\+Fit\+::\+Workspace}!Baseline\+Corr\+Data@{Baseline\+Corr\+Data}}
 \index{Baseline\+Corr\+Data@{Baseline\+Corr\+Data}!Isotope\+Fit\+::\+Workspace@{Isotope\+Fit\+::\+Workspace}}
 \subsubsection{\texorpdfstring{Baseline\+Corr\+Data}{BaselineCorrData}}
-{\footnotesize\ttfamily \hyperlink{class_isotope_fit_1_1_i_f_data_1_1_baseline_corr}{I\+F\+Data.\+Baseline\+Corr} Isotope\+Fit.\+Workspace.\+Baseline\+Corr\+Data\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_isotope_fit_1_1_i_f_data_1_1_baseline_corr}{I\+F\+Data.\+Baseline\+Corr}} Isotope\+Fit.\+Workspace.\+Baseline\+Corr\+Data\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
 
 
 
@@ -320,7 +380,7 @@ Definition at line 67 of file Workspace.\+cs.
 \index{Isotope\+Fit\+::\+Workspace@{Isotope\+Fit\+::\+Workspace}!Calibration@{Calibration}}
 \index{Calibration@{Calibration}!Isotope\+Fit\+::\+Workspace@{Isotope\+Fit\+::\+Workspace}}
 \subsubsection{\texorpdfstring{Calibration}{Calibration}}
-{\footnotesize\ttfamily \hyperlink{class_isotope_fit_1_1_i_f_data_1_1_calibration}{I\+F\+Data.\+Calibration} Isotope\+Fit.\+Workspace.\+Calibration\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_isotope_fit_1_1_i_f_data_1_1_calibration}{I\+F\+Data.\+Calibration}} Isotope\+Fit.\+Workspace.\+Calibration\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
 
 
 
@@ -338,7 +398,7 @@ Definition at line 62 of file Workspace.\+cs.
 
 
 
-Object containing the clusters, abundance of which is to be calculated. See also \hyperlink{class_isotope_fit_1_1_i_f_data_1_1_cluster}{I\+F\+Data.\+Cluster}. 
+Object containing the clusters, abundance of which is to be calculated. See also \mbox{\hyperlink{class_isotope_fit_1_1_i_f_data_1_1_cluster}{I\+F\+Data.\+Cluster}}. 
 
 
 
@@ -348,7 +408,7 @@ Definition at line 57 of file Workspace.\+cs.
 \index{Isotope\+Fit\+::\+Workspace@{Isotope\+Fit\+::\+Workspace}!Design\+Matrix@{Design\+Matrix}}
 \index{Design\+Matrix@{Design\+Matrix}!Isotope\+Fit\+::\+Workspace@{Isotope\+Fit\+::\+Workspace}}
 \subsubsection{\texorpdfstring{Design\+Matrix}{DesignMatrix}}
-{\footnotesize\ttfamily \hyperlink{class_isotope_fit_1_1_workspace_1_1_design_mtrx}{Design\+Mtrx} Isotope\+Fit.\+Workspace.\+Design\+Matrix\hspace{0.3cm}{\ttfamily [get]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_isotope_fit_1_1_workspace_1_1_design_mtrx}{Design\+Mtrx}} Isotope\+Fit.\+Workspace.\+Design\+Matrix\hspace{0.3cm}{\ttfamily [get]}}
 
 
 
@@ -362,7 +422,7 @@ Definition at line 83 of file Workspace.\+cs.
 \index{Isotope\+Fit\+::\+Workspace@{Isotope\+Fit\+::\+Workspace}!File\+Info@{File\+Info}}
 \index{File\+Info@{File\+Info}!Isotope\+Fit\+::\+Workspace@{Isotope\+Fit\+::\+Workspace}}
 \subsubsection{\texorpdfstring{File\+Info}{FileInfo}}
-{\footnotesize\ttfamily \hyperlink{class_isotope_fit_1_1_i_f_data_1_1_file_info}{I\+F\+Data.\+File\+Info} Isotope\+Fit.\+Workspace.\+File\+Info\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_isotope_fit_1_1_i_f_data_1_1_file_info}{I\+F\+Data.\+File\+Info}} Isotope\+Fit.\+Workspace.\+File\+Info\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
 
 
 
@@ -376,7 +436,7 @@ Definition at line 72 of file Workspace.\+cs.
 \index{Isotope\+Fit\+::\+Workspace@{Isotope\+Fit\+::\+Workspace}!Spectral\+Data@{Spectral\+Data}}
 \index{Spectral\+Data@{Spectral\+Data}!Isotope\+Fit\+::\+Workspace@{Isotope\+Fit\+::\+Workspace}}
 \subsubsection{\texorpdfstring{Spectral\+Data}{SpectralData}}
-{\footnotesize\ttfamily \hyperlink{class_isotope_fit_1_1_i_f_data_1_1_spectrum}{I\+F\+Data.\+Spectrum} Isotope\+Fit.\+Workspace.\+Spectral\+Data\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_isotope_fit_1_1_i_f_data_1_1_spectrum}{I\+F\+Data.\+Spectrum}} Isotope\+Fit.\+Workspace.\+Spectral\+Data\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
 
 
 
@@ -392,4 +452,5 @@ The documentation for this class was generated from the following files\+:\begin
 \item 
 Isotope\+Fit\+Lib/\+Workspace/Design\+Matrix.\+cs\item 
 Isotope\+Fit\+Lib/\+Workspace/Workspace.\+cs\item 
-Isotope\+Fit\+Lib/\+Workspace/Workspace.\+Baseline\+Correction.\+cs\end{DoxyCompactItemize}
+Isotope\+Fit\+Lib/\+Workspace/Workspace.\+Baseline\+Correction.\+cs\item 
+Isotope\+Fit\+Lib/\+Workspace/Workspace.\+G\+U\+I\+Convenience.\+cs\end{DoxyCompactItemize}
