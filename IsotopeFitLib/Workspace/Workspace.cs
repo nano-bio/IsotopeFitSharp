@@ -488,7 +488,7 @@ namespace IsotopeFit
         /// <returns>Array of cluster ID strings.</returns>
         public string[] GetClusterIDList()
         {
-            return (Clusters.Keys as ICollection<string>).ToArray();
+            return Clusters.Keys.Cast<string>().ToArray();
         }
 
         /// <summary>
