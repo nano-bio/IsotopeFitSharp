@@ -47,7 +47,7 @@ namespace IsotopeFitter
             {
                 // command is a directory
                 throw new NotImplementedException();
-            }
+            }            
 
             totalTime.Start();
 
@@ -114,6 +114,8 @@ namespace IsotopeFitter
             //Console.WriteLine("abundances done in {0} miliseconds", abdTime.ElapsedMilliseconds);
             totalTime.Stop();
             Console.WriteLine("total time {0} seconds", (totalTime.ElapsedMilliseconds) / 1000d);
+            
+            //W.GUICalibEstimateSpectrumFit(Interpolation.Type.PCHIP, Interpolation.Type.Polynomial, resInterpOrder: 8);
 
             double[] abd = new double[W.Clusters.Count];
 

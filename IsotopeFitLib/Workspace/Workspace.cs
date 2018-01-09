@@ -496,7 +496,9 @@ namespace IsotopeFit
         /// </summary>
         public void CalculateSpectrum()
         {
-            double[] abundances = (Clusters.Values as ICollection<IFData.Cluster>).Select(c => c.Abundance).ToArray();
+            double[] abundances = Clusters.Values.Cast<IFData.Cluster>().Select(c => c.Abundance).ToArray();
+
+            SpectralData.FittedSpectrum = new double[SpectralData.CroppedLength];
 
             DesignMatrix.Storage.Multiply(abundances, SpectralData.FittedSpectrum);
         }
