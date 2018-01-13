@@ -483,14 +483,17 @@ namespace IsotopeFit
         }
 
         /// <summary>
-        /// Method that adds the supplied cluster to the <see cref="Workspace.Clusters"/> dictionary, keeping it sorted by centre of mass.
+        /// <para>Method that adds the supplied cluster to the <see cref="Workspace.Clusters"/> dictionary, keeping it sorted by centre of mass.</para>
+        /// <para>If the supplied <paramref name="cluster"/> has its mass offset and resolution parameter set, it will also be added to the <see cref="Workspace.Calibration.NameList"/>.</para>
         /// </summary>
+        /// <param name="id">ID of the cluster to be inserted.</param>
         /// <param name="cluster">Cluster to be inserted into the <see cref="Workspace.Clusters"/> dictionary.</param>
         public void AddCluster(string id, IFData.Cluster cluster)
         {
             if (Clusters.Count == 0)
             {
                 Clusters.Add(id, cluster);
+                if (cluster.MassOffset != 0 && cluster.Resolution != 0) Calibration.NameList.Add(id);
             }
             else
             {
@@ -500,6 +503,7 @@ namespace IsotopeFit
                 if (index < 0) index = ~index;
 
                 Clusters.Insert(index, id, cluster);
+                if (cluster.MassOffset != 0 && cluster.Resolution != 0) Calibration.NameList.Insert(index, id);
             }            
         }
 
