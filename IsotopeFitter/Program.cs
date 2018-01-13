@@ -47,7 +47,7 @@ namespace IsotopeFitter
             {
                 // command is a directory
                 throw new NotImplementedException();
-            }            
+            }
 
             totalTime.Start();
 
