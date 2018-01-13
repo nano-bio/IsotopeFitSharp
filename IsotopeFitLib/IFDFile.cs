@@ -122,11 +122,11 @@ namespace IsotopeFit
             dataField = (Cal as MLStructure)["resolutionparam"] as MLArray;
             C.ResolutionParam = (int)(dataField as MLDouble).GetArray()[0][0];
 
-            dataField = (Cal as MLStructure)["namelist"];
-            for (int i = 0; i < dataField.N; i++)
-            {
-                C.NameList.Add(((dataField as MLCell).Cells[i] as MLChar).GetString(0));
-            }
+            //dataField = (Cal as MLStructure)["namelist"];
+            //for (int i = 0; i < dataField.N; i++)
+            //{
+            //    C.NameList.Add(((dataField as MLCell).Cells[i] as MLChar).GetString(0));
+            //}
 
             C.Shape = ReadShape((Cal as MLStructure)["shape"]); //TODO: shape is sometimes not specified - use gaussian?
 
