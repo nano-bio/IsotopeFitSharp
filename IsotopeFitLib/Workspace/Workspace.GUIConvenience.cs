@@ -9,7 +9,7 @@ namespace IsotopeFit
     public partial class Workspace
     {
         /// <summary>
-        /// Convenience function for the GUI that calculates estimate of a spectrum fit from new mass offset and resolution data and old abundance values.
+        /// Convenience method for the GUI that calculates estimate of a spectrum fit from new mass offset and resolution data and old abundance values.
         /// </summary>
         /// <param name="massOffsetInterpType">Type of the mass offset interpolation.</param>
         /// <param name="resInterpType">Type of the resolution interpolation.</param>
@@ -21,5 +21,7 @@ namespace IsotopeFit
             BuildDesignMatrix();    //TODO: the fwhmRange and searchRange should also be settable, either here, or in some more central way
             CalculateSpectrum();
         }
+
+        
     }
 }

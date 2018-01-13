@@ -483,6 +483,83 @@ namespace IsotopeFit
         }
 
         /// <summary>
+        /// Method that adds the supplied cluster to the <see cref="Workspace.Clusters"/> dictionary, keeping it sorted by centre of mass.
+        /// </summary>
+        /// <param name="cluster">Cluster to be inserted into the <see cref="Workspace.Clusters"/> dictionary.</param>
+        public void AddCluster(string id, IFData.Cluster cluster)
+        {
+            if (Clusters.Count == 0)
+            {
+                Clusters.Add(id, cluster);
+            }
+            else
+            {
+                double[] com = Clusters.Values.Cast<IFData.Cluster>().Select(c => c.CentreOfMass).ToArray();
+                int index = Array.BinarySearch(com, cluster.CentreOfMass);
+
+                if (index < 0) index = ~index;
+
+                Clusters.Insert(index, id, cluster);
+            }            
+        }
+
+        /// <summary>
+        /// Searches for the cluster with centre of mass closest to the supplied <paramref name="mass"/>.
+        /// </summary>
+        /// <remarks>
+        /// In case the <paramref name="mass"/> is smaller than all cluster masses, the ID of the first cluster is returned.
+        /// Similarly, if the <paramref name="mass"/> is larger than all cluster masses, the ID of the last cluster is returned.
+        /// If the <paramref name="mass"/> is exactly between two cluster masses, the index of the lighter one is returned.
+        /// </remarks>
+        /// <param name="mass">Cluster mass to be searched for.</param>
+        /// <returns>The index of the cluster with centre of mass closest to the supplied <paramref name="mass"/>.</returns>
+        public int FindClusterIndex(double mass)
+        {
+            if (Clusters.Count == 0) throw new WorkspaceException("The Clusters dictionary is empty.");
+
+            double[] com = Clusters.Values.Cast<IFData.Cluster>().Select(c => c.CentreOfMass).ToArray();
+
+            int index = Array.BinarySearch(com, mass);
+
+            if (index < 0)
+            {
+                // now it is the index of the first cluster with COM larger than mass, we still have to compare the distance to the masses.
+                index = ~index;
+
+                // boundary condition, if the wanted mass is larger than masses of all clusters
+                // note, that we don not have to explicitly take care of the low-mass boundary condition, thanks to the way the binary search is implemented.
+                if (index == Clusters.Count)
+                {
+                    index--;    // this is the index of the last element
+                }
+                else   // in between
+                {
+                    if (index != 0 && Math.Abs(com[index - 1] - mass) <= Math.Abs(com[index] - mass))
+                    {
+                        index--;    // this means that the cluster before has COM closer to the requested value, than the one indicated by binary search
+                    }
+                }
+            }
+
+            return index;
+        }
+
+        /// <summary>
+        /// Searches for the cluster with centre of mass closest to the supplied <paramref name="mass"/>.
+        /// </summary>
+        /// <remarks>
+        /// In case the <paramref name="mass"/> is smaller than all cluster masses, the ID of the first cluster is returned.
+        /// Similarly, if the <paramref name="mass"/> is larger than all cluster masses, the ID of the last cluster is returned.
+        /// If the <paramref name="mass"/> is exactly between two cluster masses, the index of the lighter one is returned.
+        /// </remarks>
+        /// <param name="mass">Cluster mass to be searched for.</param>
+        /// <returns>The ID of the cluster with centre of mass closest to the supplied <paramref name="mass"/>.</returns>
+        public string FindClusterID(double mass)
+        {
+            return Clusters.Keys.Cast<string>().ToList()[FindClusterIndex(mass)];
+        }
+
+        /// <summary>
         /// Gets the IDs of all currently present clusters in the <see cref="Workspace.Clusters"/> dictionary.
         /// </summary>
         /// <returns>Array of cluster ID strings.</returns>
