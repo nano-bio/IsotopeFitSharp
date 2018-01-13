@@ -492,8 +492,7 @@ namespace IsotopeFit
         {
             if (Clusters.Count == 0)
             {
-                Clusters.Add(id, cluster);
-                if (cluster.MassOffset != 0 && cluster.Resolution != 0) Calibration.NameList.Add(id);
+                Clusters.Add(id, cluster);                
             }
             else
             {
@@ -503,8 +502,9 @@ namespace IsotopeFit
                 if (index < 0) index = ~index;
 
                 Clusters.Insert(index, id, cluster);
-                if (cluster.MassOffset != 0 && cluster.Resolution != 0) Calibration.NameList.Insert(index, id);
-            }            
+            }
+
+            if (cluster.MassOffset != 0 && cluster.Resolution != 0) Calibration.NameList.Add(id);
         }
 
         /// <summary>
