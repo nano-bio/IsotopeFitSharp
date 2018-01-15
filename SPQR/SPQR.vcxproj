@@ -82,6 +82,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>D:\Innsbruck\IsotopeFitSharp\SPQR\SuiteSparseInstall\32bit\include;D:\Innsbruck\IsotopeFitSharp\SPQR\SuiteSparseInstall\32bit\include\suitesparse;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
