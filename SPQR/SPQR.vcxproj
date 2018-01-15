@@ -72,19 +72,21 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>D:\Innsbruck\IsotopeFitSharp\SPQR\SuiteSparseInstall\32bit\include\suitesparse;D:\Innsbruck\IsotopeFitSharp\SPQR\SuiteSparseInstall\32bit\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Innsbruck\IsotopeFitSharp\SPQR\SuiteSparseInstall\32bit\lib;D:\Innsbruck\IsotopeFitSharp\SPQR\SuiteSparseInstall\32bit\lib\lapack_blas_windows;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)SuiteSparseInstall\include;$(ProjectDir)SuiteSparseInstall\include\suitesparse;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)SuiteSparseInstall\lib64\lapack_blas_windows;$(ProjectDir)SuiteSparseInstall\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)SuiteSparseInstall\64bit\include;$(ProjectDir)SuiteSparseInstall\64bit\include\suitesparse;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)SuiteSparseInstall\64bit\lib64\lapack_blas_windows;$(ProjectDir)SuiteSparseInstall\64bit\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(ProjectDir)SuiteSparseInstall\include;$(ProjectDir)SuiteSparseInstall\include\suitesparse;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)SuiteSparseInstall\lib64\lapack_blas_windows;$(ProjectDir)SuiteSparseInstall\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)SuiteSparseInstall\64bit\include;$(ProjectDir)SuiteSparseInstall\64bit\include\suitesparse;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)SuiteSparseInstall\64bit\lib64\lapack_blas_windows;$(ProjectDir)SuiteSparseInstall\64bit\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -97,6 +99,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>libspqrd.lib;libcholmodd.lib;suitesparseconfigd.lib;libblas.lib;liblapack.lib;metisd.lib;libamdd.lib;libcamdd.lib;libcolamdd.lib;libccolamdd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -135,6 +138,7 @@ xcopy $(OutputPath)$(TargetName)$(TargetExt) $(SolutionDir)IsotopeFitter.Tests\b
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>libspqr.lib;libcholmod.lib;suitesparseconfig.lib;libblas.lib;liblapack.lib;metis.lib;libamd.lib;libcamd.lib;libcolamd.lib;libccolamd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
