@@ -16,12 +16,19 @@ namespace IsotopeFit
         [DllImport("SPQR.dll")]
         private static extern void SparseQRDispose(IntPtr[] handle);
 
-        [DllImport("SPQR.dll")]
+        [DllImport("SPQR.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern int SparseQR(
             IntPtr[] handle,
             [In] int ord, [In] double tol,
             [In] int rows, [In] int cols, [In] int nzCount, [In] double[] vals, [In] long[] rowInd, [In] long[] colPtr,
-            out int Rrows, out int Rcols, out int RnzCount, out IntPtr Rvals, out IntPtr RrowInd, out IntPtr RcolPtr, out IntPtr ROrdering);
+            out int Rrows, out int Rcols, out int RnzCount, out long Rvals, out long RrowInd, out long RcolPtr, out long ROrdering);  //IntPtr
+
+        //[DllImport("SPQR.dll", CallingConvention = CallingConvention.Cdecl)]
+        //private static extern int Pica(
+        //    IntPtr[] handle,
+        //    [In] int ord, [In] double tol,
+        //    [In] int rows, [In] int cols, [In] int nzCount, [In] double[] vals, [In] long[] rowInd, [In] long[] colPtr,
+        //    out int Rrows, out int Rcols, out int RnzCount, out long Rvals, out long RrowInd, out long RcolPtr, out long ROrdering);
 
         [DllImport("SPQR.dll")]
         private static extern void SparseSolveDispose(IntPtr[] handle);
@@ -54,22 +61,29 @@ namespace IsotopeFit
             long[] rowIndices = Array.ConvertAll<int, long>(A.RowIndices, a => a);
             long[] colPointers = Array.ConvertAll<int, long>(A.ColumnPointers, a => a);
 
+            //64 bit
             int status = SparseQR(handles,
-                ordering, tolerance,
+            ordering, tolerance,
                 rows, cols, nzCount, values, rowIndices, colPointers,
-                out int Rrows, out int Rcols, out int RnzCount, out IntPtr Rvals, out IntPtr RrowInd, out IntPtr RcolPtr, out IntPtr RorderingPtr);
+                out int Rrows, out int Rcols, out int RnzCount, out long Rvals, out long RrowInd, out long RcolPtr, out long RorderingPtr);
+
+            //32bit
+            //int status = SparseQR(handles,
+            //ordering, tolerance,
+            //    rows, cols, nzCount, values, rowIndices, colPointers,
+            //    out int Rrows, out int Rcols, out int RnzCount, out long Rvals, out long RrowInd, out long RcolPtr, out long RorderingPtr);
 
             double[] RvaluesArr = new double[RnzCount];
             Int64[] RrowIndArr = new Int64[RnzCount];
             Int64[] RcolPtrArr = new Int64[Rcols + 1];
             Int64[] RorderingArr = new Int64[Rcols];
 
-            Marshal.Copy(Rvals, RvaluesArr, 0, RnzCount);
-            Marshal.Copy(RrowInd, RrowIndArr, 0, RnzCount);
-            Marshal.Copy(RcolPtr, RcolPtrArr, 0, Rcols + 1);
-            Marshal.Copy(RorderingPtr, RorderingArr, 0, Rcols);
+            Marshal.Copy(new IntPtr(Rvals), RvaluesArr, 0, RnzCount);
+            Marshal.Copy(new IntPtr(RrowInd), RrowIndArr, 0, RnzCount);
+            Marshal.Copy(new IntPtr(RcolPtr), RcolPtrArr, 0, Rcols + 1);
+            Marshal.Copy(new IntPtr(RorderingPtr), RorderingArr, 0, Rcols);
 
-            SparseQRDispose(handles);
+            //SparseQRDispose(handles);
 
             SparseMatrix R = new SparseMatrix(Rrows, Rcols)
             {
@@ -80,6 +94,8 @@ namespace IsotopeFit
             };
 
             return R;
+
+            //return null;
         }
 
         /// <summary>
