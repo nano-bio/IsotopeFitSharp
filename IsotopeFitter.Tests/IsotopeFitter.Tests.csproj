@@ -55,8 +55,8 @@
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MathNet.Numerics, Version=3.20.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MathNet.Numerics.3.20.0\lib\net40\MathNet.Numerics.dll</HintPath>
+    <Reference Include="MathNet.Numerics, Version=3.20.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MathNet.Numerics.3.20.1\lib\net40\MathNet.Numerics.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=3.9.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.3.9.0\lib\net45\nunit.framework.dll</HintPath>
@@ -115,13 +115,13 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\MathNet.Numerics.MKL.Win-x64.2.2.0\build\MathNet.Numerics.MKL.Win-x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MathNet.Numerics.MKL.Win-x64.2.2.0\build\MathNet.Numerics.MKL.Win-x64.targets'))" />
-    <Error Condition="!Exists('..\packages\MathNet.Numerics.MKL.Linux-x64.2.0.0\build\MathNet.Numerics.MKL.Linux-x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MathNet.Numerics.MKL.Linux-x64.2.0.0\build\MathNet.Numerics.MKL.Linux-x64.targets'))" />
+    <Error Condition="!Exists('..\packages\MathNet.Numerics.MKL.Win-x86.2.2.0\build\MathNet.Numerics.MKL.Win-x86.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MathNet.Numerics.MKL.Win-x86.2.2.0\build\MathNet.Numerics.MKL.Win-x86.targets'))" />
   </Target>
-  <Import Project="..\packages\MathNet.Numerics.MKL.Linux-x64.2.0.0\build\MathNet.Numerics.MKL.Linux-x64.targets" Condition="Exists('..\packages\MathNet.Numerics.MKL.Linux-x64.2.0.0\build\MathNet.Numerics.MKL.Linux-x64.targets')" />
   <PropertyGroup>
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
+  <Import Project="..\packages\MathNet.Numerics.MKL.Win-x86.2.2.0\build\MathNet.Numerics.MKL.Win-x86.targets" Condition="Exists('..\packages\MathNet.Numerics.MKL.Win-x86.2.2.0\build\MathNet.Numerics.MKL.Win-x86.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
