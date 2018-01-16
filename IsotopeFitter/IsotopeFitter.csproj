@@ -121,28 +121,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\SPQR\SuiteSparseInstall\lib64\lapack_blas_windows\libblas.dll">
-      <Link>libblas.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPQR\SuiteSparseInstall\lib64\lapack_blas_windows\libgcc_s_sjlj-1.dll">
-      <Link>libgcc_s_sjlj-1.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPQR\SuiteSparseInstall\lib64\lapack_blas_windows\libgfortran-3.dll">
-      <Link>libgfortran-3.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPQR\SuiteSparseInstall\lib64\lapack_blas_windows\liblapack.dll">
-      <Link>liblapack.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\SPQR\SuiteSparseInstall\lib64\lapack_blas_windows\libquadmath-0.dll">
-      <Link>libquadmath-0.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.6.1 %28x86 and x64%29</ProductName>

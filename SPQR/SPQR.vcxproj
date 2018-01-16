@@ -103,6 +103,16 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>libspqrd.lib;libcholmodd.lib;suitesparseconfigd.lib;libblas.lib;liblapack.lib;metisd.lib;libamdd.lib;libcamdd.lib;libcolamdd.lib;libccolamdd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy $(OutputPath)$(TargetName)$(TargetExt) $(SolutionDir)IsotopeFitLib\bin\x86\Debug /Y
+xcopy $(OutputPath)$(TargetName)$(TargetExt) $(SolutionDir)IsotopeFitLib.Tests\bin\x86\Debug /Y
+xcopy $(OutputPath)$(TargetName)$(TargetExt) $(SolutionDir)IsotopeFitter\bin\x86\Debug /Y
+xcopy $(OutputPath)$(TargetName)$(TargetExt) $(SolutionDir)IsotopeFitter.Tests\bin\x86\Debug /Y
+xcopy $(ProjectDir)SuiteSparseInstall\32bit\lib\lapack_blas_windows\*.dll $(SolutionDir)IsotopeFitLib\bin\x86\Debug /d /Y
+xcopy $(ProjectDir)SuiteSparseInstall\32bit\lib\lapack_blas_windows\*.dll $(SolutionDir)IsotopeFitLib.Tests\bin\x86\Debug /d /Y
+xcopy $(ProjectDir)SuiteSparseInstall\32bit\lib\lapack_blas_windows\*.dll $(SolutionDir)IsotopeFitter\bin\x86\Debug /d /Y
+xcopy $(ProjectDir)SuiteSparseInstall\32bit\lib\lapack_blas_windows\*.dll $(SolutionDir)IsotopeFitter.Tests\bin\x86\Debug /d /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -122,7 +132,11 @@
       <Command>xcopy $(OutputPath)$(TargetName)$(TargetExt) $(SolutionDir)IsotopeFitLib\bin\x64\Debug /Y
 xcopy $(OutputPath)$(TargetName)$(TargetExt) $(SolutionDir)IsotopeFitLib.Tests\bin\x64\Debug /Y
 xcopy $(OutputPath)$(TargetName)$(TargetExt) $(SolutionDir)IsotopeFitter\bin\x64\Debug /Y
-xcopy $(OutputPath)$(TargetName)$(TargetExt) $(SolutionDir)IsotopeFitter.Tests\bin\x64\Debug /Y</Command>
+xcopy $(OutputPath)$(TargetName)$(TargetExt) $(SolutionDir)IsotopeFitter.Tests\bin\x64\Debug /Y
+xcopy $(ProjectDir)SuiteSparseInstall\64bit\lib64\lapack_blas_windows\*.dll $(SolutionDir)IsotopeFitLib\bin\x64\Debug /d /Y
+xcopy $(ProjectDir)SuiteSparseInstall\64bit\lib64\lapack_blas_windows\*.dll $(SolutionDir)IsotopeFitLib.Tests\bin\x64\Debug /d /Y
+xcopy $(ProjectDir)SuiteSparseInstall\64bit\lib64\lapack_blas_windows\*.dll $(SolutionDir)IsotopeFitter\bin\x64\Debug /d /Y
+xcopy $(ProjectDir)SuiteSparseInstall\64bit\lib64\lapack_blas_windows\*.dll $(SolutionDir)IsotopeFitter.Tests\bin\x64\Debug /d /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -142,6 +156,16 @@ xcopy $(OutputPath)$(TargetName)$(TargetExt) $(SolutionDir)IsotopeFitter.Tests\b
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>libspqr.lib;libcholmod.lib;suitesparseconfig.lib;libblas.lib;liblapack.lib;metis.lib;libamd.lib;libcamd.lib;libcolamd.lib;libccolamd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy $(OutputPath)$(TargetName)$(TargetExt) $(SolutionDir)IsotopeFitLib\bin\x86\Release /Y
+xcopy $(OutputPath)$(TargetName)$(TargetExt) $(SolutionDir)IsotopeFitLib.Tests\bin\x86\Release /Y
+xcopy $(OutputPath)$(TargetName)$(TargetExt) $(SolutionDir)IsotopeFitter\bin\x86\Release /Y
+xcopy $(OutputPath)$(TargetName)$(TargetExt) $(SolutionDir)IsotopeFitter.Tests\bin\x86\Release /Y
+xcopy $(ProjectDir)SuiteSparseInstall\32bit\lib\lapack_blas_windows\*.dll $(SolutionDir)IsotopeFitLib\bin\x86\Release /d /Y
+xcopy $(ProjectDir)SuiteSparseInstall\32bit\lib\lapack_blas_windows\*.dll $(SolutionDir)IsotopeFitLib.Tests\bin\x86\Release /d /Y
+xcopy $(ProjectDir)SuiteSparseInstall\32bit\lib\lapack_blas_windows\*.dll $(SolutionDir)IsotopeFitter\bin\x86\Release /d /Y
+xcopy $(ProjectDir)SuiteSparseInstall\32bit\lib\lapack_blas_windows\*.dll $(SolutionDir)IsotopeFitter.Tests\bin\x86\Release /d /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -164,7 +188,11 @@ xcopy $(OutputPath)$(TargetName)$(TargetExt) $(SolutionDir)IsotopeFitter.Tests\b
       <Command>xcopy $(OutputPath)$(TargetName)$(TargetExt) $(SolutionDir)IsotopeFitLib\bin\x64\Release /Y
 xcopy $(OutputPath)$(TargetName)$(TargetExt) $(SolutionDir)IsotopeFitLib.Tests\bin\x64\Release /Y
 xcopy $(OutputPath)$(TargetName)$(TargetExt) $(SolutionDir)IsotopeFitter\bin\x64\Release /Y
-xcopy $(OutputPath)$(TargetName)$(TargetExt) $(SolutionDir)IsotopeFitter.Tests\bin\x64\Release /Y</Command>
+xcopy $(OutputPath)$(TargetName)$(TargetExt) $(SolutionDir)IsotopeFitter.Tests\bin\x64\Release /Y
+xcopy $(ProjectDir)SuiteSparseInstall\64bit\lib64\lapack_blas_windows\*.dll $(SolutionDir)IsotopeFitLib\bin\x64\Release /d /Y
+xcopy $(ProjectDir)SuiteSparseInstall\64bit\lib64\lapack_blas_windows\*.dll $(SolutionDir)IsotopeFitLib.Tests\bin\x64\Release /d /Y
+xcopy $(ProjectDir)SuiteSparseInstall\64bit\lib64\lapack_blas_windows\*.dll $(SolutionDir)IsotopeFitter\bin\x64\Release /d /Y
+xcopy $(ProjectDir)SuiteSparseInstall\64bit\lib64\lapack_blas_windows\*.dll $(SolutionDir)IsotopeFitter.Tests\bin\x64\Release /d /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
