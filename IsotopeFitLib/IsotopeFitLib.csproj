@@ -88,6 +88,7 @@
     <Compile Include="Numerics\LeastSquaresSystem.cs" />
     <Compile Include="Numerics\QRFactorization.cs" />
     <Compile Include="Numerics\SPQR.cs" />
+    <Compile Include="PyGUI.cs" />
     <Compile Include="Workspace\DesignMatrix.cs" />
     <Compile Include="IFDFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
