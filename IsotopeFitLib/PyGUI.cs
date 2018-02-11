@@ -45,5 +45,28 @@ namespace IsotopeFit
             // TODO: extract the abundance (and errors maybe, anything else?) and put it to some dictionary, return that
         }
 
+        public static void bla(int x)
+        {
+            Console.WriteLine(x);
+        }
+
+        public static void TestFit( /*Dictionary<string, Dictionary<string, object>> clusters*/ Dictionary<string, int> bla )
+        {
+            foreach (var item in bla.Values)
+            {
+                Console.WriteLine(item);
+            }
+
+            foreach (var key in bla.Keys)
+            {
+                Console.Write("Key: " + key);
+                Console.WriteLine("\t\tVal: " + bla[key]);
+            }
+
+            //bla["jozko"] = 5;
+
+            //Dictionary<string, Dictionary<string, object>> abd;
+            //return abd;
+        }
     }
 }
