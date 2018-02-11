@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -67,6 +68,27 @@ namespace IsotopeFit
 
             //Dictionary<string, Dictionary<string, object>> abd;
             //return abd;
+        }
+
+        public static void TestFit2(OrderedDictionary od)
+        {
+            try
+            {
+                foreach (var key in od.Keys)
+                {
+                    IFData.Cluster c = od[key] as IFData.Cluster;
+
+                    Console.WriteLine(key);
+                    Console.WriteLine(c.CentreOfMass);
+                    Console.WriteLine(c.PeakData.Mass[0] + " " + c.PeakData.Abundance[0]);
+                    Console.WriteLine(c.PeakData.Mass[1] + " " + c.PeakData.Abundance[1]);
+                    Console.WriteLine(c.PeakData.Mass[2] + " " + c.PeakData.Abundance[2]);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }
