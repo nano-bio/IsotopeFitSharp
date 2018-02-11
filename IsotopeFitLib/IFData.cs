@@ -348,7 +348,8 @@ namespace IsotopeFit
                 public LineShape(double[] breaks, double[][] coeffs)
                 {
                     Breaks = breaks;
-                    Coeffs = Matrix<double>.Build.DenseOfRowArrays(coeffs);
+                    //Coeffs = Matrix<double>.Build.DenseOfRowArrays(coeffs);
+                    Coeffs = coeffs;
                 }
 
                 //public string Form { get; set; }
@@ -361,7 +362,8 @@ namespace IsotopeFit
                 /// <summary>
                 /// Coefficients of the partial polynomial describing the line shape
                 /// </summary>
-                public Matrix<double> Coeffs { get; set; }
+                //public Matrix<double> Coeffs { get; set; }
+                public double[][] Coeffs { get; set; }
                 //public int Pieces { get; set; }
                 //public int Order { get; set; }
                 //public int Dim { get; set; }

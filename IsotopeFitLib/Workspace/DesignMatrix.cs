@@ -232,7 +232,8 @@ namespace IsotopeFit
 
                     //Vector<double> breaks;
                     double[] breaks;
-                    Matrix<double> coefs;
+                    //Matrix<double> coefs;
+                    double[][] coefs;
 
                     //mass = Molecules[moleculeIndex].PeakData.Mass[i];
                     mass = (MoleculesDict[moleculeIndex] as IFData.Cluster).PeakData.Mass[i];
@@ -258,8 +259,9 @@ namespace IsotopeFit
                     }
 
                     // build the design matrix column for the current molecule                    
-                    PPInterpolation peakshape = new PPInterpolation(breaks.ToArray(), coefs.ToRowArrays());
-                    
+                    //PPInterpolation peakshape = new PPInterpolation(breaks.ToArray(), coefs.ToRowArrays());
+                    PPInterpolation peakshape = new PPInterpolation(breaks.ToArray(), coefs);
+
                     for (int j = peakLowerLimitIndex; j <= peakUpperLimitIndex; j++)
                     {
                         // TODO: WRONG, i have to calculate all of the points, because they might get unlocked by other fragments fitmasks. fitmask has to be applied only in the end
@@ -271,7 +273,7 @@ namespace IsotopeFit
                     }
 
                     // add the built column to the column storage
-                    designMatrixVectors[moleculeIndex] = currentColumn;
+                    designMatrixVectors[moleculeIndex] = currentColumn;     //TODO: move this outside of the for loop
                 }
 
                 return bs;
@@ -322,36 +324,47 @@ namespace IsotopeFit
             /// <param name="fwhm">Value of full width at half maximum for the particular line, shape of which is being calculated.</param>
             /// <param name="abundance">Isotopical abundance of the particular fragment, line for which is being calculated.</param>
             /// <returns>Mathnet matrix of recalculated piecewise polynomial coefficients.</returns>
-            private Matrix<double> TransformLineShapeCoefs(IFData.Calibration.LineShape sh, double fwhm, double abundance)
+            private double[][] TransformLineShapeCoefs(IFData.Calibration.LineShape sh, double fwhm, double abundance)
             {
-                Matrix<double> coefs = Matrix<double>.Build.Dense(sh.Coeffs.RowCount, sh.Coeffs.ColumnCount, 0);
+                //Matrix<double> coefs = Matrix<double>.Build.Dense(sh.Coeffs.RowCount, sh.Coeffs.ColumnCount, 0);
+                double[][] coefs = new double[sh.Coeffs.Length][];
+                int rowLength = sh.Coeffs[0].Length;
 
                 abundance = 1;  //TODO: remove
 
-                for (int row = 0; row < coefs.RowCount; row++)
+                //for (int row = 0; row < coefs.RowCount; row++)
+                for (int row = 0; row < coefs.Length; row++)
                 {
-                    for (int col = 0; col < coefs.ColumnCount; col++)
-                    {
-                        // value 4 is hardcoded, because the line shape is always represented by piecewise cubic polynomials
-                        switch (col % 4)
-                        {
-                            case 0:
-                                coefs.At(row, col, (sh.Coeffs.At(row, col) * abundance / fwhm));  //fwhmDec
-                                break;
-                            case 1:
-                                coefs.At(row, col, (sh.Coeffs.At(row, col) * abundance / (fwhm * fwhm)));   //Math.Pow(fwhm, 2)
-                                break;
-                            case 2:
-                                coefs.At(row, col, (sh.Coeffs.At(row, col) * abundance / (fwhm * fwhm * fwhm)));   //Math.Pow(fwhm, 3)
-                                break;
-                            case 3:
-                                coefs.At(row, col, (sh.Coeffs.At(row, col) * abundance / (fwhm * fwhm * fwhm * fwhm)));   //Math.Pow(fwhm, 4)
-                                break;
-                        }
-                    }
+                    coefs[row] = new double[rowLength];
+
+                    //for (int col = 0; col < rowLength; col++)
+                    //{
+                    //    // value 4 is hardcoded, because the line shape is always represented by piecewise cubic polynomials
+                    //    switch (col % 4)
+                    //    {
+                    //        case 0:
+                    //            coefs.At(row, col, (sh.Coeffs.At(row, col) * abundance / fwhm));  //fwhmDec
+                    //            break;
+                    //        case 1:
+                    //            coefs.At(row, col, (sh.Coeffs.At(row, col) * abundance / (fwhm * fwhm)));   //Math.Pow(fwhm, 2)
+                    //            break;
+                    //        case 2:
+                    //            coefs.At(row, col, (sh.Coeffs.At(row, col) * abundance / (fwhm * fwhm * fwhm)));   //Math.Pow(fwhm, 3)
+                    //            break;
+                    //        case 3:
+                    //            coefs.At(row, col, (sh.Coeffs.At(row, col) * abundance / (fwhm * fwhm * fwhm * fwhm)));   //Math.Pow(fwhm, 4)
+                    //            break;
+                    //    }
+                    //}
+
+                    coefs[row][0] = sh.Coeffs[row][0] * abundance / fwhm;
+                    coefs[row][1] = sh.Coeffs[row][1] * abundance / (fwhm * fwhm);
+                    coefs[row][2] = sh.Coeffs[row][2] * abundance / (fwhm * fwhm * fwhm);
+                    coefs[row][3] = sh.Coeffs[row][3] * abundance / (fwhm * fwhm * fwhm * fwhm);
                 }
 
-                if (fwhm < 0) coefs = Matrix<double>.Build.DenseOfRowArrays(coefs.ToRowArrays().Reverse());
+                //if (fwhm < 0) coefs = Matrix<double>.Build.DenseOfRowArrays(coefs.ToRowArrays().Reverse());
+                if (fwhm < 0) coefs = coefs.Reverse().ToArray();
 
                 return coefs;    
             }

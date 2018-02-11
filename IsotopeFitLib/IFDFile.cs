@@ -154,7 +154,8 @@ namespace IsotopeFit
                coefs[i] = coefs[i].Reverse().ToArray();
             }
 
-            S.Coeffs = IFData.Arr2DToMatrix(coefs);
+            //S.Coeffs = IFData.Arr2DToMatrix(coefs);
+            S.Coeffs = coefs;
 
             //dataField = (sh as MLStructure)["pieces"] as MLArray;
             //S.Pieces = (int)(dataField as MLDouble).GetArray()[0][0];
