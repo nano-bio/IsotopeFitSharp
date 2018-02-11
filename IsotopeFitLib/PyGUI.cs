@@ -44,5 +44,6 @@ namespace IsotopeFit
 
             // TODO: extract the abundance (and errors maybe, anything else?) and put it to some dictionary, return that
         }
+
     }
 }
