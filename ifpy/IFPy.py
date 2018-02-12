@@ -1,40 +1,31 @@
-# from System.Collections.Generic import Dictionary
-# from System import String
-
-# params = {"one": "1","two":"2"}   
-
-# dict1 = Dictionary[String, String]()
-# for k, v in param.iterkeys():
-#    dict1[k] = v
-
-# ret = Hello_Dict(dict1)
-
-
-import sys
-import os
-import clr
-
 from System.Collections.Specialized import OrderedDictionary
-from System import String, Int32
 
 from IsotopeFit import PyGUI as pg
 from IsotopeFit import IFData
 
-def Fit(d):
-	dic = OrderedDictionary()
+def fit(massAxis, signalAxis, peakDataDict):
+	# create and fill the .NET dictionary
+	dotNetDict = OrderedDictionary()
 
-	for k in d.keys():
-		c = IFData.Cluster();
-		c.Name = k
-		c.CentreOfMass = d[k]["mass"]
+	for key in peakDataDict.keys():
+		cluster = IFData.Cluster();
 
-		isot = IFData.Cluster.IsotopeData(d[k]["isot"]);
-		c.PeakData = isot
+		peakData = IFData.Cluster.IsotopeData(peakDataDict[key]);
+		cluster.PeakData = peakData
 
-		dic[k] = c
+		dotNetDict.Add(key, cluster)
 
-	pg.TestFit2(dic)
+	# call the .NET fit function
+	pg.TestFit2(dotNetDict)
 
-	#return dic
+	# put the results back to a python dictionary
+	abundanceDict = {}
+
+	for key in peakDataDict.keys():
+		abundanceDict[key] = {}
+		abundanceDict[key]["abundance"] = dotNetDict[key].Abundance
+		abundanceDict[key]["abundanceError"] = dotNetDict[key].AbundanceError
+
+	return abundanceDict
 
 
