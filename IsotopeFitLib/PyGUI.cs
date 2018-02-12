@@ -13,7 +13,7 @@ namespace IsotopeFit
     {
         public static void Fit(
             double[] massAxis, double[] signalAxis,    // spectral data
-            Dictionary<string, IFData.Cluster> clusters, List<string> clusterIDList,    // cluster data
+            OrderedDictionary clusters,    // cluster data
             double[] resolutionPPBreaks, double[][] resolutionFitCoeffs,    // resolution fit data
             double[] peakShapeBreaks, double[][] peakShapeCoeffs,    // peak shape data
             double dmSearchRange, double dmFwhmRange    // needed for design matrix calculation
@@ -23,9 +23,7 @@ namespace IsotopeFit
 
             W.SpectralData.MassAxis = massAxis;
             W.SpectralData.SignalAxisCrop = signalAxis;
-
-            // TODO: fill the cluster dictionary
-
+            W.Clusters = clusters;
 
             if (resolutionPPBreaks == null)
             {
@@ -39,7 +37,7 @@ namespace IsotopeFit
             W.Calibration.Shape.Breaks = peakShapeBreaks;
             W.Calibration.Shape.Coeffs = peakShapeCoeffs;
 
-            W.BuildDesignMatrix(dmSearchRange, dmFwhmRange);  // TODO: make the parameters adjustable
+            W.BuildDesignMatrix(dmSearchRange, dmFwhmRange);
 
             W.FitAbundances();
 
@@ -70,7 +68,7 @@ namespace IsotopeFit
             //return abd;
         }
 
-        public static void TestFit2(OrderedDictionary od)
+        public static OrderedDictionary TestFit2(OrderedDictionary od)
         {
             try
             {
@@ -83,12 +81,17 @@ namespace IsotopeFit
                     Console.WriteLine(c.PeakData.Mass[0] + " " + c.PeakData.Abundance[0]);
                     Console.WriteLine(c.PeakData.Mass[1] + " " + c.PeakData.Abundance[1]);
                     Console.WriteLine(c.PeakData.Mass[2] + " " + c.PeakData.Abundance[2]);
-                }
+
+                    c.Abundance = 4.132456;
+                    c.AbundanceError = 0.168;
+                }                
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
+
+            return od;
         }
     }
 }
