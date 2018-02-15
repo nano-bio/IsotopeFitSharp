@@ -30,6 +30,7 @@ namespace IsotopeFit
 
         internal SparseMatrix DesignMatrix { get; private set; }
         internal SparseMatrix DesignMatrixR { get; set; }
+        //internal bool[] DMFitmask { get; set; }
         internal MathNet.Numerics.LinearAlgebra.Double.SparseVector ObservationVector { get; private set; }
         internal Vector<double> ObservationVectorR { get; set; }
         internal int[] ColumnOrdering { get; set; }
@@ -48,6 +49,39 @@ namespace IsotopeFit
             double[] values = DesignMatrixR.Values;
             int[] rowIndices = DesignMatrixR.RowIndices;
             int[] columnPointers = DesignMatrixR.ColumnPointers;
+
+            //using (System.IO.FileStream f = System.IO.File.Open("values.txt", System.IO.FileMode.Create))
+            //{
+            //    using (System.IO.StreamWriter sw = new System.IO.StreamWriter(f))
+            //    {
+            //        for (int i = 0; i < values.Length; i++)
+            //        {
+            //            sw.WriteLine(values[i].ToString(new System.Globalization.NumberFormatInfo { NumberDecimalSeparator = "." }));
+            //        }
+            //    }
+            //}
+
+            //using (System.IO.FileStream f = System.IO.File.Open("rowIndices.txt", System.IO.FileMode.Create))
+            //{
+            //    using (System.IO.StreamWriter sw = new System.IO.StreamWriter(f))
+            //    {
+            //        for (int i = 0; i < rowIndices.Length; i++)
+            //        {
+            //            sw.WriteLine(rowIndices[i].ToString(new System.Globalization.NumberFormatInfo { NumberDecimalSeparator = "." }));
+            //        }
+            //    }
+            //}
+
+            //using (System.IO.FileStream f = System.IO.File.Open("colPointers.txt", System.IO.FileMode.Create))
+            //{
+            //    using (System.IO.StreamWriter sw = new System.IO.StreamWriter(f))
+            //    {
+            //        for (int i = 0; i < columnPointers.Length; i++)
+            //        {
+            //            sw.WriteLine(columnPointers[i].ToString(new System.Globalization.NumberFormatInfo { NumberDecimalSeparator = "." }));
+            //        }
+            //    }
+            //}
 
             SparseMatrix AT = (SparseMatrix)DesignMatrixR.Transpose();
 
@@ -159,6 +193,7 @@ namespace IsotopeFit
                         Array.Copy(sol, 0, abd, start, sol.Length);
 
                         //errorCalcTaskList.Add(Task.Run(() => CalculateError2(C, start, sol)));
+                        //CalculateError2(C, start, sol);
                     }));
                     // error estimation
 
@@ -176,6 +211,8 @@ namespace IsotopeFit
             //SolutionError = Enumerable.Zip(ColumnOrdering, SolutionError, (idx, val) => new { idx, val }).OrderBy(v => v.idx).Select(v => v.val).ToArray();
 
             //Task.WaitAll(errorCalcTaskList.ToArray());
+            CalculateError3(DesignMatrix, DesignMatrixR, ObservationVector, Solution);
+
         }
 
         private Task<double> CalculateError(SparseMatrix designMatrix, int idx, double abundance)
@@ -355,6 +392,121 @@ namespace IsotopeFit
 
         }
 
+        private void CalculateError3(SparseMatrix dm, SparseMatrix dmr, Vector<double> obs, double[] sol)
+        {
+            /* TODO:
+             * 1) inverse of R
+             * 2) transpose of R
+             * 3) S*S'
+             * 4) M*A
+             * 5) s_calc - obs, power 2, sum
+             * 6) put together, divide by k-N
+             * 7) diagonal, sqrt, 1.96
+             */
+
+            double[][] dmrCols = new double[dmr.ColumnCount][];
+
+            for (int i = 0; i < dmrCols.Length; i++)
+            {
+                dmrCols[i] = dmr.Column(i);
+            }
+
+            MathNet.Numerics.LinearAlgebra.Matrix<double> dmrD = Matrix<double>.Build.DenseOfColumnArrays(dmrCols);
+
+            Matrix<double> S = dmrD.Inverse();
+            Matrix<double> SxSt = S.TransposeAndMultiply(S);
+
+            //TODO: adjust DM row indices to omit zero rows
+            int[] rowInd = new int[dm.RowIndices.Length];
+            Array.Copy(dm.RowIndices, rowInd, dm.RowIndices.Length);
+
+            //int shift = 0;
+            List<int> distRowIdx = dm.RowIndices.Distinct().ToList();
+            int rows = distRowIdx.Count();
+
+            List<int> colStInd = new List<int>();
+
+            List<int> zeroRowCounts = new List<int>();
+
+            zeroRowCounts.Add(dm.RowIndices[0]);
+
+            for (int i = 1; i < dm.ColumnPointers.Length - 1; i++)
+            {
+                zeroRowCounts.Add(dm.RowIndices[dm.ColumnPointers[i]] - dm.RowIndices[dm.ColumnPointers[i] - 1] - 1);
+            }
+
+            for (int i = 0; i < zeroRowCounts.Count; i++)
+            {
+                if (zeroRowCounts[i] > 0)
+                {
+                    for (int j = dm.ColumnPointers[i]; j < rowInd.Length; j++)
+                    {
+                        rowInd[j] -= zeroRowCounts[i];
+                    }
+                }
+            }
+
+            List<int> distRowIdx2 = rowInd.Distinct().ToList();
+            int rows2 = distRowIdx2.Count();
+
+            for (int i = 0; i < rowInd.Length; i++)
+            {
+                rowInd[i] -= dm.RowIndices[0];
+            }
+
+            //for (int i = 0; i < dm.ColumnPointers.Length - 1; i++)
+            //{
+            //    colStInd.Add(dm.RowIndices[dm.ColumnPointers[i]]);
+            //}
+
+            //for (int i = 0; i < colStInd.Count; i++)
+            //{
+
+            //}
+
+            //for (int i = 0; i < dm.ColumnPointers.Length - 1; i++)
+            //{
+            //    int subt = rowInd[dm.ColumnPointers[i]];
+
+            //    for (int j = dm.ColumnPointers[i]; j < rowInd.Length; j++)
+            //    {
+            //        rowInd[j] -= subt;
+            //    }
+
+            //    //for (int j = dm.ColumnPointers[i]; j < dm.ColumnPointers[i + 1]; j++)
+            //    //{
+            //    //    rowInd[j] -= dm.RowIndices[dm.ColumnPointers[i]] - dm.ColumnPointers[i];
+            //    //}
+            //}
+
+            SparseMatrix dmf = new SparseMatrix(obs.Count, sol.Length)
+            {
+                Values = dm.Values,
+                RowIndices = rowInd,
+                ColumnPointers = dm.ColumnPointers
+            };
+            
+            int rowsN = rowInd.Distinct().Count();
+
+            double[] s_calc = new double[dm.RowCount];
+            dm.Multiply(sol, s_calc);
+
+            //s_calc = s_calc.Where((val, index) => dm.RowIndices.Contains(index)).ToArray(); //TODO: pomale, spravit cez for
+
+            double[] s_calc2 = new double[obs.Count];
+            double[] diff = new double[obs.Count];
+
+            for (int i = 0; i < s_calc2.Length; i++)
+            {
+                s_calc2[i] = s_calc[dm.RowIndices[i]];
+                diff[i] = s_calc2[i] - (obs.Storage as MathNet.Numerics.LinearAlgebra.Storage.SparseVectorStorage<double>).Values[i];
+            }
+
+            //Vector<double> s_c = Vector<double>.Build.SparseOfArray(s_calc);
+
+
+        }
+        
         /// <summary>
         /// Calls the least square solver method and stores the result in the Solution property.
         /// </summary>
