@@ -27,7 +27,7 @@ namespace IsotopeFitLib.Tests
 
             for (int i = 0; i < valFile.Length; i++)
             {
-                values.Add(Convert.ToDouble(valFile[i]));
+                values.Add(Convert.ToDouble(valFile[i], new System.Globalization.NumberFormatInfo { NumberDecimalSeparator = "." }));
                 rowInd.Add(Convert.ToInt32(ridxFile[i]));                
             }
 
@@ -44,7 +44,7 @@ namespace IsotopeFitLib.Tests
             };
 
             // TODO: call the matrix inverse
-            SparseMatrix In; // = hungabunga
+            SparseMatrix In = IsotopeFit.Numerics.MatrixInversion.Inverse(A);
 
             string[] ivalFile = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\MatrixInversion\\imtval1.txt");   //TODO: this can fail on Linux because of the backslashes
             string[] iridxFile = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\MatrixInversion\\imtridx1.txt");
