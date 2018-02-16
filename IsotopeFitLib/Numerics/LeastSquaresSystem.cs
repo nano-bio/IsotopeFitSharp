@@ -213,14 +213,16 @@ namespace IsotopeFit
             //Task.WaitAll(errorCalcTaskList.ToArray());
             CalculateError3(DesignMatrix, DesignMatrixR, ObservationVector, Solution);
 
+
+
         }
 
         private Task<double> CalculateError(SparseMatrix designMatrix, int idx, double abundance)
         {
-            return Task.Run(() =>
+            return Task.Run((Func<double>)(() =>
             {
                 // remap according to column reorderings
-                int orderIdx = ColumnOrdering.ToList().FindIndex(a => a == idx);
+                int orderIdx = ColumnOrdering.ToList().FindIndex((Predicate<int>)(a => a == idx));
 
                 double[] calcSignal = new double[designMatrix.ColumnPointers[orderIdx + 1] - designMatrix.ColumnPointers[orderIdx]];
                 int j = 0;
@@ -233,10 +235,24 @@ namespace IsotopeFit
                     j++;
                 }
 
+                SparseMatrix transInvMatrix = IsotopeFit.Numerics.MatrixInversion.Inverse(designMatrix).Transpose() as SparseMatrix;
+                
+                double[] diagVec = new double[transInvMatrix.RowCount];
+                int ix;
+                
+                for (int i = 0; i < transInvMatrix.RowCount; i++)
+                {
+                    ix = transInvMatrix.ColumnPointers[i];
+                    for (int ii = 0; ii < transInvMatrix.ColumnPointers[i + 1] - ix; ii++)
+                    {
+                        diagVec[i] += transInvMatrix.Values[ix + ii] * transInvMatrix.Values[ix + ii];
+                    }
+                }
+                
                 double sSqInv = 1d / Math.Pow(DesignMatrixR.Values[DesignMatrixR.ColumnPointers[idx]], 2);
 
                 return 1.96d * Math.Sqrt(sSqInv * diffSqSum / (calcSignal.Length - 1));
-            });
+            }));
         }
 
         private void CalculateError2(SparseMatrix currentDesignMatrixBlock, int startIndex, double[] abundances)
