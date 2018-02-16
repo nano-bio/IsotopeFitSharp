@@ -36,7 +36,7 @@ namespace IsotopeFitLib.Tests
                 colPt.Add(Convert.ToInt32(cptFile[i]));
             }
 
-            SparseMatrix A = new SparseMatrix(values.Count, values.Count)
+            SparseMatrix A = new SparseMatrix(colPt.Count - 1, colPt.Count - 1)
             {
                 Values = values.ToArray(),
                 RowIndices = rowInd.ToArray(),
@@ -56,13 +56,13 @@ namespace IsotopeFitLib.Tests
 
             for (int i = 0; i < ivalFile.Length; i++)
             {
-                ivalues.Add(Convert.ToDouble(valFile[i]));
-                irowInd.Add(Convert.ToInt32(ridxFile[i]));
+                ivalues.Add(Convert.ToDouble(ivalFile[i], new System.Globalization.NumberFormatInfo { NumberDecimalSeparator = "." }));
+                irowInd.Add(Convert.ToInt32(iridxFile[i]));
             }
 
             for (int i = 0; i < icptFile.Length; i++)
             {
-                icolPt.Add(Convert.ToInt32(cptFile[i]));
+                icolPt.Add(Convert.ToInt32(icptFile[i]));
             }
 
             // Assertions block

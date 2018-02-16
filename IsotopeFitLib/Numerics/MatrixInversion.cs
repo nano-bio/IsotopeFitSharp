@@ -29,9 +29,10 @@ namespace IsotopeFit.Numerics
         {
             A = a;
             n = A.RowCount;
+            ATransposed = A.Transpose() as SparseMatrix;
             ColArray = new Col[n];
-            tolx = 10 * MathNet.Numerics.Precision.DoublePrecision * (n - 1) * A.L1Norm(); // Tolerance
-
+            //tolx = 10 * MathNet.Numerics.Precision.DoublePrecision * (n - 1) * A.L1Norm(); // Tolerance
+            tolx = 1e-20;
             //sw.Start();
 
             Parallel.For(0, n, InvertColumn); // columns of inversed matrix do not influence each other

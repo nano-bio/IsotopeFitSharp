@@ -234,20 +234,6 @@ namespace IsotopeFit
                     diffSqSum += Math.Pow(calcSignal[j] - ObservationVector.At(designMatrix.RowIndices[i]), 2);
                     j++;
                 }
-
-                SparseMatrix transInvMatrix = IsotopeFit.Numerics.MatrixInversion.Inverse(designMatrix).Transpose() as SparseMatrix;
-                
-                double[] diagVec = new double[transInvMatrix.RowCount];
-                int ix;
-                
-                for (int i = 0; i < transInvMatrix.RowCount; i++)
-                {
-                    ix = transInvMatrix.ColumnPointers[i];
-                    for (int ii = 0; ii < transInvMatrix.ColumnPointers[i + 1] - ix; ii++)
-                    {
-                        diagVec[i] += transInvMatrix.Values[ix + ii] * transInvMatrix.Values[ix + ii];
-                    }
-                }
                 
                 double sSqInv = 1d / Math.Pow(DesignMatrixR.Values[DesignMatrixR.ColumnPointers[idx]], 2);
 
@@ -520,9 +506,22 @@ namespace IsotopeFit
 
             //Vector<double> s_c = Vector<double>.Build.SparseOfArray(s_calc);
 
+            SparseMatrix transInvMatrix = Numerics.MatrixInversion.Inverse(dmr).Transpose() as SparseMatrix;
+
+            double[] diagVec = new double[transInvMatrix.RowCount];
+            int ix;
+
+            for (int i = 0; i < transInvMatrix.RowCount; i++)
+            {
+                ix = transInvMatrix.ColumnPointers[i];
+                for (int ii = 0; ii < transInvMatrix.ColumnPointers[i + 1] - ix; ii++)
+                {
+                    diagVec[i] += transInvMatrix.Values[ix + ii] * transInvMatrix.Values[ix + ii]; // diagonal vector = diag(invA * transInvA))
+                }
+            }
 
         }
-        
+
         /// <summary>
         /// Calls the least square solver method and stores the result in the Solution property.
         /// </summary>
