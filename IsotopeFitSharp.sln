@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSparse", "CSparse\CSparse.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SPQR", "SPQR\SPQR.vcxproj", "{7E9731E1-5E6A-4071-9F14-69E24A3909C5}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "IFPy", "IFPy\IFPy.pyproj", "{06AD0562-B760-4C54-985A-4DF2A5EBF7B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -100,6 +102,12 @@ Global
 		{7E9731E1-5E6A-4071-9F14-69E24A3909C5}.Release|x64.Build.0 = Release|x64
 		{7E9731E1-5E6A-4071-9F14-69E24A3909C5}.Release|x86.ActiveCfg = Release|Win32
 		{7E9731E1-5E6A-4071-9F14-69E24A3909C5}.Release|x86.Build.0 = Release|Win32
+		{06AD0562-B760-4C54-985A-4DF2A5EBF7B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06AD0562-B760-4C54-985A-4DF2A5EBF7B5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{06AD0562-B760-4C54-985A-4DF2A5EBF7B5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{06AD0562-B760-4C54-985A-4DF2A5EBF7B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06AD0562-B760-4C54-985A-4DF2A5EBF7B5}.Release|x64.ActiveCfg = Release|Any CPU
+		{06AD0562-B760-4C54-985A-4DF2A5EBF7B5}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
