@@ -14,7 +14,7 @@ namespace IsotopeFit
         public static void Fit(
             double[] massAxis, double[] signalAxis,    // spectral data
             OrderedDictionary clusters,    // cluster data
-            double[] resolutionPPBreaks, double[][] resolutionFitCoeffs,    // resolution fit data
+            double[] resolutionPPBreaks, double[][] resolutionCoeffs,    // resolution fit data
             double[] peakShapeBreaks, double[][] peakShapeCoeffs,    // peak shape data
             double dmSearchRange, double dmFwhmRange    // needed for design matrix calculation
             )
@@ -27,11 +27,11 @@ namespace IsotopeFit
 
             if (resolutionPPBreaks == null)
             {
-                W.Calibration.ResolutionInterp = new PolyInterpolation(resolutionFitCoeffs[0]);
+                W.Calibration.ResolutionInterp = new PolyInterpolation(resolutionCoeffs[0]);
             }
             else
             {
-                W.Calibration.ResolutionInterp = new PPInterpolation(resolutionPPBreaks, resolutionFitCoeffs);
+                W.Calibration.ResolutionInterp = new PPInterpolation(resolutionPPBreaks, resolutionCoeffs);
             }
 
             W.Calibration.Shape.Breaks = peakShapeBreaks;
@@ -40,58 +40,6 @@ namespace IsotopeFit
             W.BuildDesignMatrix(dmSearchRange, dmFwhmRange);
 
             W.FitAbundances();
-
-            // TODO: extract the abundance (and errors maybe, anything else?) and put it to some dictionary, return that
-        }
-
-        public static void bla(int x)
-        {
-            Console.WriteLine(x);
-        }
-
-        public static void TestFit( /*Dictionary<string, Dictionary<string, object>> clusters*/ Dictionary<string, int> bla )
-        {
-            foreach (var item in bla.Values)
-            {
-                Console.WriteLine(item);
-            }
-
-            foreach (var key in bla.Keys)
-            {
-                Console.Write("Key: " + key);
-                Console.WriteLine("\t\tVal: " + bla[key]);
-            }
-
-            //bla["jozko"] = 5;
-
-            //Dictionary<string, Dictionary<string, object>> abd;
-            //return abd;
-        }
-
-        public static OrderedDictionary TestFit2(OrderedDictionary od)
-        {
-            try
-            {
-                foreach (var key in od.Keys)
-                {
-                    IFData.Cluster c = od[key] as IFData.Cluster;
-
-                    Console.WriteLine(key);
-                    Console.WriteLine(c.CentreOfMass);
-                    Console.WriteLine(c.PeakData.Mass[0] + " " + c.PeakData.Abundance[0]);
-                    Console.WriteLine(c.PeakData.Mass[1] + " " + c.PeakData.Abundance[1]);
-                    Console.WriteLine(c.PeakData.Mass[2] + " " + c.PeakData.Abundance[2]);
-
-                    c.Abundance = 4.132456;
-                    c.AbundanceError = 0.168;
-                }                
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-
-            return od;
         }
     }
 }
