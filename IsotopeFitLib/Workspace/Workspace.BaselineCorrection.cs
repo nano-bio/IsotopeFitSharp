@@ -23,13 +23,13 @@ namespace IsotopeFit
             if (cutoffLevel != -1) BaselineCorrData.CutoffLevel = cutoffLevel;
 
             // find the indices that indicate the interval marked by the supplied start and end mass
-            int startIndex = Array.BinarySearch(SpectralData.RawMassAxis, BaselineCorrData.StartMass);
+            int startIndex = Array.BinarySearch(SpectralData.RawMassAxis, SpectralData.CropStartMass);
             if (startIndex < 0)
             {
                 startIndex = ~startIndex;
             }
 
-            int endIndex = Array.BinarySearch(SpectralData.RawMassAxis, BaselineCorrData.EndMass);
+            int endIndex = Array.BinarySearch(SpectralData.RawMassAxis, SpectralData.CropEndMass);
             if (endIndex < 0)
             {
                 endIndex = ~endIndex - 1;   //because we want the last mass that is still smaller than the boundary

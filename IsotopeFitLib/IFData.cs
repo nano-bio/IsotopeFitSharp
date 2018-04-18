@@ -125,7 +125,10 @@ namespace IsotopeFit
             public double CropEndMass { get; set; }
 
             public double[] RawMassAxisCrop { get; set; }
+            public double[] RawSignalAxisCrop { get; set; }
+            public double[] MassAxisCrop { get; set; }
             public double[] SignalAxisCrop { get; set; }
+
             public int CroppedLength { get; internal set; }
             internal bool Cropped { get; set; }
 
@@ -209,6 +212,14 @@ namespace IsotopeFit
             //public int MinIndex { get; set; }
             //public int MaxIndex { get; set; }
 
+            /// <summary>
+            /// Cluster is used for calibration
+            /// </summary>
+            /// <remarks>
+            /// True, if used; false if not
+            /// </remarks>
+
+            public bool useForCalibration { get; internal set; }
 
             /// <summary>
             /// Fitted abundance of the cluster.

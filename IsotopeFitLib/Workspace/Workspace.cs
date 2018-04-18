@@ -148,11 +148,11 @@ namespace IsotopeFit
             SpectralData.CropEndMass = SpectralData.RawMassAxis[SpectralData.CropEndIndex];
 
             SpectralData.RawMassAxisCrop = new double[SpectralData.CroppedLength];
-            SpectralData.SignalAxisCrop = new double[SpectralData.CroppedLength];
+            SpectralData.RawSignalAxisCrop = new double[SpectralData.CroppedLength];
 
             SpectralData.Cropped = true;
             Array.Copy(SpectralData.RawMassAxis, SpectralData.CropStartIndex, SpectralData.RawMassAxisCrop, 0, SpectralData.CroppedLength);
-            Array.Copy(SpectralData.SignalAxis, SpectralData.CropStartIndex, SpectralData.SignalAxisCrop, 0, SpectralData.CroppedLength);
+            Array.Copy(SpectralData.RawSignalAxis, SpectralData.CropStartIndex, SpectralData.RawSignalAxisCrop, 0, SpectralData.CroppedLength);
         }
 
         /// <summary>
@@ -223,7 +223,7 @@ namespace IsotopeFit
                     SpectralData.CropEndIndex = SpectralData.RawLength - 1;
                     SpectralData.CroppedLength = SpectralData.RawLength;
                     SpectralData.RawMassAxisCrop = SpectralData.RawMassAxis;
-                    SpectralData.SignalAxisCrop = SpectralData.SignalAxis;
+                    SpectralData.RawSignalAxisCrop = SpectralData.SignalAxis;
                 }
             }
 

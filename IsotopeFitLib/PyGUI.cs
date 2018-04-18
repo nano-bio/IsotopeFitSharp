@@ -22,7 +22,7 @@ namespace IsotopeFit
             Workspace W = new Workspace();
 
             W.SpectralData.MassAxis = massAxis;
-            W.SpectralData.SignalAxisCrop = signalAxis;
+            W.SpectralData.SignalAxis = signalAxis;
             W.Clusters = clusters;
 
             if (resolutionPPBreaks == null)
