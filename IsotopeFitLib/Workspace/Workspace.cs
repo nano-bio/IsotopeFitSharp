@@ -397,6 +397,12 @@ namespace IsotopeFit
             sol.Stop();
             Console.WriteLine("NNLS done in {0} miliseconds", sol.ElapsedMilliseconds);
 
+            System.Diagnostics.Stopwatch err = new System.Diagnostics.Stopwatch();
+            err.Start();
+            lss.CalcErr();
+            err.Stop();
+            Console.WriteLine("Error calculation done in {0} miliseconds", err.ElapsedMilliseconds);
+
 
             // find the fit errors
 
