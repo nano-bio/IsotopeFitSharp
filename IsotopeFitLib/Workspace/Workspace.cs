@@ -386,7 +386,7 @@ namespace IsotopeFit
             //TODO: this is ugly, hide this inside the LeastSquaresSystem class
             System.Diagnostics.Stopwatch qr = new System.Diagnostics.Stopwatch();
             qr.Start();
-            lss = Algorithm.LeaSqrSparseQRHouseholder(lss);
+            lss = QRFactorization.LeaSqrSparseQRHouseholder(lss);
             qr.Stop();
             Console.WriteLine("QR factorization done in {0} miliseconds", qr.ElapsedMilliseconds);
 

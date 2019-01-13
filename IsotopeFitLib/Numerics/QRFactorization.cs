@@ -14,7 +14,7 @@ using CSparse.Storage;
 
 namespace IsotopeFit
 {
-    public static partial class Algorithm
+    public static class QRFactorization
     {
         /// <summary>
         /// Calculates QR factorization of a least squares system using Householder transformation.
