@@ -8,7 +8,7 @@ using CSparse.Double;
 using MathNet.Numerics.LinearAlgebra;
 using System.Diagnostics;
 
-namespace IsotopeFit.Numerics
+namespace IsotopeFit
 {
     public static class MatrixInversion
     {
