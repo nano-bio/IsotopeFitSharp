@@ -44,7 +44,7 @@ namespace IsotopeFitLib.Tests
             };
 
             // TODO: call the matrix inverse
-            SparseMatrix In = IsotopeFit.Numerics.MatrixInversion.Inverse(A);
+            SparseMatrix In = IsotopeFit.MatrixInversion.Inverse(A);
 
             string[] ivalFile = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\MatrixInversion\\imtval1.txt");   //TODO: this can fail on Linux because of the backslashes
             string[] iridxFile = File.ReadAllLines(Path.GetDirectoryName(Assembly.GetAssembly(typeof(Tests)).Location) + "\\TestData\\MatrixInversion\\imtridx1.txt");
