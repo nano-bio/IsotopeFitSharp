@@ -211,7 +211,7 @@ namespace IsotopeFit
             //SolutionError = Enumerable.Zip(ColumnOrdering, SolutionError, (idx, val) => new { idx, val }).OrderBy(v => v.idx).Select(v => v.val).ToArray();
 
             //Task.WaitAll(errorCalcTaskList.ToArray());
-            CalculateError3(DesignMatrix, DesignMatrixR, ObservationVector, Solution);
+            //CalculateError3(DesignMatrix, DesignMatrixR, ObservationVector, Solution);
 
 
 
