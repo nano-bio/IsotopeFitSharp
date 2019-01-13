@@ -23,13 +23,6 @@ namespace IsotopeFit
             [In] int rows, [In] int cols, [In] int nzCount, [In] double[] vals, [In] long[] rowInd, [In] long[] colPtr,
             out int Rrows, out int Rcols, out int RnzCount, out long Rvals, out long RrowInd, out long RcolPtr, out long ROrdering);  //IntPtr
 
-        //[DllImport("SPQR.dll", CallingConvention = CallingConvention.Cdecl)]
-        //private static extern int Pica(
-        //    IntPtr[] handle,
-        //    [In] int ord, [In] double tol,
-        //    [In] int rows, [In] int cols, [In] int nzCount, [In] double[] vals, [In] long[] rowInd, [In] long[] colPtr,
-        //    out int Rrows, out int Rcols, out int RnzCount, out long Rvals, out long RrowInd, out long RcolPtr, out long ROrdering);
-
         [DllImport("SPQR.dll")]
         private static extern void SparseSolveDispose(IntPtr[] handle);
 
@@ -51,7 +44,7 @@ namespace IsotopeFit
         public static SparseMatrix QR(SparseMatrix A)
         {
             IntPtr[] handles = new IntPtr[3];
-            int ordering = 5;
+            int ordering = 5;       // AMD method is used. TODO: Need to check if COLAMD (2) uses less memory.
             double tolerance = 1e-9;
 
             int rows = A.RowCount;
