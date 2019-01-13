@@ -1,4 +1,11 @@
-﻿// -----------------------------------------------------------------------
+﻿/*
+ * List of changes:
+ * - Line 318: Added an ugly dummy function to override the previous implementation of the Multiply method. Someday, someone will clean it up.
+ * - Line 328: Changed the Multiply method for two matrices to use SparseMatrix objects instead of CompressedColumnStorage.
+ * 2019, Michal Ďurian
+ */
+ 
+ // -----------------------------------------------------------------------
 // <copyright file="CompressedColumnStorage.cs">
 // Copyright (c) 2006-2016, Timothy A. Davis
 // Copyright (c) 2012-2016, Christian Woltering
@@ -308,12 +315,17 @@ namespace CSparse.Double
             result.SortIndices();
         }
 
+        public override CompressedColumnStorage<double> Multiply(CompressedColumnStorage<double> other)
+        {
+            return null;    //TODO: very ugly.
+        }
+
         /// <summary>
         /// Sparse matrix multiplication, C = A*B
         /// </summary>
         /// <param name="other">column-compressed matrix</param>
         /// <returns>C = A*B, null on error</returns>
-        public override CompressedColumnStorage<double> Multiply(CompressedColumnStorage<double> other)
+        public SparseMatrix Multiply(SparseMatrix other)
         {
             int m = this.rowCount;
             int n = other.ColumnCount;
