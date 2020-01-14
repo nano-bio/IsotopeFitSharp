@@ -32,7 +32,7 @@ namespace IsotopeFit
         }
 
         /// <summary>
-        /// Create an IsotopeFit workspace and load an IFD/IFJ file into it.
+        /// Create an IsotopeFit workspace and load an IFD file into it.
         /// </summary>
         /// <param name="IFDfile">Path to the IFD file to be loaded.</param>
         public Workspace(string path)
@@ -96,8 +96,6 @@ namespace IsotopeFit
         /// <param name="path">Path to the IFD file.</param>
         public void LoadIFDFile(string path)
         {
-            //TODO: make more robust, recognize the filetype
-
             var rootElement = IFDFile.Open(path);
 
             SpectralData = IFDFile.ReadRawData(rootElement);
@@ -110,16 +108,6 @@ namespace IsotopeFit
 
             IFDLoaded = true;
         }
-
-        public void LoadIFJFile(string path)
-        {
-            Newtonsoft.Json.Linq.JObject rootElement = IFJFile.Open(path);
-
-            SpectralData = IFJFile.ReadRawData(rootElement);
-            Clusters = IFJFile.ReadMolecules(rootElement);
-            Calibration = IFJFile.ReadCalibration(rootElement);
-            BaselineCorrData = IFJFile.ReadBackgroundCorr(rootElement);
-        }        
 
         /// <summary>
         /// Function to set the mass axis cropping.

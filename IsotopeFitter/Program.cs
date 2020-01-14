@@ -39,10 +39,6 @@ namespace IsotopeFitter
             {
                 W.LoadIFDFile(command);
             }
-            else if (command.Contains(".ifj"))
-            {
-                W.LoadIFJFile(command);
-            }
             else
             {
                 // command is a directory

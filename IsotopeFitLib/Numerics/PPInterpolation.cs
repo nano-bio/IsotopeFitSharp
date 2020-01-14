@@ -111,12 +111,6 @@ namespace IsotopeFit
             M.At(0, 2, x[1] - x[0]);
             v.At(0, 0);
 
-            // central conditions
-            //a1[i] = x[i + 1] - x[i];
-            //a2[i] = 2 * (x[i + 1] - x[i - 1]);
-            //a3[i] = x[i] - x[i - 1];
-            //b[i] = ;
-
             for (int i = 1; i < n - 1; i++)
             {
                 M.At(i, i - 1, x[i] - x[i - 1]);

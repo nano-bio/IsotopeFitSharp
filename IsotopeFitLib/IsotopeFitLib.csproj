@@ -80,7 +80,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IFData.cs" />
-    <Compile Include="IFJFile.cs" />
     <Compile Include="Numerics\Interpolation.cs" />
     <Compile Include="Numerics\MatrixInversion.cs" />
     <Compile Include="Numerics\Pardiso.cs" />
