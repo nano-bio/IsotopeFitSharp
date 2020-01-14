@@ -64,29 +64,6 @@ namespace IsotopeFit
             };
 
             return invA;
-
-            //sw.Stop();
-            //Console.WriteLine("time (ms): " + sw.ElapsedMilliseconds);
-            //Console.ReadKey();
-
-            //for (int i = 0; i <= n; i++)
-            //{
-            //    for (int j = 0; j <= n; j++)
-            //    {
-            //        Console.Write(A.At(i, j) + "\t");
-            //    }
-            //    Console.WriteLine();
-            ////}
-            //Console.WriteLine("\n\nInv(A):");
-            //for (int i = 0; i < n; i++)
-            //{
-            //    for (int j = 0; j < n; j++)
-            //    {
-            //        Console.Write(invA.At(i, j) + "\t");
-            //    }
-            //    Console.WriteLine();
-            //}
-            //Console.ReadKey();
         }
 
         static void InvertColumn(int i, ParallelLoopState pls)

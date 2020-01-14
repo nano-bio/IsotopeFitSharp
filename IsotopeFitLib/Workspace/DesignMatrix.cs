@@ -38,18 +38,6 @@ namespace IsotopeFit
             /// <summary>
             /// Create new design matrix and initialize data sources for further calculations.
             /// </summary>
-            //internal DesignMtrx(IFData.Spectrum spectrum, List<IFData.Cluster> molecules, IFData.Calibration calibration, Interpolation resolutionInterp)
-            //{
-            //    massAxis = spectrum.MassAxis.ToArray();
-            //    observationVector = (MathNet.Numerics.LinearAlgebra.Double.SparseVector)MathNet.Numerics.LinearAlgebra.Double.SparseVector.Build.SparseOfArray(spectrum.SignalAxis);
-            //    //Molecules = molecules;
-            //    Calibration = calibration;
-            //    resolutionFit = resolutionInterp;
-
-            //    Rows = spectrum.RawLength;
-            //    Cols = molecules.Count;
-            //}
-
             internal DesignMtrx(IFData.Spectrum spectrum, OrderedDictionary molecules, IFData.Calibration calibration)
             {
                 massAxis = spectrum.MassAxis;
@@ -332,30 +320,9 @@ namespace IsotopeFit
 
                 abundance = 1;  //TODO: remove
 
-                //for (int row = 0; row < coefs.RowCount; row++)
                 for (int row = 0; row < coefs.Length; row++)
                 {
                     coefs[row] = new double[rowLength];
-
-                    //for (int col = 0; col < rowLength; col++)
-                    //{
-                    //    // value 4 is hardcoded, because the line shape is always represented by piecewise cubic polynomials
-                    //    switch (col % 4)
-                    //    {
-                    //        case 0:
-                    //            coefs.At(row, col, (sh.Coeffs.At(row, col) * abundance / fwhm));  //fwhmDec
-                    //            break;
-                    //        case 1:
-                    //            coefs.At(row, col, (sh.Coeffs.At(row, col) * abundance / (fwhm * fwhm)));   //Math.Pow(fwhm, 2)
-                    //            break;
-                    //        case 2:
-                    //            coefs.At(row, col, (sh.Coeffs.At(row, col) * abundance / (fwhm * fwhm * fwhm)));   //Math.Pow(fwhm, 3)
-                    //            break;
-                    //        case 3:
-                    //            coefs.At(row, col, (sh.Coeffs.At(row, col) * abundance / (fwhm * fwhm * fwhm * fwhm)));   //Math.Pow(fwhm, 4)
-                    //            break;
-                    //    }
-                    //}
 
                     coefs[row][0] = sh.Coeffs[row][0] * abundance / fwhm;
                     coefs[row][1] = sh.Coeffs[row][1] * abundance / (fwhm * fwhm);
@@ -363,7 +330,6 @@ namespace IsotopeFit
                     coefs[row][3] = sh.Coeffs[row][3] * abundance / (fwhm * fwhm * fwhm * fwhm);
                 }
 
-                //if (fwhm < 0) coefs = Matrix<double>.Build.DenseOfRowArrays(coefs.ToRowArrays().Reverse());
                 if (fwhm < 0) coefs = coefs.Reverse().ToArray();
 
                 return coefs;    
