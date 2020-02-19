@@ -11,6 +11,9 @@ This will be done by some basic examples:
 # python modules
 import os
 import clr
+# from understanding_clusters import understanding_clusters
+import rangeGroup
+import matplotlib.pyplot as plt
 
 # C# modules
 try:
@@ -20,7 +23,16 @@ except Exception as e:
 from IsotopeFit import Workspace
 
 # create workspace
-w = Workspace()
+w = Workspace('testfile.ifd')
+
+# understanding_clusters(w.Clusters)
+range_groups = rangeGroup.find_ranges(w.Clusters, w.Calibration)
+print(len(range_groups))
+
+for range_group in range_groups:
+    mass
+    plt.plot()
+plt.show()
 
 # load h5 file and save mass and signal data to workspace
 # w = load_mass_signal_data(w)
@@ -33,4 +45,4 @@ w = Workspace()
 
 # save cluster list to workspace
 
-print("End of code in IFPy.py\n")
+print("\n----------------------\nEnd of code in IFPy.py\n----------------------\n")
