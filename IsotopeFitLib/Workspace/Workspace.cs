@@ -22,7 +22,10 @@ namespace IsotopeFit
         /// </summary>
         public Workspace()
         {
-            MathNet.Numerics.Control.UseNativeMKL();
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                MathNet.Numerics.Control.UseNativeMKL();
+            }
 
             SpectralData = new IFData.Spectrum();
             Clusters = new OrderedDictionary();
@@ -37,7 +40,10 @@ namespace IsotopeFit
         /// <param name="IFDfile">Path to the IFD file to be loaded.</param>
         public Workspace(string path)
         {
-            MathNet.Numerics.Control.UseNativeMKL();
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                MathNet.Numerics.Control.UseNativeMKL();
+            }
 
             LoadIFDFile(path);
         }
