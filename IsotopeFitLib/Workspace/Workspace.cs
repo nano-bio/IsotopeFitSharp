@@ -22,7 +22,7 @@ namespace IsotopeFit
         /// </summary>
         public Workspace()
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 MathNet.Numerics.Control.UseNativeMKL();
             }
@@ -40,7 +40,7 @@ namespace IsotopeFit
         /// <param name="IFDfile">Path to the IFD file to be loaded.</param>
         public Workspace(string path)
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 MathNet.Numerics.Control.UseNativeMKL();
             }
