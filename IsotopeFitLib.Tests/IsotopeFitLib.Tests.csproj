@@ -156,5 +156,4 @@
     </PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\MathNet.Numerics.MKL.Win.2.4.0\build\MathNet.Numerics.MKL.Win.targets" Condition="Exists('..\packages\MathNet.Numerics.MKL.Win.2.4.0\build\MathNet.Numerics.MKL.Win.targets')" />
-  <Import Project="..\packages\MathNet.Numerics.MKL.Linux.2.0.0\build\MathNet.Numerics.MKL.Linux.targets" Condition="Exists('..\packages\MathNet.Numerics.MKL.Linux.2.0.0\build\MathNet.Numerics.MKL.Linux.targets')" />
 </Project>
