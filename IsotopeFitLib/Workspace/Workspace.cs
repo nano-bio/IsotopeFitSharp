@@ -22,10 +22,7 @@ namespace IsotopeFit
         /// </summary>
         public Workspace()
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                MathNet.Numerics.Control.UseNativeMKL();
-            }
+            MathNet.Numerics.Control.TryUseNative();
 
             SpectralData = new IFData.Spectrum();
             Clusters = new OrderedDictionary();
@@ -40,17 +37,14 @@ namespace IsotopeFit
         /// <param name="IFDfile">Path to the IFD file to be loaded.</param>
         public Workspace(string path)
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                MathNet.Numerics.Control.UseNativeMKL();
-            }
+            MathNet.Numerics.Control.TryUseNative();
 
             LoadIFDFile(path);
         }
 
-        #endregion
+#endregion
 
-        #region Properties
+#region Properties
 
         /// <summary>
         /// Object containing spectral data, both raw and calibrated.
@@ -92,9 +86,9 @@ namespace IsotopeFit
 
         internal bool IFDLoaded { get; private set; }
 
-        #endregion
+#endregion
 
-        #region Public Methods
+#region Public Methods
 
         /// <summary>
         /// Loads the contents of an IFD file into the workspace.
@@ -596,7 +590,7 @@ namespace IsotopeFit
             DesignMatrix.Storage.Multiply(abundances, SpectralData.FittedSpectrum);
         }
 
-        #endregion
+#endregion
 
         /// <summary>
         /// Class for storing the Workspace status flags and message log for the user.
